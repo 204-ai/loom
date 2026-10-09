@@ -48,6 +48,7 @@ async function open(page: Page, slug: string, nodes: GraphNode[], wires: Readonl
   const file = buildProjectFile({ document: project, now: () => project.updatedAt });
   await openApp(page);
   const chooser = page.waitForEvent("filechooser");
+  await page.getByRole("button", { name: "File", exact: true }).click();
   await page.getByTestId("project-open").click();
   await (await chooser).setFiles({ name: `${slug}.loom.json`, mimeType: "application/json", buffer: Buffer.from(file.text) });
   await expect(page.locator(".react-flow__node")).toHaveCount(nodes.length);
@@ -409,4 +410,54 @@ test("a camera that comes on screen after the plan is installed shows its Render
   );
   // And with the row comes the control: it is the camera that frames the shot.
   await expectToggleVisible(page, "camera_shot");
+});
+
+test("3D preview tiles drag their nodes whenever camera controls are off", async ({ page }) => {
+  await open(page, "node-drag", [
+    named("source", "pointGrid", at(0, 0), { cols: 8, rows: 8 }),
+    named("boxes", "geometry", at(1, 0), { mode: "instances", scale: 0.12 }),
+    named("shot", "camera", at(0, 1), { eye: [0, 0.5, 3], lookAt: [0, 0, 0] }),
+    named("key", "light", at(1, 1)),
+  ], [["grid_source", "geometry_boxes", "points"]]);
+
+  for (const nodeId of ["geometry_boxes", "grid_source", "camera_shot", "light_key"]) {
+    await live(page, nodeId);
+    const node = page.locator(`.react-flow__node[data-id="${nodeId}"]`);
+    const toggle = page.getByTestId(`preview-inspect-${nodeId}`);
+    const readPosition = async () => {
+      const box = await node.boundingBox();
+      if (box === null) throw new Error(`${nodeId} has no node box`);
+      return { x: box.x, y: box.y };
+    };
+    const dragTile = async () => {
+      const box = await tile(page, nodeId).boundingBox();
+      if (box === null) throw new Error(`${nodeId} has no preview box`);
+      await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+      await page.mouse.down();
+      await page.mouse.move(box.x + box.width / 2 + 40, box.y + box.height / 2 + 24, { steps: 8 });
+      await page.mouse.up();
+    };
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    const home = await readPosition();
+    await dragTile();
+    // React Flow starts dragging on the first move past its activation threshold,
+    // so the press-to-first-move part is not included in the node's displacement.
+    await expect.poll(async () => (await readPosition()).x - home.x, { message: `${nodeId} cannot drag in home mode` }).toBeGreaterThan(30);
+    expect((await readPosition()).x - home.x).toBeLessThanOrEqual(40.5);
+    expect((await readPosition()).y - home.y).toBeGreaterThan(18);
+
+    // Camera control owns an ordinary drag only while it is enabled.
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-pressed", "true");
+    const adjustable = await readPosition();
+    await dragTile();
+    expect(await readPosition()).toEqual(adjustable);
+    await toggle.click();
+    await expect(toggle).toHaveAttribute("aria-pressed", "false");
+    const off = await readPosition();
+    await dragTile();
+    await expect.poll(async () => (await readPosition()).x - off.x, { message: `${nodeId} cannot drag after camera control is turned off` }).toBeGreaterThan(30);
+    expect((await readPosition()).x - off.x).toBeLessThanOrEqual(40.5);
+    expect((await readPosition()).y - off.y).toBeGreaterThan(18);
+  }
 });

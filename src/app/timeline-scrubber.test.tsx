@@ -1,13 +1,14 @@
 // @vitest-environment jsdom
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import type { ReactElement } from "react";
-import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, onTestFinished, vi } from "vitest";
 import { installDomStubs } from "@ui/testing/install-dom-stubs.ts";
 import { TooltipProvider } from "@ui/primitives/tooltip.tsx";
 import type { FrameInputs } from "@domain/types/backend.ts";
 import { DEFAULT_FRAME_RANGE } from "@domain/types/graph.ts";
 import { frameAtFraction, fractionOfRange } from "./scrubber-math.ts";
 import { TimelineScrubber } from "./timeline-scrubber.tsx";
+import { TimelineReadout } from "./timeline-readout.tsx";
 
 /**
  * The header timeline (T433).
@@ -92,7 +93,37 @@ describe("the track maps pointer position to a frame in the range", () => {
 });
 
 describe("scrubbing asks the transport to seek (§V170)", () => {
-  it("issues ONE seek for a whole drag, on release, not one per pointer sample", () => {
+  /**
+   * VN76 — the display's frames, by hand: `requestAnimationFrame` queues, `flush()` runs one
+   * frame. Live scrubbing is "at most one seek per animation frame", and only a clock the test
+   * holds can say how many frames passed.
+   */
+  function animationFrames() {
+    let queued = new Map<number, FrameRequestCallback>();
+    let next = 1;
+    const request = vi.spyOn(window, "requestAnimationFrame").mockImplementation((callback) => {
+      queued.set(next, callback);
+      return next++;
+    });
+    const cancel = vi.spyOn(window, "cancelAnimationFrame").mockImplementation((id) => {
+      queued.delete(id);
+    });
+    onTestFinished(() => {
+      request.mockRestore();
+      cancel.mockRestore();
+    });
+    return {
+      flush: () => {
+        const due = queued;
+        queued = new Map();
+        for (const callback of due.values()) callback(0);
+      },
+      pending: () => queued.size,
+    };
+  }
+
+  it("VN76: seeks LIVE while dragging, at most once per animation frame, the latest position winning, and once more at release", () => {
+    const frames = animationFrames();
     const onSeek = vi.fn();
     mount(
       <TimelineScrubber latestFrame={() => frameAt(0)} range={RANGE} onSeek={onSeek} />,
@@ -101,16 +132,50 @@ describe("scrubbing asks the transport to seek (§V170)", () => {
     const track = screen.getByRole("slider", { name: "Playhead" });
 
     fireEvent.pointerDown(track, { button: 0, pointerId: 1, clientX: 60 });
+    // Pressing asks for nothing: a click is the one seek at release.
+    frames.flush();
+    expect(onSeek).not.toHaveBeenCalled();
+
+    // Three samples inside one display frame: ONE seek, to the last of them.
     fireEvent.pointerMove(track, { pointerId: 1, clientX: 150 });
     fireEvent.pointerMove(track, { pointerId: 1, clientX: 240 });
     fireEvent.pointerMove(track, { pointerId: 1, clientX: 300 });
-    // A seek REPLAYS from frame zero, so one per pointer sample would replay the graph
-    // four times for this gesture and a few hundred times for a real one.
     expect(onSeek).not.toHaveBeenCalled();
+    expect(frames.pending()).toBe(1);
+    frames.flush();
+    expect(onSeek.mock.calls).toEqual([[frameAtFraction(RANGE, 0.5)]]);
 
+    // The next frame: one more, where the pointer is now.
+    fireEvent.pointerMove(track, { pointerId: 1, clientX: 450 });
+    frames.flush();
+    expect(onSeek.mock.calls.at(-1)).toEqual([frameAtFraction(RANGE, 0.75)]);
+    // A frame with no move asks for nothing.
+    frames.flush();
+    expect(onSeek).toHaveBeenCalledTimes(2);
+
+    // A move whose frame is not drawn before release is dropped; release lands where the
+    // pointer stopped, and the dropped frame never seeks after it.
+    fireEvent.pointerMove(track, { pointerId: 1, clientX: 500 });
+    fireEvent.pointerUp(track, { pointerId: 1, clientX: 540 });
+    expect(onSeek).toHaveBeenCalledTimes(3);
+    expect(onSeek.mock.calls.at(-1)).toEqual([frameAtFraction(RANGE, 0.9)]);
+    frames.flush();
+    expect(onSeek).toHaveBeenCalledTimes(3);
+  });
+
+  it("VN76: a press and release with no move is ONE seek", () => {
+    const frames = animationFrames();
+    const onSeek = vi.fn();
+    mount(
+      <TimelineScrubber latestFrame={() => frameAt(0)} range={RANGE} onSeek={onSeek} />,
+    );
+    stubTrackWidth(600);
+    const track = screen.getByRole("slider", { name: "Playhead" });
+    fireEvent.pointerDown(track, { button: 0, pointerId: 1, clientX: 300 });
+    frames.flush();
     fireEvent.pointerUp(track, { pointerId: 1, clientX: 300 });
-    expect(onSeek).toHaveBeenCalledTimes(1);
-    expect(onSeek).toHaveBeenCalledWith(frameAtFraction(RANGE, 0.5));
+    frames.flush();
+    expect(onSeek.mock.calls).toEqual([[frameAtFraction(RANGE, 0.5)]]);
   });
 
   it("seeks to where the pointer ENDED, not to where the drag began", () => {
@@ -326,6 +391,29 @@ describe("the playhead is a compositor animation, touched only on events (T1259)
 });
 
 describe("the range's ends are ONE value with three meanings (T433)", () => {
+  it("pairs the current frame before the out point while keeping seek and range edits independent", () => {
+    const latestFrame = () => frameAt(116);
+    const seek = vi.fn();
+    const changeRange = vi.fn();
+    mount(<TimelineScrubber latestFrame={latestFrame} range={RANGE} onSeek={seek} onChangeRange={changeRange}
+      readout={endPoint => <TimelineReadout latestFrame={latestFrame} onSeek={seek} endPoint={endPoint} />} />);
+    const current = screen.getByRole("textbox", { name: "Frame" });
+    const end = screen.getByRole("textbox", { name: "Out point" });
+    const pair = screen.getByRole("group", { name: "Frame position" });
+    expect(pair.contains(current)).toBe(true);
+    expect(pair.contains(end)).toBe(true);
+    expect(current.compareDocumentPosition(end) & Node.DOCUMENT_POSITION_FOLLOWING).toBeTruthy();
+    expect((current as HTMLInputElement).value).toBe("116");
+    expect((end as HTMLInputElement).value).toBe("599");
+    fireEvent.change(current, { target: { value: "120" } });
+    fireEvent.keyDown(current, { key: "Enter" });
+    expect(seek).toHaveBeenCalledWith(120);
+    expect(changeRange).not.toHaveBeenCalled();
+    fireEvent.change(end, { target: { value: "900" } });
+    fireEvent.keyDown(end, { key: "Enter" });
+    expect(changeRange).toHaveBeenCalledWith({ start: RANGE.start, end: 900 });
+    expect(seek).toHaveBeenCalledTimes(1);
+  });
   it("writes the whole range when the out point is committed, keeping the in point", () => {
     const onChangeRange = vi.fn();
     mount(
@@ -356,6 +444,31 @@ describe("the range's ends are ONE value with three meanings (T433)", () => {
     fireEvent.change(out, { target: { value: "40" } });
     fireEvent.keyDown(out, { key: "Enter" });
     expect(onChangeRange).not.toHaveBeenCalled();
+  });
+
+  it("VN71: takes an out point past 10 000, and lands one past a day on the cap, saying why", () => {
+    const onChangeRange = vi.fn();
+    mount(
+      <TimelineScrubber
+        latestFrame={() => frameAt(0)}
+        range={{ start: 0, end: 599 }}
+        onSeek={vi.fn()}
+        onChangeRange={onChangeRange}
+        fps={60}
+      />,
+    );
+    const out = screen.getByLabelText("Out point");
+    // An hour at 60 fps: the old limit refused everything past 10 000.
+    fireEvent.change(out, { target: { value: "215999" } });
+    fireEvent.keyDown(out, { key: "Enter" });
+    expect(onChangeRange).toHaveBeenLastCalledWith({ start: 0, end: 215_999 });
+    expect(out.getAttribute("title")).toBeNull();
+    fireEvent.change(out, { target: { value: "1000000000" } });
+    fireEvent.keyDown(out, { key: "Enter" });
+    expect(onChangeRange).toHaveBeenLastCalledWith({ start: 0, end: 5_183_999 });
+    expect(out.getAttribute("title")).toBe(
+      "Frame 1000000000 is past the timeline limit 5183999: one day at 60 fps is the longest range a project holds.",
+    );
   });
 
   it("abandons an edit on Escape without writing the document", () => {
