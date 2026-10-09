@@ -1,0 +1,1470 @@
+{
+  "assets": [],
+  "createdAt": "2026-08-29T00:00:00.000Z",
+  "graph": {
+    "edges": {
+      "e-beam-panel": {
+        "id": "e-beam-panel",
+        "order": 8,
+        "source": {
+          "nodeId": "xypad_beam",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-bfield-panel": {
+        "id": "e-bfield-panel",
+        "order": 2,
+        "source": {
+          "nodeId": "slider_bfield",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-blackholes-panel": {
+        "id": "e-blackholes-panel",
+        "order": 17,
+        "source": {
+          "nodeId": "slider_blackholes",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-body-rank": {
+        "id": "e-body-rank",
+        "source": {
+          "nodeId": "lag_body",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "normalize_body",
+          "portId": "in"
+        }
+      },
+      "e-camera-space": {
+        "id": "e-camera-space",
+        "order": 2,
+        "source": {
+          "nodeId": "wgsl_camera",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_space",
+          "portId": "more"
+        }
+      },
+      "e-decays-panel": {
+        "id": "e-decays-panel",
+        "order": 16,
+        "source": {
+          "nodeId": "slider_decays",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-dolly-panel": {
+        "id": "e-dolly-panel",
+        "order": 11,
+        "source": {
+          "nodeId": "slider_dolly",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-energy-panel": {
+        "id": "e-energy-panel",
+        "order": 1,
+        "source": {
+          "nodeId": "slider_energy",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-foam-camera": {
+        "id": "e-foam-camera",
+        "source": {
+          "nodeId": "noise_foam",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_camera",
+          "portId": "input"
+        }
+      },
+      "e-foam-onsets": {
+        "id": "e-foam-onsets",
+        "source": {
+          "nodeId": "noise_foam",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_onsets",
+          "portId": "input"
+        }
+      },
+      "e-foam-space": {
+        "id": "e-foam-space",
+        "source": {
+          "nodeId": "noise_foam",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_space",
+          "portId": "input"
+        }
+      },
+      "e-memory-camera": {
+        "id": "e-memory-camera",
+        "order": 0,
+        "source": {
+          "nodeId": "feedback_camera",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_camera",
+          "portId": "more"
+        }
+      },
+      "e-memory-onsets": {
+        "id": "e-memory-onsets",
+        "order": 0,
+        "source": {
+          "nodeId": "feedback_onsets",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_onsets",
+          "portId": "more"
+        }
+      },
+      "e-music-source": {
+        "id": "e-music-source",
+        "source": {
+          "nodeId": "pattern_music",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "switch_source",
+          "portId": "in1"
+        }
+      },
+      "e-onsets-space": {
+        "id": "e-onsets-space",
+        "order": 1,
+        "source": {
+          "nodeId": "wgsl_onsets",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_space",
+          "portId": "more"
+        }
+      },
+      "e-orbit-panel": {
+        "id": "e-orbit-panel",
+        "order": 12,
+        "source": {
+          "nodeId": "slider_orbit",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-pan-panel": {
+        "id": "e-pan-panel",
+        "order": 13,
+        "source": {
+          "nodeId": "slider_pan",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-photons-panel": {
+        "id": "e-photons-panel",
+        "order": 7,
+        "source": {
+          "nodeId": "slider_photons",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-planck-panel": {
+        "id": "e-planck-panel",
+        "order": 4,
+        "source": {
+          "nodeId": "slider_planck",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-quarks-panel": {
+        "id": "e-quarks-panel",
+        "order": 9,
+        "source": {
+          "nodeId": "slider_quarks",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-rank-smooth": {
+        "id": "e-rank-smooth",
+        "source": {
+          "nodeId": "normalize_body",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "lag_bodySmooth",
+          "portId": "in"
+        }
+      },
+      "e-rate-panel": {
+        "id": "e-rate-panel",
+        "order": 0,
+        "source": {
+          "nodeId": "slider_rate",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-react-panel": {
+        "id": "e-react-panel",
+        "order": 6,
+        "source": {
+          "nodeId": "slider_react",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-roll-panel": {
+        "id": "e-roll-panel",
+        "order": 14,
+        "source": {
+          "nodeId": "slider_roll",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-room-source": {
+        "id": "e-room-source",
+        "source": {
+          "nodeId": "audioin_room",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "switch_source",
+          "portId": "in3"
+        }
+      },
+      "e-shake-panel": {
+        "id": "e-shake-panel",
+        "order": 15,
+        "source": {
+          "nodeId": "slider_shake",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-source-body": {
+        "id": "e-source-body",
+        "source": {
+          "nodeId": "switch_source",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "lag_body",
+          "portId": "in"
+        }
+      },
+      "e-source-hit": {
+        "id": "e-source-hit",
+        "source": {
+          "nodeId": "switch_source",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "lag_hit",
+          "portId": "in"
+        }
+      },
+      "e-space-frame": {
+        "id": "e-space-frame",
+        "source": {
+          "nodeId": "wgsl_space",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "output_frame",
+          "portId": "input"
+        }
+      },
+      "e-track-source": {
+        "id": "e-track-source",
+        "source": {
+          "nodeId": "audiofile_track",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "switch_source",
+          "portId": "in2"
+        }
+      },
+      "e-trail-panel": {
+        "id": "e-trail-panel",
+        "order": 5,
+        "source": {
+          "nodeId": "slider_trail",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-trails-space": {
+        "id": "e-trails-space",
+        "order": 0,
+        "source": {
+          "nodeId": "feedback_trails",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_space",
+          "portId": "more"
+        }
+      },
+      "e-warp-panel": {
+        "id": "e-warp-panel",
+        "order": 3,
+        "source": {
+          "nodeId": "slider_warp",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-zoom-panel": {
+        "id": "e-zoom-panel",
+        "order": 10,
+        "source": {
+          "nodeId": "slider_zoom",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      }
+    },
+    "groups": {},
+    "nodes": {
+      "audiofile_track": {
+        "definitionVersion": 1,
+        "id": "audiofile_track",
+        "label": "audiofile_track",
+        "parameters": {
+          "cue": false,
+          "cuePoint": 0,
+          "extend": "loop",
+          "file": "",
+          "monitor": true,
+          "play": true,
+          "playMode": "freeRun",
+          "speed": 1,
+          "trimEnd": 0,
+          "trimStart": 0,
+          "volume": 1
+        },
+        "position": {
+          "x": -2400,
+          "y": -250
+        },
+        "type": "audioFileIn"
+      },
+      "audioin_room": {
+        "definitionVersion": 1,
+        "id": "audioin_room",
+        "label": "audioin_room",
+        "parameters": {},
+        "position": {
+          "x": -2400,
+          "y": 100
+        },
+        "type": "audioIn"
+      },
+      "feedback_camera": {
+        "definitionVersion": 1,
+        "format": {
+          "format": "rgba16float",
+          "mode": "fixed"
+        },
+        "id": "feedback_camera",
+        "label": "feedback_camera",
+        "parameters": {
+          "clearColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "persistence": 1,
+          "source": "wgsl_camera"
+        },
+        "position": {
+          "x": -1200,
+          "y": -700
+        },
+        "resolution": {
+          "height": 1,
+          "mode": "fixed",
+          "width": 4
+        },
+        "type": "feedback"
+      },
+      "feedback_onsets": {
+        "definitionVersion": 1,
+        "format": {
+          "format": "rgba16float",
+          "mode": "fixed"
+        },
+        "id": "feedback_onsets",
+        "label": "feedback_onsets",
+        "parameters": {
+          "clearColor": [
+            0,
+            0,
+            0,
+            0
+          ],
+          "persistence": 1,
+          "source": "wgsl_onsets"
+        },
+        "position": {
+          "x": -1200,
+          "y": -400
+        },
+        "resolution": {
+          "height": 1,
+          "mode": "fixed",
+          "width": 8
+        },
+        "type": "feedback"
+      },
+      "feedback_trails": {
+        "definitionVersion": 1,
+        "id": "feedback_trails",
+        "label": "feedback_trails",
+        "parameters": {
+          "clearColor": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "persistence": 1,
+          "source": "wgsl_space"
+        },
+        "position": {
+          "x": -900,
+          "y": 400
+        },
+        "type": "feedback"
+      },
+      "lag_body": {
+        "definitionVersion": 1,
+        "id": "lag_body",
+        "label": "lag_body",
+        "parameters": {
+          "lag": 0.5,
+          "releaseRatio": 2
+        },
+        "position": {
+          "x": -1800,
+          "y": -450
+        },
+        "type": "valueLag"
+      },
+      "lag_bodySmooth": {
+        "definitionVersion": 1,
+        "id": "lag_bodySmooth",
+        "label": "lag_bodySmooth",
+        "parameters": {
+          "lag": 0.35,
+          "releaseRatio": 1
+        },
+        "position": {
+          "x": -1200,
+          "y": -450
+        },
+        "type": "valueLag"
+      },
+      "lag_hit": {
+        "definitionVersion": 1,
+        "id": "lag_hit",
+        "label": "lag_hit",
+        "parameters": {
+          "lag": 0.12,
+          "releaseRatio": 2.5
+        },
+        "position": {
+          "x": -1800,
+          "y": -50
+        },
+        "type": "valueLag"
+      },
+      "noise_foam": {
+        "definitionVersion": 1,
+        "id": "noise_foam",
+        "label": "noise_foam",
+        "parameters": {
+          "amp": 1,
+          "exp": 1,
+          "gain": 0.5,
+          "harmon": 1,
+          "mono": true,
+          "offset": 0.5,
+          "period": 0.02,
+          "rough": 0.5,
+          "speed": 4,
+          "spread": 2,
+          "type": "perlin4d"
+        },
+        "position": {
+          "x": -900,
+          "y": 0
+        },
+        "type": "noise"
+      },
+      "normalize_body": {
+        "definitionVersion": 1,
+        "id": "normalize_body",
+        "label": "normalize_body",
+        "parameters": {
+          "window": 16
+        },
+        "position": {
+          "x": -1500,
+          "y": -450
+        },
+        "type": "valueNormalize"
+      },
+      "output_frame": {
+        "definitionVersion": 1,
+        "id": "output_frame",
+        "label": "output_frame",
+        "parameters": {
+          "toneMap": "filmic"
+        },
+        "position": {
+          "x": -300,
+          "y": 0
+        },
+        "type": "output"
+      },
+      "panel_vacuum": {
+        "definitionVersion": 1,
+        "id": "panel_vacuum",
+        "label": "panel_vacuum",
+        "parameters": {
+          "board": "{\n  \"columns\": 4,\n  \"items\": [\n    {\"label\":\"Vacuum\",\"rect\":{\"x\":0,\"y\":0,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_rate\",\"rect\":{\"x\":0,\"y\":1,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_energy\",\"rect\":{\"x\":0,\"y\":2,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_bfield\",\"rect\":{\"x\":0,\"y\":3,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_warp\",\"rect\":{\"x\":0,\"y\":4,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_planck\",\"rect\":{\"x\":0,\"y\":5,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_trail\",\"rect\":{\"x\":0,\"y\":6,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_react\",\"rect\":{\"x\":0,\"y\":7,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_photons\",\"rect\":{\"x\":0,\"y\":8,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_quarks\",\"rect\":{\"x\":0,\"y\":14,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_decays\",\"rect\":{\"x\":0,\"y\":22,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_blackholes\",\"rect\":{\"x\":0,\"y\":23,\"w\":4,\"h\":1}},\n    {\"label\":\"Camera\",\"rect\":{\"x\":0,\"y\":15,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_zoom\",\"rect\":{\"x\":0,\"y\":16,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_dolly\",\"rect\":{\"x\":0,\"y\":17,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_orbit\",\"rect\":{\"x\":0,\"y\":18,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_pan\",\"rect\":{\"x\":0,\"y\":19,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_roll\",\"rect\":{\"x\":0,\"y\":20,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_shake\",\"rect\":{\"x\":0,\"y\":21,\"w\":4,\"h\":1}},\n    {\"label\":\"Photon beam\",\"rect\":{\"x\":0,\"y\":9,\"w\":4,\"h\":1}},\n    {\"member\":\"xypad_beam\",\"rect\":{\"x\":0,\"y\":10,\"w\":4,\"h\":4}}\n  ]\n}",
+          "remote": true,
+          "title": "Vacuum"
+        },
+        "position": {
+          "x": 1200,
+          "y": 800
+        },
+        "type": "panel"
+      },
+      "pattern_music": {
+        "definitionVersion": 1,
+        "id": "pattern_music",
+        "label": "pattern_music",
+        "parameters": {
+          "amount": 1,
+          "beatsPerBar": 4,
+          "bpm": 120
+        },
+        "position": {
+          "x": -2400,
+          "y": -600
+        },
+        "type": "audioPattern"
+      },
+      "slider_bfield": {
+        "definitionVersion": 2,
+        "id": "slider_bfield",
+        "label": "slider_bfield",
+        "parameters": {
+          "caption": "Magnetic field",
+          "channel": "bfield",
+          "defaultValue": -4.08,
+          "max": 10,
+          "min": -10,
+          "step": 0,
+          "value": -4.08
+        },
+        "position": {
+          "x": -900,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_blackholes": {
+        "definitionVersion": 2,
+        "id": "slider_blackholes",
+        "label": "slider_blackholes",
+        "parameters": {
+          "caption": "Black holes",
+          "channel": "blackholes",
+          "defaultValue": 0.1,
+          "max": 0.5,
+          "min": 0,
+          "step": 0,
+          "value": 0.1
+        },
+        "position": {
+          "x": 600,
+          "y": 1400
+        },
+        "type": "slider"
+      },
+      "slider_decays": {
+        "definitionVersion": 2,
+        "id": "slider_decays",
+        "label": "slider_decays",
+        "parameters": {
+          "caption": "Decays",
+          "channel": "decays",
+          "defaultValue": 0.3,
+          "max": 1,
+          "min": 0,
+          "step": 0,
+          "value": 0.3
+        },
+        "position": {
+          "x": 300,
+          "y": 1100
+        },
+        "type": "slider"
+      },
+      "slider_dolly": {
+        "definitionVersion": 2,
+        "id": "slider_dolly",
+        "label": "slider_dolly",
+        "parameters": {
+          "caption": "Dolly",
+          "channel": "dolly",
+          "defaultValue": 0.16,
+          "max": 0.5,
+          "min": 0,
+          "step": 0,
+          "value": 0.16
+        },
+        "position": {
+          "x": -1200,
+          "y": 1100
+        },
+        "type": "slider"
+      },
+      "slider_energy": {
+        "definitionVersion": 2,
+        "id": "slider_energy",
+        "label": "slider_energy",
+        "parameters": {
+          "caption": "Energy ΔE",
+          "channel": "energy",
+          "defaultValue": 1,
+          "max": 2,
+          "min": 0.3,
+          "step": 0,
+          "value": 1
+        },
+        "position": {
+          "x": -1200,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_orbit": {
+        "definitionVersion": 2,
+        "id": "slider_orbit",
+        "label": "slider_orbit",
+        "parameters": {
+          "caption": "Orbit",
+          "channel": "orbit",
+          "defaultValue": 0.35,
+          "max": 1,
+          "min": 0,
+          "step": 0,
+          "value": 0.35
+        },
+        "position": {
+          "x": -900,
+          "y": 1100
+        },
+        "type": "slider"
+      },
+      "slider_pan": {
+        "definitionVersion": 2,
+        "id": "slider_pan",
+        "label": "slider_pan",
+        "parameters": {
+          "caption": "Pan",
+          "channel": "pan",
+          "defaultValue": 0.02,
+          "max": 0.15,
+          "min": -0.15,
+          "step": 0,
+          "value": 0.02
+        },
+        "position": {
+          "x": -600,
+          "y": 1100
+        },
+        "type": "slider"
+      },
+      "slider_photons": {
+        "definitionVersion": 2,
+        "id": "slider_photons",
+        "label": "slider_photons",
+        "parameters": {
+          "caption": "Photons",
+          "channel": "photons",
+          "defaultValue": 0.07,
+          "max": 0.2,
+          "min": 0,
+          "step": 0,
+          "value": 0.07
+        },
+        "position": {
+          "x": 600,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_planck": {
+        "definitionVersion": 2,
+        "id": "slider_planck",
+        "label": "slider_planck",
+        "parameters": {
+          "caption": "Planck foam",
+          "channel": "planck",
+          "defaultValue": 0,
+          "max": 1.5,
+          "min": 0,
+          "step": 0,
+          "value": 0
+        },
+        "position": {
+          "x": -300,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_quarks": {
+        "definitionVersion": 2,
+        "id": "slider_quarks",
+        "label": "slider_quarks",
+        "parameters": {
+          "caption": "Quarks & gluons",
+          "channel": "quarks",
+          "defaultValue": 0.35,
+          "max": 1,
+          "min": 0,
+          "step": 0,
+          "value": 0.35
+        },
+        "position": {
+          "x": 600,
+          "y": 1100
+        },
+        "type": "slider"
+      },
+      "slider_rate": {
+        "definitionVersion": 2,
+        "id": "slider_rate",
+        "label": "slider_rate",
+        "parameters": {
+          "caption": "Fluctuation rate",
+          "channel": "rate",
+          "defaultValue": 0.07,
+          "max": 0.2,
+          "min": 0,
+          "step": 0,
+          "value": 0.07
+        },
+        "position": {
+          "x": -1500,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_react": {
+        "definitionVersion": 2,
+        "id": "slider_react",
+        "label": "slider_react",
+        "parameters": {
+          "caption": "Audio reactivity",
+          "channel": "react",
+          "defaultValue": 1.6,
+          "max": 3,
+          "min": 0,
+          "step": 0,
+          "value": 1.6
+        },
+        "position": {
+          "x": 300,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_roll": {
+        "definitionVersion": 2,
+        "id": "slider_roll",
+        "label": "slider_roll",
+        "parameters": {
+          "caption": "Roll",
+          "channel": "roll",
+          "defaultValue": 0.03,
+          "max": 0.2,
+          "min": -0.2,
+          "step": 0,
+          "value": 0.03
+        },
+        "position": {
+          "x": -300,
+          "y": 1100
+        },
+        "type": "slider"
+      },
+      "slider_shake": {
+        "definitionVersion": 2,
+        "id": "slider_shake",
+        "label": "slider_shake",
+        "parameters": {
+          "caption": "Shake",
+          "channel": "shake",
+          "defaultValue": 1,
+          "max": 3,
+          "min": 0,
+          "step": 0,
+          "value": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 1100
+        },
+        "type": "slider"
+      },
+      "slider_trail": {
+        "definitionVersion": 2,
+        "id": "slider_trail",
+        "label": "slider_trail",
+        "parameters": {
+          "caption": "Trails",
+          "channel": "trail",
+          "defaultValue": 0.3,
+          "max": 0.9,
+          "min": 0,
+          "step": 0,
+          "value": 0.3
+        },
+        "position": {
+          "x": 0,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_warp": {
+        "definitionVersion": 2,
+        "id": "slider_warp",
+        "label": "slider_warp",
+        "parameters": {
+          "caption": "Spacetime warp",
+          "channel": "warp",
+          "defaultValue": 0.16,
+          "max": 0.4,
+          "min": 0,
+          "step": 0,
+          "value": 0.16
+        },
+        "position": {
+          "x": -600,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_zoom": {
+        "definitionVersion": 2,
+        "id": "slider_zoom",
+        "label": "slider_zoom",
+        "parameters": {
+          "caption": "Zoom",
+          "channel": "zoom",
+          "defaultValue": 1.25,
+          "max": 3,
+          "min": 0.5,
+          "step": 0,
+          "value": 1.25
+        },
+        "position": {
+          "x": -1500,
+          "y": 1100
+        },
+        "type": "slider"
+      },
+      "switch_source": {
+        "definitionVersion": 1,
+        "id": "switch_source",
+        "label": "switch_source",
+        "parameters": {
+          "index": 2
+        },
+        "position": {
+          "x": -2100,
+          "y": -250
+        },
+        "type": "valueSwitch"
+      },
+      "wgsl_camera": {
+        "definitionVersion": 1,
+        "format": {
+          "format": "rgba16float",
+          "mode": "fixed"
+        },
+        "id": "wgsl_camera",
+        "label": "wgsl_camera",
+        "parameters": {
+          "dolly": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_dolly').chan.dolly * (1 + op('slider_react').chan.react * 1.2 * (op('lag_bodySmooth').chan.low - 0.5)) + op('slider_react').chan.react * 0.35 * clamp(8 * op('lag_hit').chan.kick, 0, 1)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.16
+              }
+            },
+            "mode": "expression"
+          },
+          "orbitSpeed": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "0.06 * (1 + op('slider_react').chan.react * 1.5 * (op('lag_bodySmooth').chan.high - 0.5))"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.06
+              }
+            },
+            "mode": "expression"
+          },
+          "panSpeed": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_pan').chan.pan * (1 + op('slider_react').chan.react * (op('lag_bodySmooth').chan.lowMid - 0.5))"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.02
+              }
+            },
+            "mode": "expression"
+          },
+          "rollSpeed": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_roll').chan.roll * (1 + op('slider_react').chan.react * 1.5 * (op('lag_bodySmooth').chan.highMid - 0.5))"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.03
+              }
+            },
+            "mode": "expression"
+          },
+          "source": "struct SharedFrame {\n  time: f32,\n  deltaTime: f32,\n  frameIndex: f32,\n  randomSeed: f32,\n  wallTime: f32,\n  wallDelta: f32,\n  absTime: f32,\n  absFrame: f32,\n  resolution: vec2f,\n  pointer: vec4f,\n};\nstruct Params {\n  dolly: f32,         // @default 0.16  DOLLY: how fast the eye moves forward, lattice units a second\n  panSpeed: f32,      // @default 0.02  PAN: radians a second the gaze turns where the eye stands\n  rollSpeed: f32,     // @default 0.03  ROLL: radians a second the horizon turns\n  orbitSpeed: f32,    // @default 0.06  ORBIT: radians a second the eye swings round its pivot\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(2) var<uniform> frameU: SharedFrame;\n@group(0) @binding(3) var<uniform> params: Params;\n@group(0) @binding(4) var inputTexture1: texture_2d<f32>;\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let j = i32(floor(uv.x * 4.0));\n  let dt = clamp(frameU.deltaTime, 0.0, 0.1);\n  let stored = textureLoad(inputTexture1, vec2i(j, 0), 0);\n  let prev = stored.r + stored.g + stored.b;\n  var speed = params.dolly;\n  if (j == 0) { speed = params.panSpeed; }\n  if (j == 1) { speed = params.rollSpeed; }\n  if (j == 2) { speed = params.orbitSpeed; }\n  var v = prev + speed * dt;\n  if (j < 3) {\n    v = v - 6.2831853 * floor((v + 3.14159265) / 6.2831853);\n  }\n  let whole = floor(v);\n  let frac = floor((v - whole) * 1024.0) / 1024.0;\n  return vec4f(whole, frac, v - whole - frac, 1.0);\n}\n"
+        },
+        "position": {
+          "x": -900,
+          "y": -700
+        },
+        "resolution": {
+          "height": 1,
+          "mode": "fixed",
+          "width": 4
+        },
+        "type": "customWgslMulti"
+      },
+      "wgsl_onsets": {
+        "definitionVersion": 1,
+        "format": {
+          "format": "rgba16float",
+          "mode": "fixed"
+        },
+        "id": "wgsl_onsets",
+        "label": "wgsl_onsets",
+        "parameters": {
+          "brightness": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('switch_source').chan.centroid"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.5
+              }
+            },
+            "mode": "expression"
+          },
+          "hat": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('switch_source').chan.hatCount"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0
+              }
+            },
+            "mode": "expression"
+          },
+          "kick": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('switch_source').chan.kickCount"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0
+              }
+            },
+            "mode": "expression"
+          },
+          "level": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('switch_source').chan.level"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.3
+              }
+            },
+            "mode": "expression"
+          },
+          "snare": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('switch_source').chan.snareCount"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0
+              }
+            },
+            "mode": "expression"
+          },
+          "source": "struct SharedFrame {\n  time: f32,\n  deltaTime: f32,\n  frameIndex: f32,\n  randomSeed: f32,\n  wallTime: f32,\n  wallDelta: f32,\n  absTime: f32,\n  absFrame: f32,\n  resolution: vec2f,\n  pointer: vec4f,\n};\nstruct Params {\n  kick: f32,          // @default 0  kick events this frame (from the audio)\n  snare: f32,         // @default 0  snare events this frame\n  hat: f32,           // @default 0  hat events this frame\n  brightness: f32,    // @default 0.5  spectral centroid at the hit, 0..1: raises the pairs' energy\n  level: f32,         // @default 0.3  loudness at the hit: raises the share of cells lit\n  kickShare: f32,     // @default 0.55  share of cells a kick lights, before loudness\n  snareShare: f32,    // @default 0.35  share a snare lights\n  hatShare: f32,      // @default 0.1  share a hat lights\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(2) var<uniform> frameU: SharedFrame;\n@group(0) @binding(3) var<uniform> params: Params;\n@group(0) @binding(4) var inputTexture1: texture_2d<f32>;\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let j = i32(floor(uv.x * 8.0));\n  let dt = clamp(frameU.deltaTime, 0.0, 0.1);\n  let isKick = params.kick > 0.0;\n  let isSnare = params.snare > 0.0;\n  let isHat = params.hat > 0.0;\n  if (!(isKick || isSnare || isHat)) {\n    let o = textureLoad(inputTexture1, vec2i(j, 0), 0);\n    return vec4f(min(o.r + dt, 60.0), o.g, o.b, o.a);\n  }\n  if (j > 0) {\n    let o = textureLoad(inputTexture1, vec2i(j - 1, 0), 0);\n    return vec4f(min(o.r + dt, 60.0), o.g, o.b, o.a);\n  }\n  let newest = textureLoad(inputTexture1, vec2i(0, 0), 0);\n  let index = (newest.b + 1.0) % 1024.0;\n  let loud = 0.6 + 0.8 * clamp(params.level * 3.0, 0.0, 1.0);\n  let bright = clamp(params.brightness, 0.0, 1.0);\n  var share = params.hatShare;\n  var energy = 2.2 + 0.8 * bright;\n  if (isKick) {\n    share = params.kickShare;\n    energy = 0.9 + 0.4 * bright;\n  } else if (isSnare) {\n    share = params.snareShare;\n    energy = 1.4 + 0.6 * bright;\n  }\n  return vec4f(0.0, clamp(share * loud, 0.0, 1.0), index, energy);\n}\n"
+        },
+        "position": {
+          "x": -900,
+          "y": -400
+        },
+        "resolution": {
+          "height": 1,
+          "mode": "fixed",
+          "width": 8
+        },
+        "type": "customWgslMulti"
+      },
+      "wgsl_space": {
+        "definitionVersion": 1,
+        "id": "wgsl_space",
+        "label": "wgsl_space",
+        "parameters": {
+          "beatRipple": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "0.18 * op('slider_react').chan.react"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.288
+              }
+            },
+            "mode": "expression"
+          },
+          "bend": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "0.03 + op('slider_react').chan.react * 0.07 * clamp(8 * op('lag_hit').chan.kick, 0, 1)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.03
+              }
+            },
+            "mode": "expression"
+          },
+          "bfield": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_bfield').chan.bfield * (1 + op('slider_react').chan.react * 0.8 * (op('lag_bodySmooth').chan.highMid - 0.5))"
+              },
+              "static": {
+                "kind": "static",
+                "value": -4.08
+              }
+            },
+            "mode": "expression"
+          },
+          "bhRate": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_blackholes').chan.blackholes"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.1
+              }
+            },
+            "mode": "expression"
+          },
+          "decayRate": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_decays').chan.decays"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.3
+              }
+            },
+            "mode": "expression"
+          },
+          "energy": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_energy').chan.energy"
+              },
+              "static": {
+                "kind": "static",
+                "value": 1
+              }
+            },
+            "mode": "expression"
+          },
+          "flash": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "0.4 * (1 + op('slider_react').chan.react * 4 * clamp(8 * op('lag_hit').chan.snare, 0, 1))"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.4
+              }
+            },
+            "mode": "expression"
+          },
+          "glow": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "2.5 * (1 + op('slider_react').chan.react * 0.8 * clamp(8 * op('lag_hit').chan.kick, 0, 1))"
+              },
+              "static": {
+                "kind": "static",
+                "value": 2.5
+              }
+            },
+            "mode": "expression"
+          },
+          "gridGlow": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "max(5 * (1 + op('slider_react').chan.react * (1.2 * (op('lag_bodySmooth').chan.low - 0.5) + 0.9 * clamp(8 * op('lag_hit').chan.kick, 0, 1))), 0)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 5
+              }
+            },
+            "mode": "expression"
+          },
+          "lens": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_zoom').chan.zoom * (1 + op('slider_react').chan.react * 0.18 * clamp(8 * op('lag_hit').chan.kick, 0, 1))"
+              },
+              "static": {
+                "kind": "static",
+                "value": 1.25
+              }
+            },
+            "mode": "expression"
+          },
+          "orbit": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_orbit').chan.orbit"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.35
+              }
+            },
+            "mode": "expression"
+          },
+          "photonAzimuth": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "(op('xypad_beam').chan.beamX - 0.5) * 360"
+              },
+              "static": {
+                "kind": "static",
+                "value": 20
+              }
+            },
+            "mode": "expression"
+          },
+          "photonElevation": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "(op('xypad_beam').chan.beamY - 0.5) * 180"
+              },
+              "static": {
+                "kind": "static",
+                "value": 10
+              }
+            },
+            "mode": "expression"
+          },
+          "photonRate": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_photons').chan.photons"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.07
+              }
+            },
+            "mode": "expression"
+          },
+          "planck": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "max(op('slider_planck').chan.planck * (1 + op('slider_react').chan.react * (1.4 * (op('lag_bodySmooth').chan.high - 0.5) + 1.2 * clamp(8 * op('lag_hit').chan.hat, 0, 1))), 0)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0
+              }
+            },
+            "mode": "expression"
+          },
+          "quarkRate": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_quarks').chan.quarks"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.35
+              }
+            },
+            "mode": "expression"
+          },
+          "rate": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "clamp(op('slider_rate').chan.rate * (1 + op('slider_react').chan.react * 0.9 * (op('lag_bodySmooth').chan.lowMid - 0.5)), 0, 1)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.07
+              }
+            },
+            "mode": "expression"
+          },
+          "rollAngle": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_react').chan.react * 4 * clamp(8 * op('lag_hit').chan.snare, 0, 1)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0
+              }
+            },
+            "mode": "expression"
+          },
+          "shake": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_shake').chan.shake * op('slider_react').chan.react * 0.035 * clamp(8 * op('lag_hit').chan.kick, 0, 1)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0
+              }
+            },
+            "mode": "expression"
+          },
+          "source": "struct SharedFrame {\n  time: f32,\n  deltaTime: f32,\n  frameIndex: f32,\n  randomSeed: f32,\n  wallTime: f32,\n  wallDelta: f32,\n  absTime: f32,\n  absFrame: f32,\n  resolution: vec2f,\n  pointer: vec4f,\n};\nstruct Params {\n  steps: f32,         // @default 64  march steps: more is smoother and slower (the cost is linear in them)\n  maxDist: f32,       // @default 5  how far the eye sees into the patch\n  sway: f32,          // @default 1.1  truck and pedestal: how far the eye swings side to side and up and down — the parallax\n  lens: f32,          // @default 1.25  ZOOM, the focal length: higher zooms in further\n  tilt: f32,          // @default 0  TILT, degrees the gaze is lifted (negative looks down)\n  wander: f32,        // @default 1  how much the gaze drifts on its own, round the pan and tilt\n  orbit: f32,         // @default 0.35  ORBIT: 0 turns the eye where it stands (pan), 1 swings it round a point focusDist ahead\n  focusDist: f32,     // @default 2.2  how far ahead the orbit's pivot sits\n  rollAngle: f32,     // @default 0  ROLL, degrees the horizon is turned, on top of the rig's turning roll\n  shake: f32,         // @default 0  handheld SHAKE: how far the eye jolts, lattice units (audio drives it on the kick)\n  warp: f32,          // @default 0.16  how far the vector field displaces spacetime's coordinates\n  bend: f32,          // @default 0.03  how hard the field bends light rays (lensing)\n  waveScale: f32,     // @default 1.4  wavenumber of the field's modes: higher is finer\n  waveSpeed: f32,     // @default 0.35  how fast field time runs\n  mass: f32,          // @default 1.5  m in ω = sqrt(k² + m²)\n  planck: f32,        // @default 0  Planck foam (off by default: it is ~15% of the frame; 0 skips it entirely): how hard spacetime fluctuates at the finest scale\n  planckScale: f32,   // @default 0.05  the finest foam octave, in lattice units\n  planckRate: f32,    // @default 2.5  how fast the foam boils\n  gridDensity: f32,   // @default 1  lattice lines per unit\n  gridWidth: f32,     // @default 0.016  lattice line radius\n  gridGlow: f32,      // @default 5  lattice brightness\n  gridColor: vec4f,   // @default [0.42, 0.45, 0.95, 1]  the lattice close to the eye\n  gridFarColor: vec4f, // @default [0.1, 0.16, 0.5, 1]  the lattice deep in the patch\n  gridWarp: f32,      // @default 0.75  share of the field's warp the lattice takes: lower is a straighter grid\n  gridFoam: f32,      // @default 0  share of the Planck foam the lattice and the photons take: 0 keeps spacetime smooth while the particles crinkle\n  nodeGlow: f32,      // @default 8  brightness of the lattice's vertices, where three lines meet\n  nodeSize: f32,      // @default 0.035  vertex radius\n  glyphCell: f32,     // @default 0.55  spacing of the field's needles\n  glyphLen: f32,      // @default 0.14  needle half-length at unit field strength\n  glyphGlow: f32,     // @default 3  needle brightness\n  glyphColor: vec4f,  // @default [0.45, 0.9, 0.8, 1]  the needles\n  fieldGlow: f32,     // @default 0.012  the glow of the field's value\n  crestColor: vec4f,  // @default [0.5, 0.2, 0.9, 1]  where the field swings positive\n  troughColor: vec4f, // @default [0.1, 0.35, 0.8, 1]  where it swings negative\n  rate: f32,          // @default 0.07  share of cells a full-strength onset lights with a pair\n  idle: f32,          // @default 0.08  share of cycles in which a cell borrows a pair with no music at all\n  musicLife: f32,     // @default 1.3  seconds a unit-energy pair born on an onset lives\n  beatRipple: f32,    // @default 0.18  how far each onset's wavefront displaces spacetime\n  rippleSpeed: f32,   // @default 2.2  how fast an onset's wavefront runs out, lattice units a second\n  rippleLength: f32,  // @default 0.7  wavelength of an onset's wavefront\n  energy: f32,        // @default 1  scales every pair's ΔE: higher lives shorter and reaches less far\n  lifetime: f32,      // @default 2.4  seconds one cell's cycle lasts at unit energy\n  pairCell: f32,      // @default 1.2  size of a pair cell, in lattice units\n  bfield: f32,        // @default -4.08  magnetic field: radians a track winds round the axis over a life\n  size: f32,          // @default 0.014  particle radius\n  glow: f32,          // @default 2.5  particle brightness\n  matterColor: vec4f, // @default [1.0, 0.5, 0.16, 1]  the particle\n  antiColor: vec4f,   // @default [0.18, 0.72, 1.0, 1]  the antiparticle\n  flashColor: vec4f,  // @default [0.9, 0.85, 1.0, 1]  the annihilation\n  flash: f32,         // @default 0.4  brightness of the annihilation flash\n  ripple: f32,        // @default 0.15  the shell the field rings with when a pair annihilates\n  fog: f32,           // @default 0.45  haze density: what closes the view down to the patch\n  fogColor: vec4f,    // @default [0.006, 0.005, 0.018, 1]  what everything recedes into\n  trail: f32,         // @default 0.3  share of last frame blended into this one: trails, and the march noise averaged out\n  exposure: f32,      // @default 1  master gain\n  photonAzimuth: f32,   // @default 20  the beam's heading, degrees round the vertical (0 crosses the view left to right)\n  photonElevation: f32, // @default 10  the beam's climb, degrees\n  photonRate: f32,    // @default 0.07  share of lanes an onset fires a photon down, before the onset's share\n  photonIdle: f32,    // @default 0.04  share of lanes that carry a photon train with no music at all\n  laneSize: f32,      // @default 0.7  spacing of the photon lanes across the beam\n  photonSpeed: f32,   // @default 3  c, in lattice units a second\n  photonBack: f32,    // @default 5  how far behind the eye, along the beam, a photon sets off\n  packetLength: f32,  // @default 0.3  length of a packet's envelope\n  photonWave: f32,    // @default 0.07  wavelength of the field inside a packet\n  photonAmp: f32,     // @default 0.02  how far the packet's core swings across its path: the transverse field\n  photonWidth: f32,   // @default 0.007  core radius\n  photonGlow: f32,    // @default 2.2  photon brightness\n  quarkRate: f32,     // @default 0.35  share of quark cells a snare lights with a quark–antiquark pair (other onsets a third as often)\n  quarkCell: f32,     // @default 1.8  size of a quark cell: room for the flux tube to stretch\n  quarkLife: f32,     // @default 1.6  seconds from a quark pair's birth to its mesons fading\n  quarkSize: f32,     // @default 0.018  quark radius\n  quarkGlow: f32,     // @default 2.6  quark brightness\n  gluonRadius: f32,   // @default 0.03  radius of the gluon coil round the flux tube\n  gluonCoils: f32,    // @default 16  coils per unit of tube: the curl of the Feynman gluon\n  gluonWidth: f32,    // @default 0.006  thickness of the coil's line\n  gluonGlow: f32,     // @default 1.6  brightness of the gluon coil\n  decayRate: f32,     // @default 0.3  share of decay cells a hat lights with a muon decay (other onsets a fifth as often)\n  decayCell: f32,     // @default 2.2  size of a decay cell: room for the whole diagram\n  decayLife: f32,     // @default 2  seconds a decay's diagram takes to draw itself and fade\n  decayGlow: f32,     // @default 1.4  brightness of the decay diagrams\n  leptonWidth: f32,   // @default 0.007  thickness of a fermion line\n  neutrinoGlow: f32,  // @default 0.45  neutrinos barely interact, so their lines are faint\n  vertexGlow: f32,    // @default 3  brightness of an interaction vertex\n  bhRate: f32,        // @default 0.1  share of black-hole sites that hold a singularity in a given cycle: rare\n  bhCell: f32,        // @default 5  spacing of the black-hole sites\n  bhCycle: f32,       // @default 18  seconds from a hole's collapse to its last flash\n  bhMass: f32,        // @default 0.3  the largest horizon radius (Schwarzschild radius), lattice units\n  bhLens: f32,        // @default 1  how hard the holes bend light: Einstein rings\n  bhPull: f32,        // @default 1  how far spacetime's lattice is dragged down into a hole\n  diskGlow: f32,      // @default 0.6  brightness of the accretion disk\n  diskColor: vec4f,   // @default [1.0, 0.45, 0.12, 1]  the disk's cooler outer plasma\n  diskInner: f32,     // @default 2.4  the disk's inner edge, horizon radii\n  diskOuter: f32,     // @default 6  the disk's outer edge, horizon radii\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(2) var<uniform> frameU: SharedFrame;\n@group(0) @binding(3) var<uniform> params: Params;\n@group(0) @binding(4) var inputTexture1: texture_2d<f32>;\n@group(0) @binding(5) var inputTexture2: texture_2d<f32>;\n@group(0) @binding(6) var inputTexture3: texture_2d<f32>;\n\nfn hash21(p: vec2f) -> f32 {\n  var q = fract(p * vec2f(123.34, 456.21));\n  q = q + dot(q, q + 45.32);\n  return fract(q.x * q.y);\n}\n\nfn hash33(p: vec3f) -> vec3f {\n  var q = fract(p * vec3f(0.1031, 0.1030, 0.0973));\n  q = q + dot(q, q.yxz + 33.33);\n  return fract((q.xxy + q.yxx) * q.zyx);\n}\n\n\n/// Three value-noise channels at once: each lattice corner's ONE hash33 supplies all three,\n/// so a displacement costs eight hashes, not twenty-four.\nfn vnoise3v(p: vec3f) -> vec3f {\n  let i = floor(p);\n  let f = fract(p);\n  let u = f * f * (3.0 - 2.0 * f);\n  let a = mix(hash33(i), hash33(i + vec3f(1.0, 0.0, 0.0)), u.x);\n  let b = mix(hash33(i + vec3f(0.0, 1.0, 0.0)), hash33(i + vec3f(1.0, 1.0, 0.0)), u.x);\n  let c = mix(hash33(i + vec3f(0.0, 0.0, 1.0)), hash33(i + vec3f(1.0, 0.0, 1.0)), u.x);\n  let d = mix(hash33(i + vec3f(0.0, 1.0, 1.0)), hash33(i + vec3f(1.0, 1.0, 1.0)), u.x);\n  return mix(mix(a, b, u.y), mix(c, d, u.y), u.z) * 2.0 - vec3f(1.0);\n}\n\nfn planckFoam(x: vec3f, t: f32, amount: f32, scale: f32, rate: f32) -> vec3f {\n  var disp = vec3f(0.0);\n  let finest = max(scale, 0.005);\n  for (var o = 0; o < 2; o = o + 1) {\n    let len = finest * exp2(f32(1 - o));\n    let flow = t * rate * exp2(f32(o) * 0.5) * select(vec3f(0.7, -0.4, 0.5), vec3f(-0.3, 0.6, 0.8), o == 1);\n    let q = x / len + flow;\n    let w = exp2(f32(o) * 0.6);\n    disp = disp + vnoise3v(q) * len * w;\n  }\n  return disp * amount * 0.3;\n}\n\nconst MODES: i32 = 6;\nconst ONSETS: i32 = 8;\nconst RIPPLES: i32 = 4;\nconst FLASH_SECONDS: f32 = 0.5;\nconst MAX_STEPS: i32 = 160;\n\nfn segment(p: vec3f, a: vec3f, b: vec3f) -> f32 {\n  let ab = b - a;\n  let t = clamp(dot(p - a, ab) / max(dot(ab, ab), 1e-8), 0.0, 1.0);\n  return length(p - a - ab * t);\n}\n\n/// Closest distance between segments p1..q1 and p2..q2 (Ericson, Real-Time Collision\n/// Detection 5.1.9). The march uses it between ONE STEP of the ray and one frame of a\n/// particle's track, so a particle far thinner than a step is never stepped over.\nfn segSeg(p1: vec3f, q1: vec3f, p2: vec3f, q2: vec3f) -> f32 {\n  let d1 = q1 - p1;\n  let d2 = q2 - p2;\n  let r = p1 - p2;\n  let a = dot(d1, d1);\n  let e = dot(d2, d2);\n  let f = dot(d2, r);\n  var s = 0.0;\n  var t = 0.0;\n  if (a <= 1e-9 && e <= 1e-9) { return length(r); }\n  if (a <= 1e-9) {\n    t = clamp(f / e, 0.0, 1.0);\n  } else {\n    let c = dot(d1, r);\n    if (e <= 1e-9) {\n      s = clamp(-c / a, 0.0, 1.0);\n    } else {\n      let b = dot(d1, d2);\n      let denom = a * e - b * b;\n      s = select(0.0, clamp((b * f - c * e) / denom, 0.0, 1.0), denom > 1e-9);\n      t = (b * s + f) / e;\n      if (t < 0.0) {\n        t = 0.0;\n        s = clamp(-c / a, 0.0, 1.0);\n      } else if (t > 1.0) {\n        t = 1.0;\n        s = clamp((b - c) / a, 0.0, 1.0);\n      }\n    }\n  }\n  return length(p1 + d1 * s - (p2 + d2 * t));\n}\n\n/// Where the pair stands at life fraction s: the particle in .m, the antiparticle in .a.\nstruct Pair { m: vec3f, a: vec3f };\n\n/// A photon's colour from its energy, E = hν: low energy red, through green, to violet.\nfn photonColor(e: f32) -> vec3f {\n  let t = clamp((e - 0.9) / 2.1, 0.0, 1.0);\n  let red = vec3f(1.0, 0.22, 0.08);\n  let yellow = vec3f(1.0, 0.85, 0.25);\n  let green = vec3f(0.3, 1.0, 0.45);\n  let violet = vec3f(0.55, 0.35, 1.0);\n  if (t < 0.33) { return mix(red, yellow, t / 0.33); }\n  if (t < 0.66) { return mix(yellow, green, (t - 0.33) / 0.33); }\n  return mix(green, violet, (t - 0.66) / 0.34);\n}\n\n/// One of the camera rig's integrated values, stored split in three exact halves.\nfn rigValue(j: i32) -> f32 {\n  let t = textureLoad(inputTexture3, vec2i(j, 0), 0);\n  return t.r + t.g + t.b;\n}\n\n/// The colour charges: red, green, blue; an antiquark carries the anticolour.\nfn colourCharge(i: f32) -> vec3f {\n  if (i < 1.0) { return vec3f(1.0, 0.18, 0.15); }\n  if (i < 2.0) { return vec3f(0.2, 1.0, 0.3); }\n  return vec3f(0.25, 0.4, 1.0);\n}\n\nfn anticolour(i: f32) -> vec3f {\n  return vec3f(1.0) - colourCharge(i) * 0.75;\n}\n\n/// The ray step w..wEnd against the axis a..b: (where along the axis 0..1, the step's\n/// closest point minus the axis point there).\nstruct AxisHit { t: f32, perp: vec3f };\n\nfn axisHit(w: vec3f, wEnd: vec3f, a: vec3f, b: vec3f) -> AxisHit {\n  let d1 = wEnd - w;\n  let d2 = b - a;\n  let r = w - a;\n  let aa = dot(d1, d1);\n  let ee = dot(d2, d2);\n  let bb = dot(d1, d2);\n  let cc = dot(d1, r);\n  let ff = dot(d2, r);\n  let denom = aa * ee - bb * bb;\n  var s = select(0.0, clamp((bb * ff - cc * ee) / denom, 0.0, 1.0), denom > 1e-9);\n  var t = (bb * s + ff) / max(ee, 1e-9);\n  t = clamp(t, 0.0, 1.0);\n  s = clamp((dot(a + d2 * t - w, d1)) / max(aa, 1e-9), 0.0, 1.0);\n  var out: AxisHit;\n  out.t = t;\n  out.perp = (w + d1 * s) - (a + d2 * t);\n  return out;\n}\n\n/// A gluon between a and b: a coil round the flux tube (the Feynman curl), running along it,\n/// its brightness the same per unit length however far the tube is stretched — the linear\n/// potential of confinement.\nfn gluon(w: vec3f, wEnd: vec3f, a: vec3f, b: vec3f, t: f32, phase: f32) -> f32 {\n  let len = length(b - a);\n  if (len < 1e-3) { return 0.0; }\n  let ax = (b - a) / len;\n  let h = axisHit(w, wEnd, a, b);\n  let r = params.gluonRadius;\n  if (length(h.perp) > r * 4.0) { return 0.0; }\n  let e1 = normalize(cross(ax, select(vec3f(0.0, 1.0, 0.0), vec3f(1.0, 0.0, 0.0), abs(ax.y) > 0.9)));\n  let e2 = cross(ax, e1);\n  let ang = h.t * len * params.gluonCoils * 6.2831853 - phase;\n  let coil = r * (cos(ang) * e1 + sin(ang) * e2);\n  let d = length(h.perp - coil) / max(params.gluonWidth, 0.001);\n  // The tube itself, faint, and the coil on it; both fade into the quarks at the ends.\n  let tube = exp(-dot(h.perp, h.perp) / (r * r)) * 0.15;\n  let ends = smoothstep(0.0, 0.08, h.t) * smoothstep(0.0, 0.08, 1.0 - h.t);\n  return (exp(-d * d) + tube) * ends;\n}\n\n/// The black hole at one site, if the site holds one now: centre and horizon radius (0 for\n/// none). It COLLAPSES into being over the first tenth of the cycle, holds, and from 60%\n/// EVAPORATES by Hawking radiation — a hole's mass falls as (1 - t/T)^(1/3), slowly and then\n/// all at once — ending in a flash at the end of the cycle.\nfn blackHole(cell: vec3f, time: f32, size: f32) -> vec4f {\n  let cyc = max(params.bhCycle, 2.0);\n  let offset = hash33(cell * 0.71 + vec3f(5.5, 1.1, 9.3)).x * cyc;\n  let local = time + offset;\n  let k = floor(local / cyc);\n  let s = (local - k * cyc) / cyc;\n  let h = hash33(cell * 1.13 + vec3f(k * 3.3, k * 7.1, k * 1.9) + vec3f(222.0));\n  if (h.x >= params.bhRate) { return vec4f(0.0); }\n  let centre = (cell + vec3f(0.5) + (h - vec3f(0.5)) * 0.4) * size;\n  let mass = params.bhMass * (0.6 + 0.4 * h.y);\n  let formed = smoothstep(0.0, 0.1, s);\n  let evap = select(1.0, pow(max(1.0 - (s - 0.6) / 0.4, 0.0), 1.0 / 3.0), s > 0.6);\n  return vec4f(centre, mass * formed * evap);\n}\n\n/// A direction from a hash, uniform on the sphere.\nfn randomDir(h: vec3f) -> vec3f {\n  let th = fract(h.x) * 6.2831853;\n  let z = fract(h.y) * 2.0 - 1.0;\n  let r = sqrt(max(1.0 - z * z, 0.0));\n  return vec3f(r * cos(th), z, r * sin(th));\n}\n\n/// A Feynman vertex: a bright point the ray step passes.\nfn vertexDot(v: vec3f, w: vec3f, wEnd: vec3f) -> f32 {\n  let d = segment(v, w, wEnd) / 0.022;\n  return exp(-d * d) + 0.1 / (1.0 + d * d);\n}\n\n/// A fermion line a → b (b is the head): solid, brightest at the head, with arrows — dashes\n/// marching toward the head for a particle (arrow 1) and toward the tail for an\n/// antiparticle (arrow -1), Feynman's antiparticle running backward in time.\nfn fermionLine(w: vec3f, wEnd: vec3f, a: vec3f, b: vec3f, width: f32, arrow: f32) -> f32 {\n  let len = length(b - a);\n  if (len < 1e-3) { return 0.0; }\n  let h = axisHit(w, wEnd, a, b);\n  let d = length(h.perp) / max(width, 0.001);\n  if (d > 12.0) { return 0.0; }\n  let along = h.t * len;\n  let p = fract(along * 9.0 - arrow * frameU.absTime * 2.5);\n  let chevron = 0.45 + 0.55 * smoothstep(0.0, 0.2, p) * (1.0 - smoothstep(0.2, 0.55, p));\n  return (exp(-d * d) + 0.05 / (1.0 + d * d)) * chevron * mix(0.35, 1.0, h.t);\n}\n\n/// A neutrino line: dotted and faint, its dots marching like a fermion's arrows.\nfn neutrinoLine(w: vec3f, wEnd: vec3f, a: vec3f, b: vec3f, arrow: f32) -> f32 {\n  let len = length(b - a);\n  if (len < 1e-3) { return 0.0; }\n  let h = axisHit(w, wEnd, a, b);\n  let d = length(h.perp) / 0.004;\n  if (d > 10.0) { return 0.0; }\n  let p = fract(h.t * len * 16.0 - arrow * frameU.absTime * 2.5);\n  return exp(-d * d) * step(p, 0.35);\n}\n\n/// A W boson line: a short zigzag, the weak force's carrier.\nfn wLine(w: vec3f, wEnd: vec3f, a: vec3f, b: vec3f) -> f32 {\n  let len = length(b - a);\n  if (len < 1e-3) { return 0.0; }\n  let ax = (b - a) / len;\n  let h = axisHit(w, wEnd, a, b);\n  let e1 = normalize(cross(ax, select(vec3f(0.0, 1.0, 0.0), vec3f(1.0, 0.0, 0.0), abs(ax.y) > 0.9)));\n  let zig = abs(fract(h.t * 5.0) * 2.0 - 1.0) * 2.0 - 1.0;\n  let d = length(h.perp - e1 * zig * len * 0.18) / 0.005;\n  return exp(-d * d);\n}\n\n/// One photon packet seen from one ray step: envelope along the lane, the transverse\n/// field's swing across it, brightest where the field peaks. u is the closest point's\n/// position along the lane relative to the packet's centre; perp its offset from the lane.\nfn packet(u: f32, perp: vec3f, pol: vec3f, len: f32, wave: f32, amp: f32, width: f32) -> f32 {\n  let env = exp(-u * u / (len * len));\n  if (env < 0.01) { return 0.0; }\n  let phase = u * 6.2831853 / max(wave, 0.005);\n  let off = perp - pol * amp * env * sin(phase);\n  let d = length(off) / width;\n  return env * (exp(-d * d) + 0.06 / (1.0 + d * d)) * (0.55 + 0.45 * cos(phase) * cos(phase));\n}\n\nfn pairAt(born: vec3f, s: f32, sep0: f32, theta: f32, wind: f32, axial: f32, axis: vec3f, e1: vec3f, e2: vec3f) -> Pair {\n  let sc = clamp(s, 0.0, 1.0);\n  let reach = sep0 * pow(sin(3.14159265 * sc), 0.8);\n  let along = axial * sin(3.14159265 * sc);\n  let pm = theta + wind * sc;\n  let pa = theta + 3.14159265 - wind * sc;\n  var out: Pair;\n  out.m = born + reach * (cos(pm) * e1 + sin(pm) * e2) + along * axis;\n  out.a = born + reach * (cos(pa) * e1 + sin(pa) * e2) - along * axis;\n  return out;\n}\n\n/// A pair of photons leaving m back to back along ±dir, since seconds after the vertex:\n/// two wave packets on one line, at c.\nfn photonPair(w: vec3f, wEnd: vec3f, m: vec3f, dir: vec3f, since: f32) -> vec3f {\n  let reachL = 4.0;\n  let h = axisHit(w, wEnd, m - dir * reachL, m + dir * reachL);\n  let wid = params.photonWidth;\n  if (length(h.perp) > wid * 12.0 + params.photonAmp * 2.0) { return vec3f(0.0); }\n  let along = (h.t * 2.0 - 1.0) * reachL;\n  let headAt = since * params.photonSpeed;\n  let pol = normalize(cross(dir, select(vec3f(0.0, 1.0, 0.0), vec3f(1.0, 0.0, 0.0), abs(dir.y) > 0.9)));\n  let len = params.packetLength * 0.7;\n  let wave = params.photonWave * 0.6;\n  let lightOut = packet(along - headAt, h.perp, pol, len, wave, params.photonAmp, wid)\n    + packet(along + headAt, h.perp, pol, len, wave, params.photonAmp, wid);\n  return vec3f(1.0, 0.92, 0.6) * lightOut * params.photonGlow * exp(-since * 0.8);\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let aspect = frameU.resolution.x / max(frameU.resolution.y, 1.0);\n  let q = (uv - vec2f(0.5)) * vec2f(aspect, -1.0) * 2.0;\n  let time = frameU.absTime;\n\n  // THE CAMERA. wgsl_camera integrates the rig's moving parts (inputTexture3): the pan,\n  // the roll and the orbit angles and the dolly's distance, so the music can speed a move\n  // up or slow it down without the shot jumping. Here they become an eye and a gaze:\n  //   dolly          forward along +z by the integrated distance\n  //   truck/pedestal the sway: wide and slow, so near and far layers slide across each other\n  //   pan / tilt     the gaze turns by the pan angle and lifts by tilt, plus a slow wander\n  //   orbit          instead of turning where it stands, the eye swings round a pivot\n  //                  focusDist ahead — orbit blends between the two\n  //   roll           the horizon turns by the integrated roll plus rollAngle\n  //   zoom           the focal length\n  //   shake          a jolt, scaled by the kick\n  let panPhase = rigValue(0);\n  let rollPhase = rigValue(1);\n  let orbitPhase = rigValue(2);\n  let dolly = rigValue(3);\n  let wanderYaw = params.wander * 0.5 * sin(time * 0.031);\n  let pitch = radians(params.tilt) + params.wander * 0.25 * sin(time * 0.043 + 0.7);\n  let base = vec3f(params.sway * sin(time * 0.083), params.sway * 0.6 * sin(time * 0.061 + 1.0), dolly);\n  // The gaze before the orbit: pan plus wander.\n  let yawFree = panPhase + wanderYaw;\n  let fwdFree = normalize(vec3f(sin(yawFree) * cos(pitch), sin(pitch), cos(yawFree) * cos(pitch)));\n  // The orbit swings eye and gaze together round the pivot ahead.\n  let yawOrbit = yawFree + orbitPhase;\n  let fwd = normalize(vec3f(sin(yawOrbit) * cos(pitch), sin(pitch), cos(yawOrbit) * cos(pitch)));\n  let pivot = base + fwdFree * params.focusDist;\n  let shakeAt = vec3f(sin(time * 37.0), sin(time * 41.0 + 1.3), sin(time * 29.0 + 2.1)) * params.shake;\n  let ro = mix(base, pivot - fwd * params.focusDist, clamp(params.orbit, 0.0, 1.0)) + shakeAt;\n  let rollTotal = rollPhase + radians(params.rollAngle);\n  let right0 = normalize(cross(vec3f(0.0, 1.0, 0.0), fwd));\n  let up0 = cross(fwd, right0);\n  let right = right0 * cos(rollTotal) + up0 * sin(rollTotal);\n  let up = cross(fwd, right);\n  var rd = normalize(q.x * right + q.y * up + params.lens * fwd);\n\n  // The modes, once per pixel: wavevector + phase, polarisation ⟂ k (scaled 1/sqrt(k)) + ω.\n  var ks: array<vec4f, 6>;\n  var us: array<vec4f, 6>;\n  for (var i = 0; i < MODES; i = i + 1) {\n    let h = hash33(vec3f(f32(i) * 7.1, 3.3, 11.7));\n    let h2 = hash33(vec3f(f32(i) * 3.7, 19.1, 2.9));\n    let kd = normalize(h * 2.0 - vec3f(1.0) + vec3f(0.0, 0.0, 0.001));\n    let kmag = params.waveScale * (0.6 + 1.4 * h2.x);\n    let other = select(vec3f(1.0, 0.0, 0.0), vec3f(0.0, 1.0, 0.0), abs(kd.x) > 0.8);\n    let pol = normalize(cross(kd, other));\n    let omega = sqrt(kmag * kmag + params.mass * params.mass) * params.waveSpeed;\n    ks[i] = vec4f(kd * kmag, h2.y * 6.2831853);\n    us[i] = vec4f(pol / sqrt(kmag), omega);\n  }\n\n  // The last eight onsets, newest first (wgsl_onsets): age s, birth share, index, energy.\n  var onsets: array<vec4f, 8>;\n  for (var j = 0; j < ONSETS; j = j + 1) {\n    onsets[j] = textureLoad(inputTexture2, vec2i(j, 0), 0);\n  }\n  // Where each of the newest onsets' wavefronts starts: ahead of the eye, scattered.\n  var sources: array<vec3f, 4>;\n  for (var j = 0; j < RIPPLES; j = j + 1) {\n    let hs = hash33(vec3f(onsets[j].b * 1.7, 9.1, 4.3)) - vec3f(0.5);\n    sources[j] = ro + fwd * (1.8 + 1.5 * (hs.z + 0.5)) + right * hs.x * 2.5 + up * hs.y * 1.6;\n  }\n\n  // The photon beam: its direction, the plane across it the lanes tile, the eye's place on it.\n  let az = radians(params.photonAzimuth);\n  let el = radians(params.photonElevation);\n  let beam = vec3f(cos(el) * cos(az), sin(el), cos(el) * sin(az));\n  let across1 = normalize(cross(beam, select(vec3f(0.0, 1.0, 0.0), vec3f(1.0, 0.0, 0.0), abs(beam.y) > 0.9)));\n  let across2 = cross(beam, across1);\n  let launch = dot(ro, beam) - params.photonBack;\n  let lane = max(params.laneSize, 0.1);\n\n  // The magnetic axis and its perpendicular basis, for the helices.\n  let axis = normalize(vec3f(0.25, 1.0, 0.15));\n  let e1 = normalize(cross(axis, vec3f(1.0, 0.0, 0.0)));\n  let e2 = cross(axis, e1);\n\n  let steps = clamp(i32(params.steps), 8, MAX_STEPS);\n  let marchLen = max(params.maxDist, 0.5);\n  let stepLen = marchLen / f32(steps);\n  let bhc = max(params.bhCell, 1.0);\n  // The black holes this pixel's ray can meet: every site within reach of the eye, looked up\n  // ONCE here (they are rare, so the list is almost always empty and the march pays nothing).\n  var holes: array<vec4f, 4>;\n  var holeAxes: array<vec3f, 4>;\n  var holeCount = 0;\n  let eyeCell = floor(ro / bhc);\n  for (var c = 0; c < 27; c = c + 1) {\n    if (holeCount >= 4) { break; }\n    let cell = eyeCell + vec3f(f32(c % 3) - 1.0, f32((c / 3) % 3) - 1.0, f32(c / 9) - 1.0);\n    let bh = blackHole(cell, time, bhc);\n    if (bh.w <= 0.0) { continue; }\n    // The eye never falls in: a hole the eye comes too close to fades rather than black\n    // out the screen.\n    let rs = bh.w * smoothstep(bh.w * 1.5, bh.w * 5.0, length(ro - bh.xyz));\n    if (rs <= 0.001) { continue; }\n    holes[holeCount] = vec4f(bh.xyz, rs);\n    holeAxes[holeCount] = randomDir(hash33(cell + vec3f(3.1, 7.7, 1.3)));\n    holeCount = holeCount + 1;\n  }\n  let jitter = fract(hash21(uv * frameU.resolution + vec2f(frameU.frameIndex * 7.13, frameU.frameIndex * 3.71))\n    + textureSample(inputTexture, inputSampler, uv).r);\n  var x = ro + rd * stepLen * jitter;\n  var travelled = stepLen * jitter;\n\n  let energy = max(params.energy, 0.05);\n  let cycle = max(params.lifetime, 0.05) / energy;\n  let pc = max(params.pairCell, 0.1);\n  let gc = max(params.glyphCell, 0.05);\n  let gridF = max(params.gridDensity, 0.05);\n  let dt = clamp(frameU.deltaTime, 0.0, 0.1);\n\n  var col = vec3f(0.0);\n  var trans = 1.0;\n  for (var n = 0; n < MAX_STEPS; n = n + 1) {\n    if (travelled >= marchLen || trans < 0.02) { break; }\n\n    // BLACK HOLES: the pull on this point of the holes found round the eye. The step shrinks near a\n    // horizon so the bending stays smooth; a ray that crosses one is gone.\n    var pull = vec3f(0.0);\n    var hstep = stepLen;\n    var swallowed = false;\n    var nearestBH = vec4f(0.0, 0.0, 0.0, 0.0);\n    var nearestAxis = vec3f(0.0, 1.0, 0.0);\n    var nearestR = 1e9;\n    for (var c = 0; c < holeCount; c = c + 1) {\n      let bh = holes[c];\n      let rs = bh.w;\n      let off = x - bh.xyz;\n      let r = length(off);\n      if (r < rs) { swallowed = true; }\n      pull = pull - off / max(r, 1e-4) * rs / max(r * r, rs * rs);\n      hstep = min(hstep, max(0.3 * (r - rs), 0.012));\n      if (r / rs < nearestR) {\n        nearestR = r / rs;\n        nearestBH = bh;\n        nearestAxis = holeAxes[c];\n      }\n    }\n    if (swallowed) {\n      trans = 0.0;\n      break;\n    }\n\n    // The field at x: the waves, then the foam, displace spacetime's coordinates.\n    var field = vec3f(0.0);\n    var phi = 0.0;\n    for (var i = 0; i < MODES; i = i + 1) {\n      let arg = dot(ks[i].xyz, x) - us[i].w * time + ks[i].w;\n      field = field + us[i].xyz * sin(arg);\n      phi = phi + cos(arg) / sqrt(length(ks[i].xyz));\n    }\n    var foam = vec3f(0.0);\n    if (params.planck > 0.0) {\n      foam = planckFoam(x, time, params.planck, params.planckScale, params.planckRate);\n    }\n    // Each onset sends a wavefront through spacetime: a shell running out from its source at\n    // rippleSpeed, a few wavelengths thick, fading as it goes. Low-energy hits (the kick)\n    // ripple hardest.\n    var beat = vec3f(0.0);\n    for (var j = 0; j < RIPPLES; j = j + 1) {\n      let o = onsets[j];\n      if (o.g <= 0.0) { continue; }\n      let off = x - sources[j];\n      let d = length(off);\n      let front = d - o.r * params.rippleSpeed;\n      let packet = exp(-front * front / (params.rippleLength * params.rippleLength * 1.5)) * exp(-o.r * 1.2);\n      beat = beat + off / max(d, 1e-3) * sin(front * 6.2831853 / max(params.rippleLength, 0.05)) * packet * o.g / o.a;\n    }\n    // Spacetime falls into the holes: the funnel displaces every coordinate toward them.\n    let funnel = pull * params.bhPull * 0.05;\n    let w = x + params.warp * field + foam + params.beatRipple * beat + funnel;\n\n    var emit = vec3f(0.0);\n    // Point emitters, counted once per crossing; the end of this step in warped space.\n    var hit = vec3f(0.0);\n    let wEnd = w + rd * hstep;\n    let near = smoothstep(0.5, 1.4, travelled);\n\n    // The lattice has its OWN coordinates: the smooth field warp (gridWarp of it) and the\n    // onsets' wavefronts, and none of the foam by default — so it reads as one consistent,\n    // gently curved space with depth, while the particles and needles crinkle in the foam.\n    // The photons run in these same coordinates: light follows the smooth curvature of\n    // spacetime, never the foam, so its paths bend without turbulence.\n    let wg = x + params.warp * params.gridWarp * field + foam * params.gridFoam + params.beatRipple * beat + funnel;\n    // Lines where two of the three lattice coordinates are whole. A ray running ALONG a line\n    // would sit inside it for its whole length and streak toward the vanishing point, so\n    // each axis's lines are weighted by how squarely the ray crosses them.\n    let g = abs(fract(wg * gridF + vec3f(0.5)) - vec3f(0.5)) / gridF;\n    let lw = max(params.gridWidth, 0.002);\n    let cross3 = vec3f(1.0) - rd * rd;\n    let lines = cross3.x * exp(-dot(g.yz, g.yz) / (lw * lw))\n      + cross3.y * exp(-dot(g.xz, g.xz) / (lw * lw))\n      + cross3.z * exp(-dot(g.xy, g.xy) / (lw * lw));\n    // The vertices, where three lines meet: points the eye can hold on to, so the layers'\n    // parallax reads. Near is warm, deep is cool.\n    let ns = max(params.nodeSize, 0.005);\n    let vertex = exp(-dot(g, g) / (ns * ns));\n    let depthTint = mix(params.gridColor.rgb, params.gridFarColor.rgb, smoothstep(1.0, max(params.maxDist, 1.5) * 0.8, travelled));\n    emit = emit + depthTint * (params.gridGlow * lines * (0.55 + 0.45 * clamp(length(field), 0.0, 2.0)) + params.nodeGlow * vertex);\n\n    // The needles: one per glyph cell, along the waves at the cell's centre, brighter at the head.\n    let gcell = floor(w / gc);\n    let gcen = (gcell + vec3f(0.5)) * gc;\n    var gfield = vec3f(0.0);\n    for (var i = 0; i < MODES; i = i + 1) {\n      gfield = gfield + us[i].xyz * sin(dot(ks[i].xyz, gcen) - us[i].w * time + ks[i].w);\n    }\n    let half = gfield * params.glyphLen;\n    let needle = segment(w, gcen - half, gcen + half);\n    let head = clamp(dot(w - gcen, half) / max(dot(half, half), 1e-6) * 0.5 + 0.5, 0.0, 1.0);\n    let nw = lw * 0.6;\n    emit = emit + params.glyphColor.rgb * params.glyphGlow * exp(-needle * needle / (nw * nw)) * (0.3 + 0.7 * head);\n\n    // The field's value as a faint glow.\n    emit = emit + params.fieldGlow * (params.crestColor.rgb * max(phi, 0.0) + params.troughColor.rgb * max(-phi, 0.0));\n\n    // The pair in this cell. MUSIC first: the most recent onset that lit this cell (a lit\n    // cell keeps that pair; older onsets never overlap it). Otherwise the IDLE vacuum: the\n    // cell's own clock, at a low rate, so silence still fluctuates.\n    let cid = floor(w / pc);\n    var lit = false;\n    var e = 1.0;\n    var life = 1.0;\n    var age = -1.0;\n    var h2 = vec3f(0.0);\n    for (var j = 0; j < ONSETS; j = j + 1) {\n      let o = onsets[j];\n      if (o.g <= 0.0) { continue; }\n      let hj = hash33(cid * 1.37 + vec3f(o.b * 7.3, o.b * 1.9, o.b * 3.1));\n      if (hj.x < params.rate * o.g) {\n        lit = true;\n        e = o.a * (0.8 + 0.4 * hj.y) * energy;\n        life = params.musicLife / e;\n        age = o.r;\n        h2 = hash33(cid * 2.11 + vec3f(o.b * 3.7, o.b * 5.3, o.b * 0.7) + vec3f(91.0, 37.0, 11.0));\n        break;\n      }\n    }\n    if (!lit) {\n      let offset = hash33(cid + vec3f(17.0, 5.0, 3.0)).x * cycle;\n      let local = time + offset;\n      let k = floor(local / cycle);\n      let tau = local - k * cycle;\n      let h = hash33(cid * 1.37 + vec3f(k * 7.3, k * 1.9, k * 3.1) + vec3f(400.0));\n      if (h.x < params.idle) {\n        lit = true;\n        e = (1.0 + 1.5 * h.y) * energy;\n        life = cycle * 0.5 / (1.0 + 1.5 * h.y);\n        h2 = hash33(cid * 2.11 + vec3f(k * 3.7, k * 5.3, k * 0.7) + vec3f(491.0, 37.0, 11.0));\n        age = tau - h.z * (cycle - life - FLASH_SECONDS / energy);\n      }\n    }\n    if (lit && age >= 0.0) {\n      let born = (cid + vec3f(0.25) + 0.5 * h2) * pc;\n      let sep0 = pc * 0.3 / max(e, 0.5);\n      let r = max(params.size, 0.001);\n      let flashLen = FLASH_SECONDS / max(e, 0.5);\n      if (age < life) {\n        let s = age / life;\n        let theta = h2.x * 6.2831853;\n        let wind = params.bfield * (0.6 + 0.8 * h2.y);\n        let axial = sep0 * (h2.z * 2.0 - 1.0) * 0.8;\n        let now = pairAt(born, s, sep0, theta, wind, axial, axis, e1, e2);\n        let before = pairAt(born, s - dt / life, sep0, theta, wind, axial, axis, e1, e2);\n        // A pair born on a beat condenses fast: a twentieth of its life.\n        let fade = smoothstep(0.0, 0.05, s) * params.glow * (0.7 + 0.3 * e) * near;\n        // Per crossing, not per length: the closest approach of this ray step to the track.\n        let dm = segSeg(w, wEnd, before.m, now.m) / r;\n        let da = segSeg(w, wEnd, before.a, now.a) / r;\n        hit = hit + params.matterColor.rgb * (exp(-dm * dm) + 0.08 / (1.0 + dm * dm)) * fade;\n        hit = hit + params.antiColor.rgb * (exp(-da * da) + 0.08 / (1.0 + da * da)) * fade;\n      } else {\n        let u = (age - life) / flashLen;\n        if (u < 1.0) {\n          let d = length(w - born);\n          let db = segment(born, w, wEnd) / (r * (1.5 + e));\n          hit = hit + params.flashColor.rgb * exp(-u * 10.0) * (exp(-db * db) + 0.15 / (1.0 + db * db)) * params.flash * e * near;\n          let shell = exp(-pow((d - u * pc * 0.4) / (r * 0.6), 2.0)) * (1.0 - u) * (1.0 - u) / r;\n          emit = emit + params.flashColor.rgb * shell * params.ripple * 0.3;\n        }\n      }\n    }\n\n    // QUARKS AND GLUONS, in the smooth coordinates like the photons: confinement as a\n    // story in three acts. A quark and its antiquark (colour and anticolour) are born on\n    // an onset and part; the gluon field between them is a flux tube — drawn as the\n    // Feynman curl — whose energy grows with its length. At 55% of the life the tube\n    // snaps: a new quark pair condenses out of the vacuum at the break, and the two\n    // mesons (each a quark and an antiquark) drift apart, their own tubes short, and fade.\n    if (params.quarkRate > 0.0) {\n      let qc = max(params.quarkCell, 0.4);\n      let cq = floor(wg / qc);\n      var qlit = false;\n      var qage = 0.0;\n      var qe = 1.0;\n      var qh = vec3f(0.0);\n      for (var j = 0; j < ONSETS; j = j + 1) {\n        let o = onsets[j];\n        if (o.g <= 0.0) { continue; }\n        let snare = o.a > 1.35 && o.a < 2.1;\n        let hq = hash33(cq * 1.91 + vec3f(o.b * 4.1, o.b * 2.3, o.b * 6.7) + vec3f(13.0));\n        if (hq.x < params.quarkRate * select(0.33, 1.0, snare)) {\n          qlit = true;\n          qage = o.r;\n          qe = o.a;\n          qh = hash33(cq * 3.07 + vec3f(o.b * 1.3, o.b * 8.9, o.b * 2.2) + vec3f(57.0));\n          break;\n        }\n      }\n      let qlife = params.quarkLife;\n      let wgE = wg + rd * hstep;\n      // The life runs on past qlife for the decay photons to get away.\n      if (qlit && qage < qlife * 1.6) {\n        let s = qage / qlife;\n        let centre = (cq + vec3f(0.3) + 0.4 * qh) * qc;\n        let theta = qh.x * 6.2831853;\n        let phi = acos(qh.y * 2.0 - 1.0);\n        let dir = vec3f(sin(phi) * cos(theta), cos(phi), sin(phi) * sin(theta));\n        let reach = qc * 0.36 / sqrt(qe);\n        let colourIdx = floor(qh.z * 3.0);\n        let breakIdx = floor(fract(qh.z * 7.0) * 3.0);\n        let cQ = colourCharge(colourIdx);\n        let cA = anticolour(colourIdx);\n        let cNewA = anticolour(breakIdx);\n        let cNewQ = colourCharge(breakIdx);\n        let rq = max(params.quarkSize, 0.002);\n        let fade = smoothstep(0.0, 0.04, s) * (1.0 - smoothstep(1.4, 1.6, s)) * near;\n        let flow = time * 9.0;\n        var qlight = vec3f(0.0);\n        let SNAP = 0.55;\n        if (s < SNAP) {\n          // Act one: parting, slowing as the tube pulls back.\n          let sep = reach * (1.0 - pow(1.0 - s / SNAP, 2.0));\n          let q = centre + dir * sep;\n          let a = centre - dir * sep;\n          let dq = segment(q, wg, wgE) / rq;\n          let da = segment(a, wg, wgE) / rq;\n          qlight = qlight + cQ * exp(-dq * dq) * params.quarkGlow + cA * exp(-da * da) * params.quarkGlow;\n          // The tube brightens as it stretches toward the snap.\n          let strain = 0.6 + 0.8 * (s / SNAP);\n          qlight = qlight + mix(cQ, cA, 0.5) * gluon(wg, wgE, q, a, 0.0, flow) * params.gluonGlow * strain;\n        } else {\n          // Act two: the snap, and the two mesons — which then DECAY, each π⁰ → γγ: the\n          // meson vanishes into a vertex and two photons leave it back to back.\n          let u = (s - SNAP) / (1.0 - SNAP);\n          let DECAY = 0.65;\n          let live = 1.0 - smoothstep(DECAY, DECAY + 0.08, u);\n          let drift = reach * (1.0 + 0.6 * min(u, 1.0));\n          let q = centre + dir * drift;\n          let a = centre - dir * drift;\n          // The new pair, born at the break, pulled toward its partners.\n          let gap = reach * (0.9 * (1.0 - min(u, 1.0)) + 0.15);\n          let newA = q - dir * gap;\n          let newQ = a + dir * gap;\n          if (live > 0.0) {\n            let dq = segment(q, wg, wgE) / rq;\n            let da = segment(a, wg, wgE) / rq;\n            let dnA = segment(newA, wg, wgE) / rq;\n            let dnQ = segment(newQ, wg, wgE) / rq;\n            qlight = qlight + (cQ * exp(-dq * dq) + cA * exp(-da * da) + cNewA * exp(-dnA * dnA) + cNewQ * exp(-dnQ * dnQ)) * params.quarkGlow * live;\n            qlight = qlight + mix(cQ, cNewA, 0.5) * gluon(wg, wgE, q, newA, 0.0, flow) * params.gluonGlow * live;\n            qlight = qlight + mix(cNewQ, cA, 0.5) * gluon(wg, wgE, newQ, a, 0.0, flow) * params.gluonGlow * live;\n          }\n          // The snap itself: a white flash where the tube broke — a vertex.\n          let db = segment(centre, wg, wgE) / (rq * 3.0);\n          qlight = qlight + vec3f(1.0) * exp(-u * 12.0) * exp(-db * db) * params.flash * 2.0;\n          if (u > DECAY) {\n            let since = (u - DECAY) * (1.0 - SNAP) * qlife;\n            let m1 = (q + newA) * 0.5;\n            let m2 = (newQ + a) * 0.5;\n            let p1 = randomDir(qh * 5.3 + vec3f(1.0));\n            let p2 = randomDir(qh * 7.9 + vec3f(2.0));\n            qlight = qlight + photonPair(wg, wgE, m1, p1, since) + photonPair(wg, wgE, m2, p2, since);\n            qlight = qlight + vec3f(1.0, 0.95, 0.85) * params.vertexGlow * exp(-since * 5.0)\n              * (vertexDot(m1, wg, wgE) + vertexDot(m2, wg, wgE));\n          }\n        }\n        hit = hit + qlight * fade;\n      }\n    }\n\n    // DECAYS, drawn as their Feynman diagrams growing in space, in the smooth coordinates.\n    // μ⁻ → νμ W⁻, then W⁻ → e⁻ ν̄e: the muon's track runs in to a vertex; there it becomes\n    // a muon neutrino and throws off a W, so heavy and brief it is a short zigzag that is\n    // gone almost at once; at the W's far end a second vertex makes the electron and the\n    // electron antineutrino. Fermions are straight lines with arrows (an antiparticle's\n    // arrows run backward, Feynman's particle going back in time), neutrinos faint and\n    // dotted, every vertex a bright point. Born on hats, the high end of the sound.\n    if (params.decayRate > 0.0) {\n      let dc = max(params.decayCell, 0.5);\n      let cd = floor(wg / dc);\n      let wgE = wg + rd * hstep;\n      var dlit = false;\n      var dage = 0.0;\n      var dh = vec3f(0.0);\n      for (var j = 0; j < ONSETS; j = j + 1) {\n        let o = onsets[j];\n        if (o.g <= 0.0) { continue; }\n        let hat = o.a >= 2.1;\n        let hd = hash33(cd * 2.37 + vec3f(o.b * 5.9, o.b * 3.1, o.b * 7.7) + vec3f(29.0));\n        if (hd.x < params.decayRate * select(0.2, 1.0, hat)) {\n          dlit = true;\n          dage = o.r;\n          dh = hash33(cd * 4.13 + vec3f(o.b * 2.9, o.b * 6.1, o.b * 1.7) + vec3f(83.0));\n          break;\n        }\n      }\n      let T = max(params.decayLife, 0.2);\n      if (dlit && dage < T) {\n        let s = dage / T;\n        let muDir = randomDir(dh);\n        let side = normalize(cross(muDir, randomDir(dh.zxy + vec3f(0.37))));\n        let L = dc * 0.32;\n        let V = (cd + vec3f(0.35) + 0.3 * dh) * dc;\n        let P0 = V - muDir * L;\n        let V2 = V + normalize(muDir + side * 1.4) * dc * 0.07;\n        let eDir = normalize(muDir * cos(0.9) + side * sin(0.9));\n        let nuMuDir = normalize(muDir * cos(0.25) - side * sin(0.25));\n        let anuDir = normalize(muDir * cos(1.6) - side * sin(1.6));\n        let fadeAll = smoothstep(0.0, 0.03, s) * (1.0 - smoothstep(0.85, 1.0, s)) * near;\n        let S1 = 0.4;\n        var dl = vec3f(0.0);\n        let muColor = vec3f(1.0, 0.45, 0.8);\n        let eColor = params.matterColor.rgb;\n        let nuColor = vec3f(0.55, 0.62, 0.7);\n        let head = P0 + muDir * L * min(s / S1, 1.0);\n        dl = dl + muColor * fermionLine(wg, wgE, P0, head, params.leptonWidth, 1.0);\n        if (s >= S1) {\n          let k = (s - S1) / (1.0 - S1);\n          let grow = 1.0 - pow(1.0 - k, 2.0);\n          let L2 = dc * 0.38;\n          dl = dl + vec3f(0.9, 1.0, 0.3) * wLine(wg, wgE, V, V2) * exp(-k * 6.0) * 2.0;\n          dl = dl + nuColor * neutrinoLine(wg, wgE, V, V + nuMuDir * L2 * grow, 1.0) * params.neutrinoGlow;\n          dl = dl + eColor * fermionLine(wg, wgE, V2, V2 + eDir * L2 * grow, params.leptonWidth, 1.0);\n          dl = dl + nuColor * neutrinoLine(wg, wgE, V2, V2 + anuDir * L2 * grow, -1.0) * params.neutrinoGlow;\n          dl = dl + vec3f(1.0) * params.vertexGlow * (vertexDot(V, wg, wgE) + vertexDot(V2, wg, wgE)) * (0.4 + 0.6 * exp(-k * 4.0));\n        }\n        hit = hit + dl * params.decayGlow * fadeAll;\n      }\n    }\n\n    // PHOTONS: packets running down the beam at c, in the lane this point falls in. Lanes\n    // live in warped coordinates, so the beam bends where spacetime does. The ray step's\n    // closest approach to the lane's centre line is found once; each onset that fired this\n    // lane then only asks where its packet has got to.\n    if (params.photonRate > 0.0 || params.photonIdle > 0.0) {\n      let lc = floor(vec2f(dot(wg, across1), dot(wg, across2)) / lane);\n      let lh = hash33(vec3f(lc, 71.3));\n      let centre2 = (lc + vec2f(0.3) + 0.4 * lh.xy) * lane;\n      let centre = across1 * centre2.x + across2 * centre2.y;\n      // Closest point of the step w..wEnd to the line centre + beam·t.\n      let wgEnd = wg + rd * hstep;\n      let d1 = wgEnd - wg;\n      let rr = wg - centre;\n      let a = dot(d1, d1);\n      let b = dot(d1, beam);\n      let denom = a - b * b;\n      let sc = select(0.0, clamp((b * dot(beam, rr) - dot(d1, rr)) / denom, 0.0, 1.0), denom > 1e-9);\n      let q = wg + d1 * sc;\n      let along = dot(q - centre, beam);\n      let perp = q - centre - beam * along;\n      if (length(perp) < params.photonWidth * 12.0 + params.photonAmp * 2.0) {\n        let polAngle = lh.z * 6.2831853;\n        let pol = across1 * cos(polAngle) + across2 * sin(polAngle);\n        let start = launch + lh.z * 1.5;\n        var light = vec3f(0.0);\n        for (var j = 0; j < ONSETS; j = j + 1) {\n          let o = onsets[j];\n          if (o.g <= 0.0) { continue; }\n          let hp = hash33(vec3f(lc * 1.31, o.b * 2.7 + 5.0));\n          if (hp.x >= params.photonRate * o.g * 2.0) { continue; }\n          let u = along - (start + o.r * params.photonSpeed);\n          light = light + photonColor(o.a) * packet(u, perp, pol, params.packetLength, params.photonWave / o.a, params.photonAmp, params.photonWidth);\n        }\n        // The idle stream: a train down a few lanes, spaced by the lane's own hash.\n        if (lh.x < params.photonIdle) {\n          let spacing = 3.0 + 4.0 * lh.y;\n          let u = (fract((along - time * params.photonSpeed) / spacing + lh.z) - 0.5) * spacing;\n          light = light + photonColor(1.6 + lh.y) * 0.6 * packet(u, perp, pol, params.packetLength, params.photonWave, params.photonAmp, params.photonWidth);\n        }\n        hit = hit + light * params.photonGlow * near;\n      }\n    }\n\n    // The accretion disk of the nearest hole: hot plasma in a thin plane round it, from\n    // diskInner to diskOuter horizon radii, turning; the side coming toward the eye is\n    // brighter (Doppler beaming). The photon sphere at 1.5 horizon radii glows faintly.\n    if (nearestBH.w > 0.0 && nearestR < params.diskOuter * 1.3) {\n      let rs = nearestBH.w;\n      let off = x - nearestBH.xyz;\n      let hgt = dot(off, nearestAxis);\n      let inPlane = off - nearestAxis * hgt;\n      let rr = length(inPlane) / rs;\n      let band = smoothstep(params.diskInner, params.diskInner + 0.6, rr) * (1.0 - smoothstep(params.diskOuter - 1.5, params.diskOuter, rr));\n      let thin = exp(-hgt * hgt / (rs * rs * 0.012));\n      let tangent = normalize(cross(nearestAxis, inPlane + vec3f(1e-5)));\n      let doppler = 1.0 + 0.7 * dot(tangent, -rd);\n      let swirl = 0.6 + 0.4 * sin(atan2(dot(inPlane, cross(nearestAxis, tangent)), dot(inPlane, tangent)) * 3.0 + rr * 2.0 - time * 3.0 / max(rr, 1.0));\n      let heat = mix(vec3f(1.0, 0.95, 0.85), params.diskColor.rgb, smoothstep(params.diskInner, params.diskOuter, rr));\n      emit = emit + heat * band * thin * doppler * doppler * swirl * params.diskGlow / rs;\n      let sphere = exp(-pow((length(off) / rs - 1.5) * 4.0, 2.0));\n      emit = emit + vec3f(0.8, 0.85, 1.0) * sphere * 0.4 / rs;\n    }\n\n    // Emission through the haze. near keeps everything within arm's reach of the eye\n    // dark: anything that close fills the screen as an out-of-focus smear. Point emitters\n    // are counted per crossing; where the steps shrink near a hole they are scaled back so a\n    // shorter step does not count the same particle many times.\n    col = col + (emit * hstep * near + hit * (hstep / stepLen)) * trans;\n    trans = trans * exp(-max(params.fog, 0.0) * hstep);\n\n    // Light bends toward the field: the lensing half of the warp.\n    rd = normalize(rd + params.bend * field * hstep + pull * params.bhLens * hstep);\n    x = x + rd * hstep;\n    travelled = travelled + hstep;\n  }\n  col = col + params.fogColor.rgb * (1.0 - trans);\n  col = col * params.exposure;\n\n  let size = vec2f(textureDimensions(inputTexture1));\n  let prev = textureLoad(inputTexture1, vec2i(clamp(uv * size, vec2f(0.0), size - vec2f(1.0))), 0).rgb;\n  col = mix(col, prev, clamp(params.trail, 0.0, 0.98));\n  return vec4f(col, 1.0);\n}\n",
+          "trail": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_trail').chan.trail"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.3
+              }
+            },
+            "mode": "expression"
+          },
+          "warp": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "max(op('slider_warp').chan.warp * (1 + op('slider_react').chan.react * 1.6 * (op('lag_bodySmooth').chan.low - 0.5)), 0)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.16
+              }
+            },
+            "mode": "expression"
+          }
+        },
+        "position": {
+          "x": -600,
+          "y": 0
+        },
+        "resolution": {
+          "height": 540,
+          "mode": "fixed",
+          "width": 960
+        },
+        "type": "customWgslMulti"
+      },
+      "xypad_beam": {
+        "definitionVersion": 2,
+        "id": "xypad_beam",
+        "label": "xypad_beam",
+        "parameters": {
+          "caption": "Photon beam",
+          "channel": "beam",
+          "defaultX": 0.5556,
+          "defaultY": 0.5556,
+          "max": 1,
+          "min": 0,
+          "x": 0.5556,
+          "y": 0.5556
+        },
+        "position": {
+          "x": 900,
+          "y": 800
+        },
+        "type": "xyPad"
+      }
+    },
+    "revision": 1
+  },
+  "name": "Vacuum",
+  "projectId": "example-vacuum",
+  "schemaVersion": 5,
+  "settings": {
+    "limits": {
+      "maxBufferBytes": 268435456,
+      "maxDispatch": 65535,
+      "maxResolution": 4096,
+      "memoryBudgetBytes": 1073741824
+    },
+    "outputResolution": {
+      "height": 720,
+      "width": 1280
+    },
+    "previewFps": 30,
+    "previewLongEdge": 192,
+    "randomSeed": 137,
+    "workingFormat": "rgba16float"
+  },
+  "updatedAt": "2026-08-29T00:00:00.000Z"
+}
