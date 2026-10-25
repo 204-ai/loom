@@ -9,6 +9,7 @@ StreamDiffusion output.
 |---|---|
 | `ciurlionis-mirror.loom.json` | The example network. Carries both components. |
 | `mirror-hybrid.loom.json` | The whole mirror as a hybrid with realtime-client and sd-webrtc (see The hybrid). |
+| `mirror-whip.loom.json` | Option 3: Loom sends to and reads from sd-webrtc directly, over WHIP and WHEP (see Option 3). |
 | `Watercolor.loom.json` | Watercolor on its own: the component and a movie to run it on. |
 | `PaintingKey.loom.json` | PaintingKey on its own, with the two painting loops. |
 | `media/` | The stand-in movies (see Media). |
@@ -200,6 +201,83 @@ picker by hand. Loom also opens a capture only on a click; see Limits.
 - **OSC Out needs the helper running and the tab paired** with the helper's code. Pairing
   also hands the tab to any agent on that helper ("Attached agents can edit this document").
 - **Overlays before diffusion** would need realtime-client to draw at a wrist.
+
+## Option 3: Loom talks to sd-webrtc directly
+
+`mirror-whip.loom.json` takes realtime-client out of the loop. Loom reads the camera and the
+engine's output as `whep:` Webcam devices and sends the engine its input with WHIP Out. Both
+are new in Loom, on `feat/webrtc-io`, which is merged into this branch. `mirror-hybrid.loom.json`
+stays as the fallback.
+
+```
+camera (whep:) ─► centre square ─► pose_visitor ─► wrists ─► state ─► oscout_engine ─► bridge.py ─► /prompts, /t_index
+   └► hsv_mono ─► + wrist disc ─► + angels ─────────────┐
+pose_visitor ─► wgsl_skeleton (OpenPose-18) ─► wgsl_pack [RGB | skeleton] 1024×512 ─► whipout_engine ─► sd-webrtc /whip
+sd-webrtc /whep ─► webcam_engine (whep:) ─► flip_mirror ─► paintingkey_look ─► watercolor_look ─► cornerpin_projector ─► window_perform
+```
+
+With Loom feeding the engine, the overlays go back where the .toe has them: before diffusion,
+in its order. First grey (mono1), then the white disc on the right wrist (circle1 → level4,
+opacity hands), then the angels loop beside it (transform6 ×0.8, comp6's wrist x + 0.25,
+reorder1's luminance alpha, level2's opacity butterfly). The engine paints them again.
+
+- **Skeleton.** `wgsl_skeleton` ports realtime-client's `senseOverlay.ts` to WGSL:
+  - MoveNet's COCO-17 joints map to OpenPose-18 (`COCO_TO_OP`); the neck is the shoulders'
+    midpoint at the lower of their two confidences.
+  - 17 limbs and 18 joints in the canonical palette, on black. Limbs are max(4, size·0.45) px
+    wide at 0.85 alpha; joints are max(3, size·0.4) px; a joint needs confidence above 0.4.
+  - It reads MoveNet's raw keypoints rather than the smoothed ones the wrists use, so it keeps
+    step with the picture.
+  - It is never flipped: the two halves share one orientation.
+- **Pack.** `wgsl_pack` puts the two 512² halves side by side at 1024×512. That is more than
+  1.6× the model's aspect, so sd-webrtc's control packing splits it. Its format is
+  `rgba8unorm-srgb`, because WHIP Out sends the bytes it is given and refuses a linear input.
+
+### Setup
+
+1. **sd-webrtc**, with the launch line from The hybrid's Setup step 1; its preset already has
+   `control_packing` on. Only Loom may send to it: the engine has one ingress, so
+   realtime-client must not be connected to the same port.
+2. **The camera as WHEP.** Set `webcam_camera`'s device to `whep:<url>` by typing the URL into
+   the Webcam inspector's WHEP URL field. On the box that is depthcam-studio's
+   `http://<camera-host>:8777/whep?stream=color`; a media server path such as mediamtx's
+   `http://127.0.0.1:8889/cam/whep` also works.
+3. **The engine.** Set `whipout_engine`'s URL to `http://<gpu-box>:8766/whip` and
+   `webcam_engine`'s device to `whep:http://<gpu-box>:8766/whep`.
+4. **Control** is unchanged: `bridge.py --engine http://<gpu-box>:8766`, the helper paired and
+   MoveNet downloaded (The hybrid's Setup steps 3 and 6).
+
+Nothing here needs a click to start. A `whep:` device opens with the project, and WHIP Out
+sends while its Send is on. An unattended start therefore waits only for the MoveNet download
+(once per machine) and the helper's pairing.
+
+### Tested on this Mac, 2026-10-25
+
+- **Setup.**
+  - Engine: sd-webrtc's mock from PR 204-ai/sd-webrtc#17, on :8767 with
+    `control_packing=True`. It splits a packed frame and draws the pose.
+  - Camera: mediamtx re-publishing a dancer loop at `http://127.0.0.1:8889/cam/whep`.
+  - Loom: Playwright's Chromium, with MoveNet already downloaded there.
+- **Sending.** The project opened with only the OSC helper warnings. WHIP Out connected, and
+  the mock showed 2 peers (WHIP in, WHEP out). It received about 1,040 frames in 30 s with
+  its input live.
+- **What the engine received.** `/debug/rgb.jpg` showed the grey dancer, the white disc on the
+  raised wrist and the angels loop beside it. `/debug/control.jpg` showed the OpenPose-18
+  skeleton in the same orientation.
+- **The way back.** The engine's output returned over WHEP into `webcam_engine` and ran through
+  the mirror flip, PaintingKey, Watercolor and the corner pin at 60 fps.
+- **Not re-run here.** The prompt path is the hybrid's, unchanged.
+
+### Left for the GPU box
+
+- **The real engine.** Run the classic engine with the openpose ControlNet and check that a
+  20 px Size skeleton at 512² reads the way the ControlNet expects.
+- **The camera.** Serve the Femto colour as WHEP, and check its framing: the centre square of
+  a 16:9 frame drops the sides.
+- **Encode and latency.** Check that the show machine's Chrome encodes H.264 in hardware, and
+  compare the latency of WHIP in plus WHEP out with realtime-client's single `/offer`.
+- **The network.** Run Loom's tab, the engine and the camera host on one LAN; there is no STUN
+  or TURN.
 
 ## Watercolor
 
