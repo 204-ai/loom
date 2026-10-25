@@ -95,6 +95,8 @@ export const NODE_REPRODUCIBILITY: Readonly<Record<string, Reproducibility>> = {
   syphonOut: "pure",
   // §T1391b: a function of its input like Output; the window it feeds is app-side.
   window: "pure",
+  // T955: a function of its input; the stream it sends is the pump's, never the render's.
+  whipOut: "pure",
   ndiOut: "pure",
   spoutOut: "pure",
   // FOUND BY THIS EXERCISE, not by the brief. The session's microphone, read through

@@ -730,6 +730,7 @@ export const DIAGNOSTIC_CLASSES: Readonly<Record<string, DiagnosticClassRow>> = 
   "vision.native.starting": { class: "elsewhereHost" },
   "vision.refused": { class: "elsewhereHost" },
   "wgsl/compile": { class: "advice", splits: { task: "T1641b", holds: ["never", "advice"] } },
+  "whip.output": { class: "elsewhereHost" },
 };
 
 /**

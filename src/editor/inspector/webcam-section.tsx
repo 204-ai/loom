@@ -2,8 +2,14 @@ import { useEffect, useState } from "react";
 import type { NodeId } from "@domain/types/ids.ts";
 import { ControlRow } from "@ui/controls/control-row.tsx";
 import { EnumField } from "@ui/controls/enum-field.tsx";
+import { TextField } from "@ui/controls/text-field.tsx";
 import { cameraShortfall, type CameraStatus } from "@/app/camera-request.ts";
-import { PHONE_CAMERA_DEVICE_PREFIX, phoneCameraName } from "@nodes/definitions/index.ts";
+import {
+  PHONE_CAMERA_DEVICE_PREFIX,
+  phoneCameraName,
+  WHEP_CAMERA_DEVICE_PREFIX,
+  whepCameraUrl,
+} from "@nodes/definitions/index.ts";
 import type { ParameterEditor } from "./parameter-editor.ts";
 import styles from "./inspector.module.css";
 
@@ -119,6 +125,12 @@ function phoneOptions(device: string, phones: readonly string[]): Array<{ value:
   return options;
 }
 
+/** The stored WHEP stream, so the picker shows what is chosen. A URL is typed, not listed. */
+function whepOptions(device: string): Array<{ value: string; label: string }> {
+  const url = whepCameraUrl(device);
+  return url === null ? [] : [{ value: device, label: `WHEP · ${url}` }];
+}
+
 /** A requested number, or the word for "you asked for nothing", which is not zero. */
 function askedText(value: number, unit: string): string {
   return value > 0 ? `${String(value)}${unit}` : "any";
@@ -228,8 +240,20 @@ export function WebcamSection({ nodeId, device, status, phones = [], editor }: W
               label: entry.label === "" ? `Camera ${String(index + 1)}` : entry.label,
             })),
             ...phoneOptions(device, phones),
+            ...whepOptions(device),
           ]}
           onChange={(next) => editor.setParameter(nodeId, "device", next, "commit")}
+        />
+      </ControlRow>
+      {/* A WHEP stream cannot be discovered, so its URL is typed; empty goes back to the default camera. */}
+      <ControlRow label="WHEP URL">
+        <TextField
+          label="WHEP stream URL"
+          value={whepCameraUrl(device) ?? ""}
+          onChange={(typed) => {
+            const url = typed.trim();
+            editor.setParameter(nodeId, "device", url === "" ? "" : `${WHEP_CAMERA_DEVICE_PREFIX}${url}`, "commit");
+          }}
         />
       </ControlRow>
       {unlabelled ? (

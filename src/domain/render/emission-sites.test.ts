@@ -147,6 +147,8 @@ describe("T1005 — the pump ledger, held to the side-effect ledger", () => {
       ["oscOut", "src/app/use-osc-bridge.ts"],
       ["spoutOut", "src/app/use-native-outputs.ts"],
       ["syphonOut", "src/app/use-native-outputs.ts"],
+      // T955: registered in the same commit that declared whipOut "emits".
+      ["whipOut", "src/app/use-whip-out.ts"],
     ]);
   });
 

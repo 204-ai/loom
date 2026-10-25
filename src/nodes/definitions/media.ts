@@ -224,6 +224,22 @@ export function phoneCameraName(device: unknown): string | null {
   return device.slice(PHONE_CAMERA_DEVICE_PREFIX.length).trim();
 }
 
+/**
+ * A WHEP STREAM IS A WEBCAM DEVICE TOO. `device: "whep:<url>"` plays what a WHEP endpoint
+ * serves (an engine's output, a camera re-published by a media server), received over
+ * WebRTC by `whep-camera.ts` instead of `getUserMedia`; everything downstream of the element
+ * is the webcam's own, as for a phone. Like `phone:`, the prefix cannot collide with a
+ * browser `deviceId`.
+ */
+export const WHEP_CAMERA_DEVICE_PREFIX = "whep:";
+
+/** The WHEP URL a `device` value names, or null when it names anything else. */
+export function whepCameraUrl(device: unknown): string | null {
+  if (typeof device !== "string" || !device.startsWith(WHEP_CAMERA_DEVICE_PREFIX)) return null;
+  const url = device.slice(WHEP_CAMERA_DEVICE_PREFIX.length).trim();
+  return url === "" ? null : url;
+}
+
 /** Nothing in the Capture group is asked for. The Fit control has nothing to apply to. */
 function asksForNothing(values: Readonly<Record<string, ParameterValue>>): boolean {
   const asked = (key: string): boolean => {
@@ -302,7 +318,7 @@ export const webcamNode: NodeDefinition = {
       label: "Device",
       default: "",
       description:
-        "Camera device id, from the inspector's device picker. Empty = the system default. Device names are hidden by the browser until camera access is granted. `phone:<name>` is a phone sending its camera over the phone door under that name (the picker lists the phones sending now); the Capture parameters are then asked of the phone, and its own buttons can change them too — the latest choice wins.",
+        "Camera device id, from the inspector's device picker. Empty = the system default. Device names are hidden by the browser until camera access is granted. `phone:<name>` is a phone sending its camera over the phone door under that name (the picker lists the phones sending now); the Capture parameters are then asked of the phone, and its own buttons can change them too — the latest choice wins. `whep:<url>` plays a WHEP stream (an engine's output, a camera re-published by a media server) and keeps retrying until the server answers; the Capture parameters do not apply to it.",
     },
     width: {
       type: "number",

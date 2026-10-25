@@ -8,13 +8,14 @@ import type { ChannelResolver } from "@domain/parameters/resolve.ts";
 import { isSilencedSource } from "@domain/graph/bypass.ts";
 import { resolveStored } from "@domain/parameters/index.ts";
 import { storedStaticValue } from "@domain/parameters/slots.ts";
-import { mediaNodeDefinitions, mediaSourceIdFor, phoneCameraName } from "@nodes/definitions/index.ts";
+import { mediaNodeDefinitions, mediaSourceIdFor, phoneCameraName, whepCameraUrl } from "@nodes/definitions/index.ts";
 import type { NodeRegistryView } from "@nodes/registry/registry.ts";
 import type { LoomBackend } from "@runtime/backend/index.ts";
 import type { CameraStatus } from "./camera-request.ts";
 import type { AppRuntime } from "./app-runtime.ts";
 import type { MediaControlRegistry } from "./media-commands.ts";
 import type { PhoneCameraOpener } from "./use-phone-cameras.ts";
+import { openWhepCamera } from "./whep-camera.ts";
 import {
   createMediaTransportRunner,
   playableMedia,
@@ -419,6 +420,8 @@ export function useMediaSources(
   controls?: MediaControlRegistry,
   /** T1397b: how a Webcam whose device is `phone:<name>` is opened. Absent: no phone door here. */
   phones?: PhoneCameraOpener,
+  /** How a Webcam whose device is `whep:<url>` is opened (`whep-camera.ts`). Injectable for tests. */
+  openWhep: (url: string) => OpenedCamera = openWhepCamera,
 ): MediaWiring {
   const [diagnostics, setDiagnostics] = useState<readonly RuntimeDiagnostic[]>(NO_DIAGNOSTICS);
   const [playbackDiagnostics, setPlaybackDiagnostics] = useState<readonly RuntimeDiagnostic[]>(NO_DIAGNOSTICS);
@@ -664,8 +667,13 @@ export function useMediaSources(
          * that the user meant. Everything after the element is the webcam's own.
          */
         const phone = request.type === "webcam" ? phoneCameraName(request.camera.device) : null;
+        // A WHEP stream (`whep:<url>`) is the same kind of device: opened at once, never refused.
+        const whep = request.type === "webcam" ? whepCameraUrl(request.camera.device) : null;
         try {
-          if (phone !== null) {
+          if (whep !== null) {
+            camera = openWhep(whep);
+            element = camera.element;
+          } else if (phone !== null) {
             if (phones === undefined) throw new Error("This page has no phone door to receive a phone camera.");
             camera = phones.open(request.nodeId, phone, request.camera);
             element = camera.element;
@@ -866,7 +874,8 @@ export function useMediaSources(
           if (request.type === "webcam") matchNodeResolution(request.nodeId, size.width, size.height);
           // T1397b: a phone keeps listening — turned on its side it swaps width and height
           // mid-stream, and a new session from it is a new stream on the same element.
-          if (phone !== null) return;
+          // A WHEP stream likewise: a reconnect is a new stream, possibly at a new size.
+          if (phone !== null || whep !== null) return;
           element.removeEventListener("loadedmetadata", applySize);
           element.removeEventListener("resize", applySize);
         };
@@ -920,7 +929,7 @@ export function useMediaSources(
     };
     // `key` is the identity of the request set; `requestsRef` carries the values, so a
     // node moving on the canvas does not restart a camera.
-  }, [backend, controls, environment, key, reloadNonce, phones]);
+  }, [backend, controls, environment, key, reloadNonce, phones, openWhep]);
 
   /**
    * What each Text node draws, pushed after registration (T243, T312).

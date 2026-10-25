@@ -215,6 +215,7 @@ export const NODE_KINDS: Readonly<Record<string, string>> = {
   // outputs
   output: "output",
   window: "window",
+  whipOut: "whipout",
   syphonOut: "syphonout",
   ndiOut: "ndiout",
   spoutOut: "spoutout",

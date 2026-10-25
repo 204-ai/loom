@@ -1,6 +1,6 @@
 // @vitest-environment jsdom
 import { afterEach, describe, expect, it } from "vitest";
-import { cleanup, render, screen, waitFor } from "@testing-library/react";
+import { cleanup, fireEvent, render, screen, waitFor } from "@testing-library/react";
 
 import { WebcamSection } from "./webcam-section.tsx";
 import { NO_CAMERA_REQUEST, type CameraStatus } from "@/app/camera-request.ts";
@@ -86,6 +86,38 @@ describe("WebcamSection (T810)", () => {
     select.value = "phone:Back cam";
     select.dispatchEvent(new Event("change", { bubbles: true }));
     expect(editor.calls).toEqual([["cam", "device", "phone:Back cam", "commit"]]);
+  });
+
+  /*
+   * A WHEP stream is a webcam device too, but nothing announces one: its URL is typed. The
+   * stored stream still shows in the picker, so the node does not read as "System default".
+   */
+  it("shows a stored `whep:` stream in the picker and writes `whep:<url>` from the URL field", async () => {
+    mockDevices([{ deviceId: "cam-1", label: "FaceTime HD" }]);
+    const editor = editorStub();
+    render(
+      <WebcamSection nodeId={"cam" as never} device="whep:http://box:8766/whep" status={null} editor={editor} />,
+    );
+    await waitFor(() => expect(screen.getByText("FaceTime HD")).toBeTruthy());
+    const select = screen.getByLabelText("Camera device") as HTMLSelectElement;
+    expect([...select.options].at(-1)?.textContent).toBe("WHEP · http://box:8766/whep");
+    expect(select.value).toBe("whep:http://box:8766/whep");
+
+    const field = screen.getByLabelText("WHEP stream URL") as HTMLInputElement;
+    expect(field.value).toBe("http://box:8766/whep");
+    fireEvent.change(field, { target: { value: " http://127.0.0.1:8889/cam/whep " } });
+    fireEvent.blur(field);
+    expect(editor.calls).toEqual([["cam", "device", "whep:http://127.0.0.1:8889/cam/whep", "commit"]]);
+  });
+
+  it("an emptied WHEP URL goes back to the system default camera", async () => {
+    mockDevices([]);
+    const editor = editorStub();
+    render(<WebcamSection nodeId={"cam" as never} device="whep:http://box/whep" status={null} editor={editor} />);
+    const field = screen.getByLabelText("WHEP stream URL") as HTMLInputElement;
+    fireEvent.change(field, { target: { value: "" } });
+    fireEvent.blur(field);
+    expect(editor.calls).toEqual([["cam", "device", "", "commit"]]);
   });
 
   it("lists only cameras — microphones are the other picker's business", async () => {
