@@ -1,0 +1,442 @@
+{
+  "assets": [],
+  "createdAt": "2026-08-29T00:00:00.000Z",
+  "graph": {
+    "edges": {
+      "e-bfield-panel": {
+        "id": "e-bfield-panel",
+        "order": 2,
+        "source": {
+          "nodeId": "slider_bfield",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-energy-panel": {
+        "id": "e-energy-panel",
+        "order": 1,
+        "source": {
+          "nodeId": "slider_energy",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-field-vacuum": {
+        "id": "e-field-vacuum",
+        "source": {
+          "nodeId": "wgsl_field",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "add_vacuum",
+          "portId": "in1"
+        }
+      },
+      "e-foam-field": {
+        "id": "e-foam-field",
+        "source": {
+          "nodeId": "noise_foam",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_field",
+          "portId": "input"
+        }
+      },
+      "e-foam-pairs": {
+        "id": "e-foam-pairs",
+        "source": {
+          "nodeId": "noise_foam",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_pairs",
+          "portId": "input"
+        }
+      },
+      "e-pairs-vacuum": {
+        "id": "e-pairs-vacuum",
+        "source": {
+          "nodeId": "wgsl_pairs",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "add_vacuum",
+          "portId": "in2"
+        }
+      },
+      "e-planck-panel": {
+        "id": "e-planck-panel",
+        "order": 4,
+        "source": {
+          "nodeId": "slider_planck",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-rate-panel": {
+        "id": "e-rate-panel",
+        "order": 0,
+        "source": {
+          "nodeId": "slider_rate",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-trail-panel": {
+        "id": "e-trail-panel",
+        "order": 3,
+        "source": {
+          "nodeId": "slider_trail",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "panel_vacuum",
+          "portId": "controls"
+        }
+      },
+      "e-trails-pairs": {
+        "id": "e-trails-pairs",
+        "order": 0,
+        "source": {
+          "nodeId": "feedback_trails",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "wgsl_pairs",
+          "portId": "more"
+        }
+      },
+      "e-vacuum-frame": {
+        "id": "e-vacuum-frame",
+        "source": {
+          "nodeId": "add_vacuum",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "output_frame",
+          "portId": "input"
+        }
+      }
+    },
+    "groups": {},
+    "nodes": {
+      "add_vacuum": {
+        "definitionVersion": 1,
+        "id": "add_vacuum",
+        "label": "add_vacuum",
+        "parameters": {
+          "opacity": 1
+        },
+        "position": {
+          "x": -600,
+          "y": 0
+        },
+        "type": "add"
+      },
+      "feedback_trails": {
+        "definitionVersion": 1,
+        "id": "feedback_trails",
+        "label": "feedback_trails",
+        "parameters": {
+          "clearColor": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "persistence": 1,
+          "source": "wgsl_pairs"
+        },
+        "position": {
+          "x": -1200,
+          "y": 400
+        },
+        "type": "feedback"
+      },
+      "noise_foam": {
+        "definitionVersion": 1,
+        "id": "noise_foam",
+        "label": "noise_foam",
+        "parameters": {
+          "amp": 1,
+          "exp": 1,
+          "gain": 0.5,
+          "harmon": 3,
+          "mono": true,
+          "offset": 0.5,
+          "period": 0.12,
+          "rough": 0.5,
+          "speed": 0.25,
+          "spread": 2,
+          "type": "perlin4d"
+        },
+        "position": {
+          "x": -1200,
+          "y": 0
+        },
+        "type": "noise"
+      },
+      "output_frame": {
+        "definitionVersion": 1,
+        "id": "output_frame",
+        "label": "output_frame",
+        "parameters": {
+          "toneMap": "filmic"
+        },
+        "position": {
+          "x": -300,
+          "y": 0
+        },
+        "type": "output"
+      },
+      "panel_vacuum": {
+        "definitionVersion": 1,
+        "id": "panel_vacuum",
+        "label": "panel_vacuum",
+        "parameters": {
+          "board": "{\n  \"columns\": 4,\n  \"items\": [\n    {\"label\":\"Vacuum\",\"rect\":{\"x\":0,\"y\":0,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_rate\",\"rect\":{\"x\":0,\"y\":1,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_energy\",\"rect\":{\"x\":0,\"y\":2,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_bfield\",\"rect\":{\"x\":0,\"y\":3,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_trail\",\"rect\":{\"x\":0,\"y\":4,\"w\":4,\"h\":1}},\n    {\"member\":\"slider_planck\",\"rect\":{\"x\":0,\"y\":5,\"w\":4,\"h\":1}}\n  ]\n}",
+          "remote": true,
+          "title": "Vacuum"
+        },
+        "position": {
+          "x": 300,
+          "y": 800
+        },
+        "type": "panel"
+      },
+      "slider_bfield": {
+        "definitionVersion": 2,
+        "id": "slider_bfield",
+        "label": "slider_bfield",
+        "parameters": {
+          "caption": "Magnetic field",
+          "channel": "bfield",
+          "defaultValue": 2.4,
+          "max": 6,
+          "min": -6,
+          "step": 0,
+          "value": 2.4
+        },
+        "position": {
+          "x": -600,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_energy": {
+        "definitionVersion": 2,
+        "id": "slider_energy",
+        "label": "slider_energy",
+        "parameters": {
+          "caption": "Energy ΔE",
+          "channel": "energy",
+          "defaultValue": 1,
+          "max": 3,
+          "min": 0.3,
+          "step": 0,
+          "value": 1
+        },
+        "position": {
+          "x": -900,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_planck": {
+        "definitionVersion": 2,
+        "id": "slider_planck",
+        "label": "slider_planck",
+        "parameters": {
+          "caption": "Planck foam",
+          "channel": "planck",
+          "defaultValue": 1,
+          "max": 3,
+          "min": 0,
+          "step": 0,
+          "value": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_rate": {
+        "definitionVersion": 2,
+        "id": "slider_rate",
+        "label": "slider_rate",
+        "parameters": {
+          "caption": "Fluctuation rate",
+          "channel": "rate",
+          "defaultValue": 0.55,
+          "max": 1,
+          "min": 0,
+          "step": 0,
+          "value": 0.55
+        },
+        "position": {
+          "x": -1200,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "slider_trail": {
+        "definitionVersion": 2,
+        "id": "slider_trail",
+        "label": "slider_trail",
+        "parameters": {
+          "caption": "Trails",
+          "channel": "trail",
+          "defaultValue": 0.9,
+          "max": 0.98,
+          "min": 0,
+          "step": 0,
+          "value": 0.9
+        },
+        "position": {
+          "x": -300,
+          "y": 800
+        },
+        "type": "slider"
+      },
+      "wgsl_field": {
+        "definitionVersion": 1,
+        "id": "wgsl_field",
+        "label": "wgsl_field",
+        "parameters": {
+          "planck": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_planck').chan.planck"
+              },
+              "static": {
+                "kind": "static",
+                "value": 1
+              }
+            },
+            "mode": "expression"
+          },
+          "source": "struct SharedFrame {\n  time: f32,\n  deltaTime: f32,\n  frameIndex: f32,\n  randomSeed: f32,\n  wallTime: f32,\n  wallDelta: f32,\n  absTime: f32,\n  absFrame: f32,\n  resolution: vec2f,\n  pointer: vec4f,\n};\nstruct Params {\n  mass: f32,          // @default 6  m in ω = sqrt(k² + m²): the frequency even the longest mode never drops below\n  speed: f32,         // @default 0.12  how fast field time runs against the clock\n  amplitude: f32,     // @default 1  how far the field swings from zero\n  foam: f32,          // @default 0.6  how much of the input noise rides on the modes as fine foam\n  contours: f32,      // @default 3  iso-lines per unit of field value\n  lineWidth: f32,     // @default 0.06  width of an iso-line, as a share of its spacing\n  baseColor: vec4f,   // @default [0.006, 0.006, 0.02, 1]  the vacuum at rest\n  crestColor: vec4f,  // @default [0.14, 0.07, 0.32, 1]  where the field swings positive\n  troughColor: vec4f, // @default [0.03, 0.1, 0.22, 1]  where it swings negative\n  lineColor: vec4f,   // @default [0.25, 0.3, 0.6, 1]  the iso-lines\n  brightness: f32,    // @default 0.8  master gain on the field\n  vignette: f32,      // @default 0.55  corner falloff\n  grain: f32,         // @default 0.012  film grain\n  planck: f32,        // @default 1  Planck foam: how hard spacetime itself fluctuates at the finest scale\n  planckScale: f32,   // @default 0.0035  the stand-in Planck length, screen heights — the finest octave\n  planckRate: f32,    // @default 6  how fast the foam boils\n  foamColor: vec4f,   // @default [0.32, 0.28, 0.55, 1]  the foam's bubble walls\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(2) var<uniform> frameU: SharedFrame;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn hash21(p: vec2f) -> f32 {\n  var q = fract(p * vec2f(123.34, 456.21));\n  q = q + dot(q, q + 45.32);\n  return fract(q.x * q.y);\n}\n\nfn hash33(p: vec3f) -> vec3f {\n  var q = fract(p * vec3f(0.1031, 0.1030, 0.0973));\n  q = q + dot(q, q.yxz + 33.33);\n  return fract((q.xxy + q.yxx) * q.zyx);\n}\n\n\nfn vnoise3(p: vec3f) -> f32 {\n  let i = floor(p);\n  let f = fract(p);\n  let u = f * f * (3.0 - 2.0 * f);\n  let a = mix(hash33(i).x, hash33(i + vec3f(1.0, 0.0, 0.0)).x, u.x);\n  let b = mix(hash33(i + vec3f(0.0, 1.0, 0.0)).x, hash33(i + vec3f(1.0, 1.0, 0.0)).x, u.x);\n  let c = mix(hash33(i + vec3f(0.0, 0.0, 1.0)).x, hash33(i + vec3f(1.0, 0.0, 1.0)).x, u.x);\n  let d = mix(hash33(i + vec3f(0.0, 1.0, 1.0)).x, hash33(i + vec3f(1.0, 1.0, 1.0)).x, u.x);\n  return mix(mix(a, b, u.y), mix(c, d, u.y), u.z) * 2.0 - 1.0;\n}\n\n/// (displacement.xy in screen heights, bubble walls 0..1) at p, time t.\nfn planckFoam(p: vec2f, t: f32, amount: f32, scale: f32, rate: f32) -> vec3f {\n  var disp = vec2f(0.0);\n  var walls = 0.0;\n  let finest = max(scale, 0.0005);\n  for (var o = 0; o < 5; o = o + 1) {\n    // Octave 0 is 16 Planck lengths across, octave 4 is one.\n    let len = finest * exp2(f32(4 - o));\n    let q = p / len;\n    // Smaller is faster: a fluctuation lasts about as long as light takes to cross it.\n    let z = t * rate * exp2(f32(o) * 0.5);\n    let w = exp2(f32(o) * 0.35);\n    let nx = vnoise3(vec3f(q, z));\n    let ny = vnoise3(vec3f(q + vec2f(31.7, 17.3), z + 5.1));\n    disp = disp + vec2f(nx, ny) * len * w;\n    if (o >= 3) {\n      walls = walls + pow(1.0 - abs(nx), 14.0) * (0.5 + 0.5 * f32(o - 3));\n    }\n  }\n  return vec3f(disp * amount * 0.35, walls * amount);\n}\n\nconst MODES: i32 = 8;\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let aspect = frameU.resolution.x / max(frameU.resolution.y, 1.0);\n  let flat = (uv - vec2f(0.5)) * vec2f(aspect, 1.0);\n  let pf = planckFoam(flat, frameU.absTime, params.planck, params.planckScale, params.planckRate);\n  let p = flat + pf.xy;\n  let t = frameU.absTime * params.speed;\n  let m = max(params.mass, 0.0);\n\n  // The modes: fixed wavevectors spread over directions and scales, phases from a hash.\n  var phi = 0.0;\n  for (var i = 0; i < MODES; i = i + 1) {\n    let h = hash33(vec3f(f32(i) * 7.1, 3.3, 11.7));\n    let kMag = mix(4.0, 26.0, h.x * h.x);\n    let ang = h.y * 6.2831853;\n    let k = kMag * vec2f(cos(ang), sin(ang));\n    let omega = sqrt(kMag * kMag + m * m);\n    // Equal energy per mode: amplitude ∝ 1/sqrt(ω), the vacuum's own spectrum.\n    phi = phi + cos(dot(k, p) - omega * t + h.z * 6.2831853) / sqrt(omega);\n  }\n  phi = phi * 0.9;\n  let foam = textureSample(inputTexture, inputSampler, uv).r - 0.5;\n  phi = (phi + foam * params.foam) * params.amplitude;\n\n  var col = params.baseColor.rgb;\n  col = col + params.crestColor.rgb * max(phi, 0.0) * max(phi, 0.0) * 1.6;\n  col = col + params.troughColor.rgb * max(-phi, 0.0) * max(-phi, 0.0) * 1.6;\n  // Iso-lines at whole multiples of 1/contours, drawn only where the field is away from zero.\n  let f = fract(phi * max(params.contours, 0.0));\n  let line = 1.0 - smoothstep(0.0, max(params.lineWidth, 0.001), min(f, 1.0 - f));\n  col = col + params.lineColor.rgb * line * 0.25 * smoothstep(0.0, 0.5, abs(phi));\n\n  col = col + params.foamColor.rgb * pf.z * 0.35;\n\n  let vig = 1.0 - clamp(params.vignette, 0.0, 1.0) * pow(length(flat) * 1.1, 2.2);\n  let grain = (hash21(uv * frameU.resolution + vec2f(frameU.frameIndex * 7.13, frameU.frameIndex * 3.71)) - 0.5) * params.grain;\n  return vec4f(max(col * params.brightness * vig + vec3f(grain), vec3f(0.0)), 1.0);\n}\n"
+        },
+        "position": {
+          "x": -900,
+          "y": -200
+        },
+        "type": "customWgsl"
+      },
+      "wgsl_pairs": {
+        "definitionVersion": 1,
+        "id": "wgsl_pairs",
+        "label": "wgsl_pairs",
+        "parameters": {
+          "bfield": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_bfield').chan.bfield"
+              },
+              "static": {
+                "kind": "static",
+                "value": 2.4
+              }
+            },
+            "mode": "expression"
+          },
+          "energy": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_energy').chan.energy"
+              },
+              "static": {
+                "kind": "static",
+                "value": 1
+              }
+            },
+            "mode": "expression"
+          },
+          "planck": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_planck').chan.planck"
+              },
+              "static": {
+                "kind": "static",
+                "value": 1
+              }
+            },
+            "mode": "expression"
+          },
+          "rate": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_rate').chan.rate"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.55
+              }
+            },
+            "mode": "expression"
+          },
+          "source": "struct SharedFrame {\n  time: f32,\n  deltaTime: f32,\n  frameIndex: f32,\n  randomSeed: f32,\n  wallTime: f32,\n  wallDelta: f32,\n  absTime: f32,\n  absFrame: f32,\n  resolution: vec2f,\n  pointer: vec4f,\n};\nstruct Params {\n  rate: f32,          // @default 0.55  share of cycles in which a cell borrows a pair: how busy the vacuum is\n  energy: f32,        // @default 1  scales every pair's ΔE: higher lives shorter and reaches less far (Δt ≈ ħ/2ΔE)\n  lifetime: f32,      // @default 2.4  seconds one cell's cycle lasts at unit energy\n  cell: f32,          // @default 0.17  size of a vacuum cell, in screen heights\n  reach: f32,         // @default 0.75  how far apart a unit-energy pair gets, in cells\n  bfield: f32,        // @default 2.4  magnetic field: radians a track curls over a life, opposite for the antiparticle\n  jitter: f32,        // @default 0.02  how much the input noise shakes a pair's birthplace, screen heights\n  size: f32,          // @default 0.0055  particle core radius, screen heights\n  glow: f32,          // @default 1  particle brightness\n  matterColor: vec4f, // @default [1.0, 0.5, 0.16, 1]  the particle\n  antiColor: vec4f,   // @default [0.18, 0.72, 1.0, 1]  the antiparticle\n  flashColor: vec4f,  // @default [0.9, 0.85, 1.0, 1]  the annihilation\n  flash: f32,         // @default 0.7  brightness of the annihilation flash\n  ripple: f32,        // @default 0.25  the ring the field rings with when a pair annihilates\n  trail: f32,         // @default 0.9  how much of last frame's tracks survives into this one\n  planck: f32,        // @default 1  Planck foam: how hard spacetime wrinkles under the tracks (match wgsl_field)\n  planckScale: f32,   // @default 0.0035  the stand-in Planck length, screen heights (match wgsl_field)\n  planckRate: f32,    // @default 6  how fast the foam boils (match wgsl_field)\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(2) var<uniform> frameU: SharedFrame;\n@group(0) @binding(3) var<uniform> params: Params;\n@group(0) @binding(4) var inputTexture1: texture_2d<f32>;\n\nfn hash21(p: vec2f) -> f32 {\n  var q = fract(p * vec2f(123.34, 456.21));\n  q = q + dot(q, q + 45.32);\n  return fract(q.x * q.y);\n}\n\nfn hash33(p: vec3f) -> vec3f {\n  var q = fract(p * vec3f(0.1031, 0.1030, 0.0973));\n  q = q + dot(q, q.yxz + 33.33);\n  return fract((q.xxy + q.yxx) * q.zyx);\n}\n\n\nfn vnoise3(p: vec3f) -> f32 {\n  let i = floor(p);\n  let f = fract(p);\n  let u = f * f * (3.0 - 2.0 * f);\n  let a = mix(hash33(i).x, hash33(i + vec3f(1.0, 0.0, 0.0)).x, u.x);\n  let b = mix(hash33(i + vec3f(0.0, 1.0, 0.0)).x, hash33(i + vec3f(1.0, 1.0, 0.0)).x, u.x);\n  let c = mix(hash33(i + vec3f(0.0, 0.0, 1.0)).x, hash33(i + vec3f(1.0, 0.0, 1.0)).x, u.x);\n  let d = mix(hash33(i + vec3f(0.0, 1.0, 1.0)).x, hash33(i + vec3f(1.0, 1.0, 1.0)).x, u.x);\n  return mix(mix(a, b, u.y), mix(c, d, u.y), u.z) * 2.0 - 1.0;\n}\n\n/// (displacement.xy in screen heights, bubble walls 0..1) at p, time t.\nfn planckFoam(p: vec2f, t: f32, amount: f32, scale: f32, rate: f32) -> vec3f {\n  var disp = vec2f(0.0);\n  var walls = 0.0;\n  let finest = max(scale, 0.0005);\n  for (var o = 0; o < 5; o = o + 1) {\n    // Octave 0 is 16 Planck lengths across, octave 4 is one.\n    let len = finest * exp2(f32(4 - o));\n    let q = p / len;\n    // Smaller is faster: a fluctuation lasts about as long as light takes to cross it.\n    let z = t * rate * exp2(f32(o) * 0.5);\n    let w = exp2(f32(o) * 0.35);\n    let nx = vnoise3(vec3f(q, z));\n    let ny = vnoise3(vec3f(q + vec2f(31.7, 17.3), z + 5.1));\n    disp = disp + vec2f(nx, ny) * len * w;\n    if (o >= 3) {\n      walls = walls + pow(1.0 - abs(nx), 14.0) * (0.5 + 0.5 * f32(o - 3));\n    }\n  }\n  return vec3f(disp * amount * 0.35, walls * amount);\n}\n\nconst FLASH_SECONDS: f32 = 0.45;\n\nfn dir(a: f32) -> vec2f {\n  return vec2f(cos(a), sin(a));\n}\n\n/// A particle: a hard core and a soft 1/r² halo.\nfn spot(d: f32, r: f32) -> f32 {\n  let x = d / r;\n  return exp(-x * x) + 0.12 / (1.0 + x * x);\n}\n\n/// Distance from p to the segment a..b: a particle swept over one frame, so a fast one\n/// leaves a line in the trails instead of a row of dots.\nfn segment(p: vec2f, a: vec2f, b: vec2f) -> f32 {\n  let ab = b - a;\n  let t = clamp(dot(p - a, ab) / max(dot(ab, ab), 1e-8), 0.0, 1.0);\n  return length(p - a - ab * t);\n}\n\n/// Where the pair stands at life fraction s: (particle, antiparticle).\nfn pairAt(born: vec2f, s: f32, sep0: f32, theta: f32, curl0: f32) -> vec4f {\n  let sep = sep0 * pow(sin(3.14159265 * clamp(s, 0.0, 1.0)), 0.8);\n  let curl = curl0 * s;\n  return vec4f(born + sep * dir(theta + curl), born - sep * dir(theta - curl));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let aspect = frameU.resolution.x / max(frameU.resolution.y, 1.0);\n  let flat = (uv - vec2f(0.5)) * vec2f(aspect, 1.0);\n  // The tracks run through the same foam as the field: the point is displaced, not the pair.\n  let p = flat + planckFoam(flat, frameU.absTime, params.planck, params.planckScale, params.planckRate).xy;\n  let time = frameU.absTime;\n  let cell = max(params.cell, 0.02);\n  let energy = max(params.energy, 0.05);\n  let cycle = max(params.lifetime, 0.05) / energy;\n  let r = max(params.size, 0.0005);\n  let home = vec2i(floor(p / cell));\n  // One frame back, for the swept segments; a paused or first frame still draws a dot.\n  let dt = clamp(frameU.deltaTime, 0.0, 0.1);\n\n  var col = vec3f(0.0);\n  for (var j = -2; j <= 2; j = j + 1) {\n    for (var i = -2; i <= 2; i = i + 1) {\n      let c = home + vec2i(i, j);\n      let cf = vec2f(c);\n      // Each cell runs its own clock, offset so the vacuum never pulses in step.\n      let offset = hash21(cf + vec2f(17.0, 5.0)) * cycle;\n      let local = time + offset;\n      let k = floor(local / cycle);\n      let tau = local - k * cycle;\n      let h = hash33(vec3f(cf, k));\n      let h2 = hash33(vec3f(cf + vec2f(91.0, 37.0), k));\n      if (h.x >= params.rate) { continue; }\n\n      // ΔE for this loan, in 1..2.5: the heavier the pair, the shorter and smaller its life.\n      let e = 1.0 + 1.5 * h.y;\n      let life = cycle * 0.5 / e;\n      let start = h.z * (cycle - life - FLASH_SECONDS / energy);\n      let age = tau - start;\n      if (age < 0.0) { continue; }\n\n      var born = (cf + vec2f(0.25) + 0.5 * h2.xy) * cell;\n      let shake = textureSampleLevel(inputTexture, inputSampler, born / vec2f(aspect, 1.0) + vec2f(0.5), 0.0).r - 0.5;\n      born = born + params.jitter * vec2f(shake, -shake);\n\n      if (age < life) {\n        let s = age / life;\n        let sep0 = params.reach * cell / e;\n        let theta = h2.z * 6.2831853;\n        let curl0 = params.bfield * (0.6 + 0.8 * h2.x);\n        let now = pairAt(born, s, sep0, theta, curl0);\n        let before = pairAt(born, s - dt / life, sep0, theta, curl0);\n        // They condense out of the field over the first tenth of a life.\n        let fade = smoothstep(0.0, 0.1, s) * params.glow * (0.7 + 0.3 * e);\n        col = col + params.matterColor.rgb * spot(segment(p, before.xy, now.xy), r) * fade;\n        col = col + params.antiColor.rgb * spot(segment(p, before.zw, now.zw), r) * fade;\n      } else {\n        let u = (age - life) / (FLASH_SECONDS / energy);\n        if (u < 1.0) {\n          let d = length(p - born);\n          let burst = exp(-u * 9.0) * spot(d, r * (1.0 + 0.8 * e));\n          let radius = u * cell * 0.9;\n          let ring = exp(-pow((d - radius) / (r * 0.9), 2.0)) * (1.0 - u) * (1.0 - u);\n          col = col + params.flashColor.rgb * (burst * params.flash * e + ring * params.ripple);\n        }\n      }\n    }\n  }\n\n  let size = vec2f(textureDimensions(inputTexture1));\n  let prev = textureLoad(inputTexture1, vec2i(clamp(uv * size, vec2f(0.0), size - vec2f(1.0))), 0).rgb;\n  col = max(col, prev * clamp(params.trail, 0.0, 0.99));\n  return vec4f(col, 1.0);\n}\n",
+          "trail": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "op('slider_trail').chan.trail"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0.9
+              }
+            },
+            "mode": "expression"
+          }
+        },
+        "position": {
+          "x": -900,
+          "y": 200
+        },
+        "type": "customWgslMulti"
+      }
+    },
+    "revision": 1
+  },
+  "name": "Vacuum",
+  "projectId": "example-vacuum",
+  "schemaVersion": 5,
+  "settings": {
+    "limits": {
+      "maxBufferBytes": 268435456,
+      "maxDispatch": 65535,
+      "maxResolution": 4096,
+      "memoryBudgetBytes": 1073741824
+    },
+    "outputResolution": {
+      "height": 720,
+      "width": 1280
+    },
+    "previewFps": 30,
+    "previewLongEdge": 192,
+    "randomSeed": 137,
+    "workingFormat": "rgba16float"
+  },
+  "updatedAt": "2026-08-29T00:00:00.000Z"
+}
