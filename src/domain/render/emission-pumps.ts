@@ -64,6 +64,12 @@ export const EMISSION_PUMPS: Readonly<Record<string, string>> = {
    * and THIS file is where the reviewer finds the seam.
    */
   laserOut: "src/app/use-laser-bridge.ts",
+  /*
+   * T955. The WHIP pump: presents each live node's upstream resource into a canvas,
+   * captures it, and hands the stream to `src/devices/whip-sender.ts`. It consults
+   * `emissionRefusal` per node per frame and closes every stream during a take.
+   */
+  whipOut: "src/app/use-whip-out.ts",
 };
 
 /**

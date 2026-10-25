@@ -81,3 +81,22 @@ node tools/osc-listen.mjs 9001
 ```
 
 The test tools also use `127.0.0.1`.
+
+## WHIP and WHEP
+
+WebRTC video in and out needs no helper and no desktop app.
+
+**WHIP Out** streams its input to a WHIP endpoint, such as an engine's `/whip` or a
+media server. Set URL; an empty URL sends nothing. FPS sets the capture rate, and Send
+closes or reopens the stream. H.264 is preferred when the browser can send it. The input
+must be display-encoded: set the upstream node's Format to `rgba8unorm-srgb` in Common,
+or WHIP Out refuses and says so. It sends only in a live session; a take or an offline
+render sends nothing.
+
+**Webcam `whep:<url>`** plays a WHEP stream, such as an engine's `/whep` or a media
+server's `/<path>/whep`. Type the URL into the Webcam inspector's WHEP URL field. The
+node retries until the server answers, and the Camera line says why it is waiting.
+
+Both are for a local network: no STUN or TURN server, and one complete offer with no
+trickle. A server on another origin must allow CORS, and must expose `Location` for the
+session to be deleted rather than just dropped.

@@ -161,11 +161,14 @@ function Harness({
   onDiagnostics,
   onWiring,
   controls,
+  openWhep,
 }: {
   runtime: AppRuntime;
   backend: LoomBackend | null;
   graph: GraphDocument;
   environment: MediaEnvironment;
+  /** How a `whep:<url>` webcam opens, when a test is about one. */
+  openWhep?: (url: string) => OpenedCamera;
   /** T493/T1223: where `media.cue` and `media.reload` find a node, when a test cares. */
   controls?: MediaControlRegistry;
   /** Resolved output sizes (T312). Omitted where the test is only about video wiring. */
@@ -174,7 +177,7 @@ function Harness({
   /** T493: the per-frame seam, so a test can drive a frame the way the loop does. */
   onWiring?: (wiring: MediaWiring) => void;
 }) {
-  const media = useMediaSources(runtime, backend, flatDocument(graph), resolved ?? null, environment, controls);
+  const media = useMediaSources(runtime, backend, flatDocument(graph), resolved ?? null, environment, controls, undefined, openWhep);
   onDiagnostics?.(media.diagnostics.map((entry) => entry.message));
   onWiring?.(media);
   return null;
@@ -386,6 +389,49 @@ describe("media sources reach the backend (T264)", () => {
       // Anything else registers a source nothing will ever read.
       expect(registered.has(mediaSourceIdFor("cam"))).toBe(true);
     });
+  });
+
+  it("opens a `whep:<url>` webcam through the WHEP opener, never `getUserMedia`, and says why it waits", async () => {
+    const runtime = newRuntime();
+    const { backend, registered } = fakeBackend();
+    const element = fakeElement();
+    const opened: string[] = [];
+    let cameraAsked = 0;
+    const environment: MediaEnvironment = {
+      openStill: () => Promise.reject(new Error("no still in this test")),
+      openFile: () => Promise.reject(new Error("not used")),
+      openCamera: () => {
+        cameraAsked += 1;
+        return Promise.reject(new Error("a WHEP device must not reach getUserMedia"));
+      },
+    };
+    const openWhep = (url: string): OpenedCamera => {
+      opened.push(url);
+      return { ...fakeCamera(element), waiting: () => `The WHEP stream at ${url} is connecting.` };
+    };
+    let wiring: MediaWiring | null = null;
+
+    await act(async () => {
+      render(
+        <Harness
+          runtime={runtime}
+          backend={backend}
+          graph={graphWith({ cam: { type: "webcam", parameters: { device: "whep:http://box:8766/whep" } } })}
+          environment={environment}
+          openWhep={openWhep}
+          onWiring={(value) => {
+            wiring = value;
+          }}
+        />,
+      );
+    });
+
+    await waitFor(() => expect(registered.has(mediaSourceIdFor("cam"))).toBe(true));
+    expect(opened).toEqual(["http://box:8766/whep"]);
+    expect(cameraAsked).toBe(0);
+    const status = (wiring as MediaWiring | null)?.cameraStatus("cam" as never);
+    expect(status?.kind).toBe("error");
+    expect(status?.message).toBe("The WHEP stream at http://box:8766/whep is connecting.");
   });
 
   it("reports a refused camera and registers nothing, rather than throwing", async () => {

@@ -318,6 +318,14 @@ export const NODE_SIDE_EFFECTS: Readonly<Record<string, SideEffect>> = {
   // window is a browser window the app presents this node's target into, the same kind of
   // surface as the viewer, and a headless build never opens one.
   window: "none",
+  /*
+   * T955. `whipOut` streams its input over WebRTC to a WHIP endpoint the document names —
+   * an engine on another machine as often as this one. Unlike Window Out the picture
+   * LEAVES the process, so it is `emits` like Syphon/NDI Out. The send lives in
+   * `use-whip-out.ts`, which consults `emissionRefusal` per node per frame; the WebRTC
+   * transport itself is `src/devices/whip-sender.ts`.
+   */
+  whipOut: "emits",
   ndiOut: "emits",
   spoutOut: "emits",
   audioIn: "none",

@@ -76,6 +76,8 @@ describe("T949 — the scan is finding the real catalogue, or it is measuring no
       "oscOut:emits",
       "spoutOut:emits",
       "syphonOut:emits",
+      // T955. WebRTC to a WHIP endpoint the document names; see the ledger row.
+      "whipOut:emits",
     ]);
   });
 });

@@ -558,6 +558,7 @@ Generated from `NODE_KINDS`. The code is the source; this is a snapshot of 2026-
 | `output` | Output | `output` | `output1` | same |  |
 | `syphonOut` | Syphon Out | `syphonout` | `syphonout1` | same |  |
 | `window` | Window Out | `window` | `window1` | same |  |
+| `whipOut` | WHIP Out | `whipout` | `whipout1` | same |  |
 | `ndiOut` | NDI Out | `ndiout` | `ndiout1` | same |  |
 | `spoutOut` | Spout Out | `spoutout` | `spoutout1` | same |  |
 | `oscOut` | OSC Out | `oscout` | `oscout1` | same |  |

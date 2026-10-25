@@ -113,6 +113,7 @@ import { useMeshSources } from "./use-mesh-sources.ts";
 import { useNativeInputs } from "./use-native-inputs.ts";
 import { usePhoneCameras } from "./use-phone-cameras.ts";
 import { useNativeOutputs } from "./use-native-outputs.ts";
+import { useWhipOut } from "./use-whip-out.ts";
 import { drainNativeViewerOutputs } from "./native-viewer-outputs.ts";
 import { createMediaControlRegistry, useMediaCommands } from "./media-commands.ts";
 import { useProject } from "./use-project.ts";
@@ -1443,6 +1444,8 @@ export function App({
    * accounting and warn twice about the same read.
    */
   const nativeOutputs = useNativeOutputs(runtime, backend ?? null, compile.flatGraph, frameLoop.installedPlan);
+  // T955: WHIP Out streams, pumped from the same installed plan.
+  const whip = useWhipOut(runtime, backend ?? null, compile.flatGraph, frameLoop.installedPlan);
   // §T1391b: Window Out perform windows — the commands, the open set, the inspector surface.
   const perform = usePerformWindows({
     bus: runtime.bus,
@@ -1473,6 +1476,8 @@ export function App({
     },
     beforeRender: async () => {
       await floatMaps.settle();
+      // A presentation keeps painting during a take, so the streams close before its first frame.
+      whip.suspend();
       await Promise.all([nativeOutputs.suspend(), drainNativeViewerOutputs(backend ?? null), vision.prepareForRender()]);
       return depth.prepareForRender();
     },
@@ -1542,6 +1547,7 @@ export function App({
       { id: "nativeInputs", read: () => nativeInputs.diagnostics },
       { id: "phoneCameras", read: () => phoneCameras.diagnostics },
       { id: "nativeOutputs", read: () => nativeOutputs.diagnostics },
+      { id: "whip", read: () => whip.diagnostics },
       // T1340b — the host-level limitation a node declares about itself. Same list as
       // everything else, which is what makes the node badge and this panel agree.
       { id: "requirements", read: () => requirements },
