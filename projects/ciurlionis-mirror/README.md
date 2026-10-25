@@ -8,6 +8,7 @@ StreamDiffusion output.
 | File | What it is |
 |---|---|
 | `ciurlionis-mirror.loom.json` | The example network. Carries both components. |
+| `mirror-hybrid.loom.json` | The whole mirror as a hybrid with realtime-client and sd-webrtc (see The hybrid). |
 | `Watercolor.loom.json` | Watercolor on its own: the component and a movie to run it on. |
 | `PaintingKey.loom.json` | PaintingKey on its own, with the two painting loops. |
 | `media/` | The stand-in movies (see Media). |
@@ -32,6 +33,163 @@ depth-keyed visitor. `Scene` follows the show's 30-second scene clock (without i
 
 Cost: on this Mac (Apple GPU, Loom in a browser pane, sharing the GPU with two running
 TouchDesigner instances) a frame measured 24–32 ms of GPU time. The show runs on an RTX 4090.
+
+## The hybrid
+
+`mirror-hybrid.loom.json` is the whole mirror with no code changes anywhere: realtime-client
+feeds sd-webrtc, and Loom reads the result, runs the painting controller and draws the look.
+
+```
+Femto colour ─► realtime-client [StreamDiffusion | Sense: OpenPose, black | Depth camera, RGB]
+                   └─ POST /offer, one track packed [RGB | skeleton] ─► sd-webrtc (openpose ControlNet)
+sd-webrtc /whep ─► whep-view "mirror engine" ─► screenin_engine ─► glow, angels ─► flip_mirror
+   ─► paintingkey_look ─► watercolor_look ─► cornerpin_projector ─► window_perform, output_main
+Femto colour /whep ─► whep-view "mirror camera" (centre square) ─► screenin_camera ─► pose_visitor
+   ─► wrists ─► state ─► lag_blend ─► expression_engine ─► oscout_engine
+   ─► Loom helper ─► udp 127.0.0.1:9100 ─► bridge.py ─► POST /prompts, /t_index ─► sd-webrtc
+```
+
+`bridge.py` and `whep-view.html` live outside this repo, in
+`dao-llama/mirror-ciurlionis/bridge/`: a launch script is not a project file.
+
+### Setup
+
+1. **sd-webrtc** on the GPU box, from PR 204-ai/sd-webrtc#15's branch
+   (`feat/weighted-prompts-seeds-lora`, which carries `POST /prompts` and `/t_index`). The
+   TD build's settings plus the openpose ControlNet:
+
+   ```
+   python webrtc_server.py --config configs/sd_0.2.99_depth_v2v_lora.json \
+     --set controlnet_model=C:/AI/StreamDiffusion/StreamDiffusion/models/ControlNet/control_v11p_sd21_openpose.safetensors \
+     --set controlnet_weight=0.813 --set width=512 --set height=512 \
+     --set feature_injection_strength=0.7 --set feature_similarity_threshold=0.3 \
+     --set cache_maxframes=4 --set guidance_scale=1.005
+   ```
+
+   A ControlNet that fails to load exits the server, and it also needs
+   `models/ControlNet/cldm_v21.yaml` under the engine root. The preset's LoRA
+   (`ciurlionis_everything_v5` at 1.0) is a `C:/` path, so this runs on the Windows box.
+2. **depthcam-studio** on the camera machine: `depthcam-studio` for the Femto, or
+   `--source mock`, or `--replay <take>` (PR 204-ai/depthcam-studio#4).
+3. **The bridge**, on the Loom machine: `python3 bridge.py --engine http://<gpu-box>:8766`.
+   It listens for OSC on 127.0.0.1:9100 and serves `whep-view.html` on
+   http://127.0.0.1:9101/. `--dry-run` prints instead of sending.
+4. **realtime-client** in Chrome or Edge (packing needs the Streams backend). `yarn dev`, or
+   `yarn dev --port 5199 --strictPort` when Loom's dev server already holds 5173. Build the
+   stack bottom first, and leave no empty layer between the engine and Sense:
+   - **Depth camera**: server `http://<camera-host>:8777`, view **RGB**. TD keyed the visitor
+     by depth before diffusion, and **Cut to range** with far set behind the visitor does
+     the same. (A **WHEP** clip on mediamtx's `cam-femto` also works, without the key.)
+   - **Sense**: OpenPose on, YOLO26 and Pose off, background **Black (no blend)**.
+   - **StreamDiffusion**: server `http://<gpu-box>:8766`, Start, controlnet **openpose**
+     (packing switches on by itself), cn weight about 0.81, steps 4 and 14. Aspect Auto,
+     res 720p: sd-webrtc centre-crops each half to the 512² model.
+   - Leave the prompt panel and Autoloop alone. The bridge owns the prompt, t_index,
+     guidance, delta and ControlNet scale, and puts them back within 2 s when
+     realtime-client's reconnect flush (`tindex:5,10`, `guidance:1`, `delta:0.7`,
+     `cn:…:1.2`) or an operator changes them. `--no-keep` turns that off.
+
+   realtime-client saves the stack to localStorage, but not the engine clip's server or
+   ControlNet mode: type those again after a reload. To paste the stack in, run this in
+   DevTools on the realtime-client page and reload:
+
+   ```js
+   localStorage.setItem("fluxrt.composition.v1", JSON.stringify({ version: 1, layers: [
+     { name: "SD", kind: "streamdiffusion", opacity: 1, blend: "normal", cells: [{ active: true, clip: { kind: "streamdiffusion", label: "StreamDiffusion", mirror: false } }] },
+     { name: "Sense", kind: "sense", opacity: 1, blend: "normal", cells: [{ active: true, clip: { kind: "sense", label: "Sense", mirror: false, effectConfig: { enabled: true, pose: false, openpose: true, yolo: false, detect: false, removeBg: true, face: false, hands: false, numPoses: 1, color: "#39ff88", size: 20 } } }] },
+     { name: "Femto", kind: "orbbec", opacity: 1, blend: "normal", cells: [{ active: true, clip: { kind: "orbbec", label: "Femto colour", mirror: false, effectConfig: { serverUrl: "http://<camera-host>:8777", view: "rgb", stride: 2, depthFps: 20 } } }] },
+   ] }));
+   ```
+5. **Two viewer tabs** in the same Chrome as Loom (each costs the server one x264 encode):
+   - `http://127.0.0.1:9101/whep-view.html?label=engine&whep=http%3A%2F%2F<gpu-box>%3A8766%2Fwhep`
+   - `http://127.0.0.1:9101/whep-view.html?label=camera&square=1&whep=http%3A%2F%2F<camera-host>%3A8777%2Fwhep%3Fstream%3Dcolor`
+
+   `square=1` shows the camera's centre square, which is the square sd-webrtc diffuses. Both
+   Screen Ins fill, so a wrist MoveNet finds in the camera lands on the same spot of the
+   engine image.
+6. **Loom**: `pnpm dev`, File → Open project → `mirror-hybrid.loom.json`.
+   - `screenin_engine`: Share tab/window → "mirror engine". `screenin_camera`: → "mirror camera".
+   - Pose: **Download** (MoveNet SinglePose Lightning, 8.9 MB, once per machine).
+   - OSC: start the helper (`pnpm helper`) and enter its pairing code under Connections in
+     the agent panel. `oscout_engine` then sends `/mirror/p3` … `/mirror/step_end` at 15/s.
+   - `window_perform` goes fullscreen on the projector.
+
+For an unattended start, Chrome's `--auto-select-tab-capture-source-by-title="mirror engine"`
+answers the picker with the tab of that title (`--auto-select-desktop-capture-source` does the
+same for a window or screen). It takes one title per launch, and Loom only opens a capture on
+a click, so each start still needs the two Share clicks, and the second needs the camera tab
+to carry the title. See Limits.
+
+### The network
+
+| TD (.toe) | Loom |
+|---|---|
+| MediaPipe wrists from SpoutCam | `pose_visitor` (MoveNet) on `screenin_camera`; `transform_lwrist/rwrist` crop keypoints 9 and 10 to one pixel; `analyze_*` → `channelin_*` give x, y (0..1, y down) and confidence |
+| filter1 (0.13 s) | `feedback_keypoints` + `cross_keypoints` (0.12 a frame, 0.13 s at 60 fps) |
+| painting_logic: borders, `or` mode | `constant_bordertop` 0.35, `borderbottom/left/right` 0.15, `visibility` 0.5; `constant_leftin`, `rightin`, `hands` (max) |
+| timer2 (30 s) → count2 → lag1 (2 s) | `constant_scenelength` 30 → `expression_scene` → `lag_scene` 2 s; also drives PaintingKey's Scene |
+| STATE_MATRIX, Blendscene on | `expression_state`: p3–p6 and butterfly from scene and hands |
+| lag1 Blendtime 0.75 s | `lag_blend` 0.75 s |
+| math1, math2 on prompt4 | `expression_engine`: `step_start = round(4 + 16·p4)`, `step_end = round(14 + 11·p4)` |
+| Promptdict3–6 weights, t_index | `oscout_engine` → bridge → `POST /prompts` (four fixed slots, blocks 5 and 6 crosswise as in the .toe) and `POST /t_index` |
+| circle1 → level4 (opacity hands) | `constant_wristscale` → `circle_glow` → `level_glow` (opacity hands) → `composite_glow` |
+| Angels_flying_loop → transform6 (×0.8) → level2 (opacity butterfly), comp6 tx = wrist x + 0.25 | `movie_angelsoverlay` → `level_angelsoverlay` (brightness 2, gamma 2.53, opacity butterfly) → `transform_angelsoverlay` (×0.8, wrist x + 0.25) → `composite_angelsoverlay` (screen) |
+| flip X → … → corner1 → out1 | `flip_mirror` → `paintingkey_look` → `watercolor_look` → `cornerpin_projector` → `window_perform` |
+
+### What changed from TD
+
+- **The overlays come after diffusion.** TD drew a white disc at the right wrist and the
+  angels loop into StreamDiffusion's input, so SD painted them (the disc comes out as the
+  candle or orb light). Here they are drawn over SD's output and SD never sees them: a soft
+  warm disc stands in for that light. Drawing them before diffusion would need
+  realtime-client to draw at a wrist, which it cannot do today.
+- **Wrist scale 1.** TD drew its disc at wrist × 1.2 in its own SpoutCam framing. Here
+  MoveNet looks at the same square SD diffuses, so the wrist maps as is; `constant_wristscale`
+  is the knob.
+- **The angels follow across only**, a quarter frame to the side, at ×0.8, as comp6 and
+  transform6 do (transform5 is bypassed in the .toe). The clip is the
+  `painting-loop-angels.mp4` stand-in: `Angels_flying_loop.mp4` is not in this repo.
+- **Visibility is gated.** The .toe routes no visibility channel, so its gate never fires.
+  MoveNet always returns 17 joints, so a joint below 0.5 confidence does not count.
+- **The play area is measured on the centre square** SD diffuses, not on MediaPipe's full
+  SpoutCam frame.
+- **Colour, not mono.** TD keyed the visitor by depth, made it grey (mono1), and zoomed it
+  1.2× and down a quarter (transform2) before SD. realtime-client sends the camera in colour
+  at 1×. Its clip transform could do the zoom; the camera tab would then need it too.
+- **ControlNet is on.** The .toe has `Usecontrolnet` off. This launch line runs the
+  openpose model at 0.813, fed by realtime-client's packed skeleton.
+- Lags are exponential. TD's lag1 also has slope and acceleration limits, which Loom's Lag
+  does not. Prompt blocks 1 and 2 (weight 0 in the .toe) and the ×2 upscaler are left out.
+
+### Tested on this Mac, 2026-10-25
+
+- sd-webrtc `--mock` (PR #15 plus #16, 6c793f3), depthcam-studio `--source mock`,
+  realtime-client on :5199 and the bridge, all on 127.0.0.1.
+- realtime-client: the restored stack connected to the mock, and with openpose its engine
+  input showed the packed `[RGB | skeleton]` frame. The mock centre-crops a packed frame, so
+  it is not a ControlNet check.
+- Bridge: each state's OSC set produced the right `prompt_list` and `t_index` in `/healthz`.
+  After a simulated reconnect flush, `/prompt`, `tindex:5,10`, `guidance:1`, `delta:0.7` and
+  `cn scale 1.2` were all put back within one 2 s check.
+- Loom: the project opens with only the OSC helper warnings and the Pose model notice, and
+  the gates pass. Both Screen Ins captured their viewer tabs in Playwright's Chromium and the
+  look ran at 60 fps. The browser pane the rest of the test used blocks screen capture.
+- The value graph, evaluated headless: a right wrist inside the borders at 0.9 confidence
+  gives p4 and t_index 20, 25. Above the top border, or at 0.3 confidence, it gives p3 and
+  4, 14. The scene ramps to p6 over the 2 s lag at 30 s.
+- Not run: MoveNet (its weights are not downloaded in the test browser) and the OSC hop
+  through the helper (it needs the helper's pairing code).
+
+### Limits
+
+- **Screen In needs a click.** Loom opens a capture only on a click, and Chrome's auto-select
+  flag takes one title. An unattended show needs Loom to restore captures on load (with
+  Chrome's `ScreenCaptureWithoutGestureAllowedForOrigins` policy), or the engine output on
+  an input Loom already has (NDI In, Syphon In, Spout In), which nothing here produces.
+- **realtime-client does not save the engine clip's server or ControlNet mode**, and has no
+  file export for a composition.
+- **OSC Out needs the helper running and the tab paired** with the helper's code.
+- **Overlays before diffusion** would need realtime-client to draw at a wrist.
 
 ## Watercolor
 
@@ -128,11 +286,11 @@ percentile 3 levels). See `td-vs-loom.jpg`.
   `noise_grain` scales by 0.78125). On other sizes the grain scales with the frame.
 - The NVIDIA ×2 upscaler (Windows/RTX only) and everything upstream of the SD output (depth
   camera, MediaPipe, wrist glow, angels overlay, the painting controller) are not part of the
-  look and are not here.
+  look. The hybrid below carries the controller and the overlays.
 
 ## Media
 
-The movies are untracked working copies of 204.ai material:
+The movies are working copies of 204.ai material:
 
 - `ai-standin-portraits.mp4` is `feat-ciurlionis-5a3485.mp4` from the 204.ai site.
 - `painting-loop-angels.mp4` is 212–224 s of `Ciurlionis_Narrative_Journey_720p.mp4`, centre
