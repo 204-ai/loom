@@ -109,16 +109,21 @@ Femto colour /whep ─► whep-view "mirror camera" (centre square) ─► scree
    engine image.
 6. **Loom**: `pnpm dev`, File → Open project → `mirror-hybrid.loom.json`.
    - `screenin_engine`: Share tab/window → "mirror engine". `screenin_camera`: → "mirror camera".
-   - Pose: **Download** (MoveNet SinglePose Lightning, 8.9 MB, once per machine).
-   - OSC: start the helper (`pnpm helper`) and enter its pairing code under Connections in
-     the agent panel. `oscout_engine` then sends `/mirror/p3` … `/mirror/step_end` at 15/s.
+   - Pose: **Download** (MoveNet SinglePose Lightning, 8.9 MB, once per machine). A dev
+     server that has not loaded `onnxruntime-web` before re-optimises it on this first use
+     and reloads the page: open the project and share again.
+   - OSC: the helper must be running (`pnpm helper`, or the `loom` MCP server an agent
+     client starts). Enter the pairing code it printed under Connections in the agent panel.
+     When an MCP client started it, the code is in that client's MCP log (for Claude Code,
+     `~/Library/Caches/claude-cli-nodejs/<project>/mcp-logs-loom/`). `oscout_engine` then
+     sends `/mirror/p3` … `/mirror/step_end` at 15/s.
    - `window_perform` goes fullscreen on the projector.
 
-For an unattended start, Chrome's `--auto-select-tab-capture-source-by-title="mirror engine"`
-answers the picker with the tab of that title (`--auto-select-desktop-capture-source` does the
-same for a window or screen). It takes one title per launch, and Loom only opens a capture on
-a click, so each start still needs the two Share clicks, and the second needs the camera tab
-to carry the title. See Limits.
+Chrome's `--auto-select-tab-capture-source-by-title=<text>` skips the picker by taking the
+first tab whose title contains the text (`--auto-select-desktop-capture-source` does the same
+for a window or screen). One value cannot serve both captures: "mirror" matches both tabs, and
+a value that matches one tab answers both Shares with it. With two Screen Ins, pick in the
+picker by hand. Loom also opens a capture only on a click; see Limits.
 
 ### The network
 
@@ -172,13 +177,17 @@ to carry the title. See Limits.
   After a simulated reconnect flush, `/prompt`, `tindex:5,10`, `guidance:1`, `delta:0.7` and
   `cn scale 1.2` were all put back within one 2 s check.
 - Loom: the project opens with only the OSC helper warnings and the Pose model notice, and
-  the gates pass. Both Screen Ins captured their viewer tabs in Playwright's Chromium and the
-  look ran at 60 fps. The browser pane the rest of the test used blocks screen capture.
+  the gates pass. The in-app browser pane blocks screen capture, so the live run used
+  Playwright's Chromium, with each target tab given a unique title while it was shared.
 - The value graph, evaluated headless: a right wrist inside the borders at 0.9 confidence
   gives p4 and t_index 20, 25. Above the top border, or at 0.3 confidence, it gives p3 and
   4, 14. The scene ramps to p6 over the 2 s lag at 30 s.
-- Not run: MoveNet (its weights are not downloaded in the test browser) and the OSC hop
-  through the helper (it needs the helper's pairing code).
+- Live, end to end. realtime-client fed the mock engine from the mock depth camera, and a
+  dancer clip (realtime-client's `dancer-loop.mp4`) stood in for the camera tab. MoveNet
+  read the wrists at 0.44–0.75 confidence. With the helper paired, the engine followed the
+  table: scene 0 with hands gave p4 and t_index 20, 25, and a dropped hand pulled it toward
+  p3. At the scene change it slid to p6 and 4, 14. Losing the hands in scene 1 pulled it
+  toward p5. The look ran at 55–60 fps.
 
 ### Limits
 
@@ -188,7 +197,8 @@ to carry the title. See Limits.
   an input Loom already has (NDI In, Syphon In, Spout In), which nothing here produces.
 - **realtime-client does not save the engine clip's server or ControlNet mode**, and has no
   file export for a composition.
-- **OSC Out needs the helper running and the tab paired** with the helper's code.
+- **OSC Out needs the helper running and the tab paired** with the helper's code. Pairing
+  also hands the tab to any agent on that helper ("Attached agents can edit this document").
 - **Overlays before diffusion** would need realtime-client to draw at a wrist.
 
 ## Watercolor
