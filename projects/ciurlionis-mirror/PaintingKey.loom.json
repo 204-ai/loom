@@ -1,0 +1,785 @@
+{
+  "assets": [],
+  "componentLibrary": {
+    "components": [
+      {
+        "componentId": "paintingKey",
+        "description": "The Ciurlionis mirror's composite: the AI output threshold-keyed on its luminance, capped by the matte (TD Minimum), and laid atop a painting loop chosen by Scene, brightened and scaled to cover the frame. TD's maths on sRGB-encoded 8-bit values between wgsl_encode* and wgsl_decode.",
+        "graph": {
+          "edges": {
+            "in_ai_feed_1": {
+              "id": "in_ai_feed_1",
+              "source": {
+                "nodeId": "in_ai",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_encodeai",
+                "portId": "input"
+              }
+            },
+            "in_painting0_feed_1": {
+              "id": "in_painting0_feed_1",
+              "source": {
+                "nodeId": "in_painting0",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "null_painting0",
+                "portId": "in"
+              }
+            },
+            "in_painting1_feed_1": {
+              "id": "in_painting1_feed_1",
+              "source": {
+                "nodeId": "in_painting1",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "null_painting1",
+                "portId": "in"
+              }
+            },
+            "out_out_feed": {
+              "id": "out_out_feed",
+              "source": {
+                "nodeId": "wgsl_decodekey",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "out_out",
+                "portId": "in"
+              }
+            },
+            "p-atop-decode": {
+              "id": "p-atop-decode",
+              "source": {
+                "nodeId": "composite_atop",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_decodekey",
+                "portId": "input"
+              }
+            },
+            "p-brightness-gamma": {
+              "id": "p-brightness-gamma",
+              "source": {
+                "nodeId": "level_brightness",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "level_gamma",
+                "portId": "input"
+              }
+            },
+            "p-encode-brightness": {
+              "id": "p-encode-brightness",
+              "source": {
+                "nodeId": "wgsl_encodepainting",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "level_brightness",
+                "portId": "input"
+              }
+            },
+            "p-encodeai-key": {
+              "id": "p-encodeai-key",
+              "source": {
+                "nodeId": "wgsl_encodeai",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "threshold_key",
+                "portId": "input"
+              }
+            },
+            "p-encodeai-minimum": {
+              "id": "p-encodeai-minimum",
+              "source": {
+                "nodeId": "wgsl_encodeai",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_minimum",
+                "portId": "more"
+              }
+            },
+            "p-fit-atop": {
+              "id": "p-fit-atop",
+              "source": {
+                "nodeId": "transform_fit",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_atop",
+                "portId": "in2"
+              }
+            },
+            "p-gamma-fit": {
+              "id": "p-gamma-fit",
+              "source": {
+                "nodeId": "level_gamma",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "transform_fit",
+                "portId": "input"
+              }
+            },
+            "p-key-minimum": {
+              "id": "p-key-minimum",
+              "source": {
+                "nodeId": "threshold_key",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_minimum",
+                "portId": "input"
+              }
+            },
+            "p-minimum-atop": {
+              "id": "p-minimum-atop",
+              "source": {
+                "nodeId": "wgsl_minimum",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_atop",
+                "portId": "in1"
+              }
+            },
+            "p-painting0-scene": {
+              "id": "p-painting0-scene",
+              "order": 0,
+              "source": {
+                "nodeId": "null_painting0",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "switch_scene",
+                "portId": "inputs"
+              }
+            },
+            "p-painting1-scene": {
+              "id": "p-painting1-scene",
+              "order": 1,
+              "source": {
+                "nodeId": "null_painting1",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "switch_scene",
+                "portId": "inputs"
+              }
+            },
+            "p-scene-encode": {
+              "id": "p-scene-encode",
+              "source": {
+                "nodeId": "switch_scene",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_encodepainting",
+                "portId": "input"
+              }
+            }
+          },
+          "groups": {},
+          "nodes": {
+            "composite_atop": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "composite_atop",
+              "label": "composite_atop",
+              "parameters": {
+                "opacity": 1,
+                "operation": "atop"
+              },
+              "position": {
+                "x": 1806,
+                "y": -90
+              },
+              "resolution": {
+                "input": "in2",
+                "mode": "input"
+              },
+              "type": "composite"
+            },
+            "in_ai": {
+              "definitionVersion": 1,
+              "id": "in_ai",
+              "label": "ai",
+              "parameters": {},
+              "position": {
+                "x": 0,
+                "y": -262
+              },
+              "type": "componentIn"
+            },
+            "in_painting0": {
+              "definitionVersion": 1,
+              "id": "in_painting0",
+              "label": "painting0",
+              "parameters": {},
+              "position": {
+                "x": 0,
+                "y": -74
+              },
+              "type": "componentIn"
+            },
+            "in_painting1": {
+              "definitionVersion": 1,
+              "id": "in_painting1",
+              "label": "painting1",
+              "parameters": {},
+              "position": {
+                "x": 0,
+                "y": 114
+              },
+              "type": "componentIn"
+            },
+            "level_brightness": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "level_brightness",
+              "label": "level_brightness",
+              "parameters": {
+                "blacklevel": 0,
+                "brightness": 1.64,
+                "contrast": 1,
+                "gamma1": 1,
+                "invert": 0,
+                "opacity": 1,
+                "whitelevel": 1
+              },
+              "position": {
+                "x": 1032,
+                "y": -74
+              },
+              "type": "level"
+            },
+            "level_gamma": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "level_gamma",
+              "label": "level_gamma",
+              "parameters": {
+                "blacklevel": 0,
+                "brightness": 1,
+                "contrast": 1,
+                "gamma1": 0.98,
+                "invert": 0,
+                "opacity": 1,
+                "whitelevel": 1
+              },
+              "position": {
+                "x": 1290,
+                "y": -74
+              },
+              "type": "level"
+            },
+            "null_painting0": {
+              "definitionVersion": 1,
+              "id": "null_painting0",
+              "parameters": {},
+              "position": {
+                "x": 258,
+                "y": -74
+              },
+              "type": "null"
+            },
+            "null_painting1": {
+              "definitionVersion": 1,
+              "id": "null_painting1",
+              "parameters": {},
+              "position": {
+                "x": 258,
+                "y": 114
+              },
+              "type": "null"
+            },
+            "out_out": {
+              "definitionVersion": 1,
+              "id": "out_out",
+              "label": "out",
+              "parameters": {},
+              "position": {
+                "x": 2322,
+                "y": -74
+              },
+              "type": "componentOut"
+            },
+            "switch_scene": {
+              "definitionVersion": 1,
+              "id": "switch_scene",
+              "label": "switch_scene",
+              "parameters": {
+                "crossfade": false,
+                "index": 0
+              },
+              "position": {
+                "x": 516,
+                "y": 4
+              },
+              "type": "switch"
+            },
+            "threshold_key": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "threshold_key",
+              "label": "threshold_key",
+              "parameters": {
+                "channel": "luminance",
+                "compare": "greater",
+                "softness": 0.75,
+                "threshold": 0.05
+              },
+              "position": {
+                "x": 516,
+                "y": -184
+              },
+              "type": "threshold"
+            },
+            "transform_fit": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "transform_fit",
+              "label": "transform_fit",
+              "parameters": {
+                "aspectcorrect": true,
+                "extend": "zero",
+                "p": [
+                  0,
+                  0
+                ],
+                "r": 0,
+                "s": [
+                  1.6,
+                  1.6
+                ],
+                "t": [
+                  0,
+                  0
+                ],
+                "xord": "srt"
+              },
+              "position": {
+                "x": 1548,
+                "y": -74
+              },
+              "type": "transform"
+            },
+            "wgsl_decodekey": {
+              "definitionVersion": 1,
+              "format": {
+                "mode": "project"
+              },
+              "id": "wgsl_decodekey",
+              "label": "wgsl_decodekey",
+              "parameters": {
+                "amount": 1,
+                "source": "// Loom works in linear light and straight alpha (SPEC V56). TouchDesigner's TOPs hold\n// sRGB-encoded 8-bit values, and every operator in drmbt's network does its maths on those\n// numbers. wgsl_encode and wgsl_decode bracket the TD chain so a threshold of 0.05, a\n// brightness of 1.64, a soft light and an emboss all mean exactly what they meant in TD.\n// This half: sRGB-encoded values -> linear, back into the project's working space.\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn decodeSrgb(encoded: vec3f) -> vec3f {\n  let c = clamp(encoded, vec3f(0.0), vec3f(1.0));\n  let high = pow((c + vec3f(0.055)) / 1.055, vec3f(2.4));\n  return select(high, c / 12.92, c <= vec3f(0.04045));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let source = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  // Amount must match wgsl_encode's: 1 decodes, 0 passes the values through.\n  return vec4f(mix(source.rgb, decodeSrgb(source.rgb), params.amount), source.a);\n}"
+              },
+              "position": {
+                "x": 2064,
+                "y": -74
+              },
+              "type": "customWgsl"
+            },
+            "wgsl_encodeai": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_encodeai",
+              "label": "wgsl_encodeai",
+              "parameters": {
+                "amount": 1,
+                "source": "// Loom works in linear light and straight alpha (SPEC V56). TouchDesigner's TOPs hold\n// sRGB-encoded 8-bit values, and every operator in drmbt's network does its maths on those\n// numbers. wgsl_encode and wgsl_decode bracket the TD chain so a threshold of 0.05, a\n// brightness of 1.64, a soft light and an emboss all mean exactly what they meant in TD.\n// This half: linear -> sRGB-encoded values (the exact piecewise sRGB curve).\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn encodeSrgb(linear: vec3f) -> vec3f {\n  let c = clamp(linear, vec3f(0.0), vec3f(1.0));\n  let high = (1.055 * pow(c, vec3f(1.0 / 2.4))) - vec3f(0.055);\n  return select(high, c * 12.92, c <= vec3f(0.0031308));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let source = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let plain = clamp(source.rgb, vec3f(0.0), vec3f(1.0));\n  // Amount 1 encodes. 0 leaves linear values in place, to A/B the TD maths against Loom's.\n  return vec4f(mix(plain, encodeSrgb(source.rgb), params.amount), source.a);\n}"
+              },
+              "position": {
+                "x": 258,
+                "y": -262
+              },
+              "type": "customWgsl"
+            },
+            "wgsl_encodepainting": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_encodepainting",
+              "label": "wgsl_encodepainting",
+              "parameters": {
+                "amount": 1,
+                "source": "// Loom works in linear light and straight alpha (SPEC V56). TouchDesigner's TOPs hold\n// sRGB-encoded 8-bit values, and every operator in drmbt's network does its maths on those\n// numbers. wgsl_encode and wgsl_decode bracket the TD chain so a threshold of 0.05, a\n// brightness of 1.64, a soft light and an emboss all mean exactly what they meant in TD.\n// This half: linear -> sRGB-encoded values (the exact piecewise sRGB curve).\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn encodeSrgb(linear: vec3f) -> vec3f {\n  let c = clamp(linear, vec3f(0.0), vec3f(1.0));\n  let high = (1.055 * pow(c, vec3f(1.0 / 2.4))) - vec3f(0.055);\n  return select(high, c * 12.92, c <= vec3f(0.0031308));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let source = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let plain = clamp(source.rgb, vec3f(0.0), vec3f(1.0));\n  // Amount 1 encodes. 0 leaves linear values in place, to A/B the TD maths against Loom's.\n  return vec4f(mix(plain, encodeSrgb(source.rgb), params.amount), source.a);\n}"
+              },
+              "position": {
+                "x": 774,
+                "y": 36
+              },
+              "type": "customWgsl"
+            },
+            "wgsl_minimum": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_minimum",
+              "label": "wgsl_minimum",
+              "parameters": {
+                "amount": 1,
+                "source": "// TD Composite TOP, operation Minimum (comp3 in the Ciurlionis mirror), followed by the\n// alpha convention change Loom needs.\n// TD takes the per-channel minimum of PREMULTIPLIED pixels, alpha included: the threshold\n// matte (rgb = alpha = m, input 0) caps the AI picture (input 1, in More) at m and becomes\n// its coverage, so TD stores (min(m, rgb), m). Loom carries straight alpha (SPEC V56), so\n// that result is divided back out here; the Porter-Duff atop downstream multiplies it in\n// again, and atop(front, painting) then reproduces TD's min(m, rgb) + painting * (1 - m).\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n@group(0) @binding(4) var inputTexture1: texture_2d<f32>;\n\nfn secondAt(uv: vec2f) -> vec4f {\n  let size = vec2i(textureDimensions(inputTexture1));\n  let texel = clamp(vec2i(uv * vec2f(size)), vec2i(0), size - vec2i(1));\n  return textureLoad(inputTexture1, texel, 0);\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let matte = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let picture = secondAt(uv);\n  let premultiplied = vec4f(picture.rgb * picture.a, picture.a);\n  let keyed = min(matte, premultiplied);\n  let straight = select(keyed.rgb / max(keyed.a, 1e-6), vec3f(0.0), keyed.a <= 0.0);\n  // Amount 1 keys. 0 hands the AI picture through unkeyed.\n  return mix(picture, vec4f(clamp(straight, vec3f(0.0), vec3f(1.0)), keyed.a), params.amount);\n}"
+              },
+              "position": {
+                "x": 774,
+                "y": -184
+              },
+              "type": "customWgslMulti"
+            }
+          },
+          "revision": 1
+        },
+        "inputs": [
+          {
+            "externalId": "ai",
+            "label": "ai",
+            "nodeId": "in_ai",
+            "portId": "in"
+          },
+          {
+            "externalId": "painting0",
+            "label": "painting0",
+            "nodeId": "in_painting0",
+            "portId": "in"
+          },
+          {
+            "externalId": "painting1",
+            "label": "painting1",
+            "nodeId": "in_painting1",
+            "portId": "in"
+          }
+        ],
+        "name": "PaintingKey",
+        "outputs": [
+          {
+            "externalId": "out",
+            "label": "out",
+            "nodeId": "out_out",
+            "portId": "out"
+          }
+        ],
+        "parameters": [
+          {
+            "definition": {
+              "default": 0.05,
+              "description": "Luminance (sRGB-encoded) where the AI picture turns opaque.",
+              "label": "Threshold",
+              "max": 1,
+              "min": 0,
+              "range": "soft",
+              "step": 0.001,
+              "type": "number"
+            },
+            "key": "Threshold",
+            "targets": [
+              {
+                "key": "threshold",
+                "nodeId": "threshold_key"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0.75,
+              "description": "Width of the key's ramp. At 0.75 even black keeps about 40% cover.",
+              "label": "Soften",
+              "max": 1,
+              "min": 0,
+              "range": "bounded",
+              "step": 0.001,
+              "type": "number"
+            },
+            "key": "Soften",
+            "targets": [
+              {
+                "key": "softness",
+                "nodeId": "threshold_key"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0,
+              "description": "Which painting loop: 0 shows painting0, 1 shows painting1 (TD switch2, driven by the scene clock).",
+              "label": "Scene",
+              "max": 1,
+              "min": 0,
+              "range": "soft",
+              "step": 1,
+              "type": "number"
+            },
+            "key": "Scene",
+            "targets": [
+              {
+                "key": "index",
+                "nodeId": "switch_scene"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 1.64,
+              "label": "Brightness",
+              "max": 4,
+              "min": 0,
+              "range": "floor",
+              "step": 0.01,
+              "type": "number"
+            },
+            "key": "Brightness",
+            "targets": [
+              {
+                "key": "brightness",
+                "nodeId": "level_brightness"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0.98,
+              "label": "Gamma",
+              "max": 4,
+              "min": 0.1,
+              "range": "floor",
+              "step": 0.01,
+              "type": "number"
+            },
+            "key": "Gamma",
+            "targets": [
+              {
+                "key": "gamma1",
+                "nodeId": "level_gamma"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": [
+                1.6,
+                1.6
+              ],
+              "description": "The fitted painting, scaled about the centre (TD fit1 sx, sy).",
+              "label": "Scale",
+              "max": 4,
+              "min": 0,
+              "range": "floor",
+              "size": 2,
+              "step": 0.01,
+              "type": "vector"
+            },
+            "key": "Scale",
+            "targets": [
+              {
+                "key": "s",
+                "nodeId": "transform_fit"
+              }
+            ]
+          }
+        ],
+        "version": 1
+      }
+    ],
+    "schemaVersion": 1
+  },
+  "createdAt": "2026-10-24T00:00:00.000Z",
+  "graph": {
+    "edges": {
+      "h-ai-look": {
+        "id": "h-ai-look",
+        "source": {
+          "nodeId": "movie_ai",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "paintingkey_look",
+          "portId": "ai"
+        }
+      },
+      "h-angels-look": {
+        "id": "h-angels-look",
+        "source": {
+          "nodeId": "movie_angels",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "paintingkey_look",
+          "portId": "painting0"
+        }
+      },
+      "h-friendship-look": {
+        "id": "h-friendship-look",
+        "source": {
+          "nodeId": "movie_friendship",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "paintingkey_look",
+          "portId": "painting1"
+        }
+      },
+      "h-look-out": {
+        "id": "h-look-out",
+        "source": {
+          "nodeId": "paintingkey_look",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "output_main",
+          "portId": "input"
+        }
+      }
+    },
+    "groups": {},
+    "nodes": {
+      "movie_ai": {
+        "definitionVersion": 1,
+        "id": "movie_ai",
+        "label": "movie_ai",
+        "parameters": {
+          "audio": false,
+          "cue": false,
+          "cuePoint": 0,
+          "extend": "loop",
+          "file": "projects/ciurlionis-mirror/media/ai-standin-portraits.mp4",
+          "imageFit": "fill",
+          "play": true,
+          "playMode": "freeRun",
+          "speed": 1,
+          "trimEnd": 0,
+          "trimStart": 0,
+          "volume": 1
+        },
+        "position": {
+          "x": -600,
+          "y": -240
+        },
+        "type": "movieFileIn"
+      },
+      "movie_angels": {
+        "definitionVersion": 1,
+        "id": "movie_angels",
+        "label": "movie_angels",
+        "parameters": {
+          "audio": false,
+          "cue": false,
+          "cuePoint": 0,
+          "extend": "loop",
+          "file": "projects/ciurlionis-mirror/media/painting-loop-angels.mp4",
+          "imageFit": "fit",
+          "play": true,
+          "playMode": "freeRun",
+          "speed": 1,
+          "trimEnd": 0,
+          "trimStart": 0,
+          "volume": 1
+        },
+        "position": {
+          "x": -600,
+          "y": 0
+        },
+        "type": "movieFileIn"
+      },
+      "movie_friendship": {
+        "definitionVersion": 1,
+        "id": "movie_friendship",
+        "label": "movie_friendship",
+        "parameters": {
+          "audio": false,
+          "cue": false,
+          "cuePoint": 0,
+          "extend": "loop",
+          "file": "projects/ciurlionis-mirror/media/painting-loop-background.mp4",
+          "imageFit": "fit",
+          "play": true,
+          "playMode": "freeRun",
+          "speed": 1,
+          "trimEnd": 0,
+          "trimStart": 0,
+          "volume": 1
+        },
+        "position": {
+          "x": -600,
+          "y": 240
+        },
+        "type": "movieFileIn"
+      },
+      "output_main": {
+        "definitionVersion": 1,
+        "id": "output_main",
+        "label": "output_main",
+        "parameters": {
+          "toneMap": "none"
+        },
+        "position": {
+          "x": 80,
+          "y": 0
+        },
+        "type": "output"
+      },
+      "paintingkey_look": {
+        "definitionVersion": 1,
+        "id": "paintingkey_look",
+        "label": "paintingkey_look",
+        "parameters": {},
+        "position": {
+          "x": -260,
+          "y": 0
+        },
+        "type": "component:paintingKey@1"
+      }
+    },
+    "revision": 1
+  },
+  "name": "PaintingKey",
+  "projectId": "component-paintingKey",
+  "schemaVersion": 5,
+  "settings": {
+    "fps": 60,
+    "limits": {
+      "maxBufferBytes": 268435456,
+      "maxDispatch": 65535,
+      "maxResolution": 4096,
+      "memoryBudgetBytes": 1073741824
+    },
+    "outputResolution": {
+      "height": 1280,
+      "width": 1280
+    },
+    "previewFps": 30,
+    "previewLongEdge": 192,
+    "randomSeed": 7,
+    "workingFormat": "rgba16float"
+  },
+  "updatedAt": "2026-10-24T00:00:00.000Z"
+}

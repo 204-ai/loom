@@ -1,0 +1,2410 @@
+{
+  "assets": [],
+  "componentLibrary": {
+    "components": [
+      {
+        "componentId": "paintingKey",
+        "description": "The Ciurlionis mirror's composite: the AI output threshold-keyed on its luminance, capped by the matte (TD Minimum), and laid atop a painting loop chosen by Scene, brightened and scaled to cover the frame. TD's maths on sRGB-encoded 8-bit values between wgsl_encode* and wgsl_decode.",
+        "graph": {
+          "edges": {
+            "in_ai_feed_1": {
+              "id": "in_ai_feed_1",
+              "source": {
+                "nodeId": "in_ai",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_encodeai",
+                "portId": "input"
+              }
+            },
+            "in_painting0_feed_1": {
+              "id": "in_painting0_feed_1",
+              "source": {
+                "nodeId": "in_painting0",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "null_painting0",
+                "portId": "in"
+              }
+            },
+            "in_painting1_feed_1": {
+              "id": "in_painting1_feed_1",
+              "source": {
+                "nodeId": "in_painting1",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "null_painting1",
+                "portId": "in"
+              }
+            },
+            "out_out_feed": {
+              "id": "out_out_feed",
+              "source": {
+                "nodeId": "wgsl_decodekey",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "out_out",
+                "portId": "in"
+              }
+            },
+            "p-atop-decode": {
+              "id": "p-atop-decode",
+              "source": {
+                "nodeId": "composite_atop",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_decodekey",
+                "portId": "input"
+              }
+            },
+            "p-brightness-gamma": {
+              "id": "p-brightness-gamma",
+              "source": {
+                "nodeId": "level_brightness",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "level_gamma",
+                "portId": "input"
+              }
+            },
+            "p-encode-brightness": {
+              "id": "p-encode-brightness",
+              "source": {
+                "nodeId": "wgsl_encodepainting",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "level_brightness",
+                "portId": "input"
+              }
+            },
+            "p-encodeai-key": {
+              "id": "p-encodeai-key",
+              "source": {
+                "nodeId": "wgsl_encodeai",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "threshold_key",
+                "portId": "input"
+              }
+            },
+            "p-encodeai-minimum": {
+              "id": "p-encodeai-minimum",
+              "source": {
+                "nodeId": "wgsl_encodeai",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_minimum",
+                "portId": "more"
+              }
+            },
+            "p-fit-atop": {
+              "id": "p-fit-atop",
+              "source": {
+                "nodeId": "transform_fit",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_atop",
+                "portId": "in2"
+              }
+            },
+            "p-gamma-fit": {
+              "id": "p-gamma-fit",
+              "source": {
+                "nodeId": "level_gamma",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "transform_fit",
+                "portId": "input"
+              }
+            },
+            "p-key-minimum": {
+              "id": "p-key-minimum",
+              "source": {
+                "nodeId": "threshold_key",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_minimum",
+                "portId": "input"
+              }
+            },
+            "p-minimum-atop": {
+              "id": "p-minimum-atop",
+              "source": {
+                "nodeId": "wgsl_minimum",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_atop",
+                "portId": "in1"
+              }
+            },
+            "p-painting0-scene": {
+              "id": "p-painting0-scene",
+              "order": 0,
+              "source": {
+                "nodeId": "null_painting0",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "switch_scene",
+                "portId": "inputs"
+              }
+            },
+            "p-painting1-scene": {
+              "id": "p-painting1-scene",
+              "order": 1,
+              "source": {
+                "nodeId": "null_painting1",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "switch_scene",
+                "portId": "inputs"
+              }
+            },
+            "p-scene-encode": {
+              "id": "p-scene-encode",
+              "source": {
+                "nodeId": "switch_scene",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_encodepainting",
+                "portId": "input"
+              }
+            }
+          },
+          "groups": {},
+          "nodes": {
+            "composite_atop": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "composite_atop",
+              "label": "composite_atop",
+              "parameters": {
+                "opacity": 1,
+                "operation": "atop"
+              },
+              "position": {
+                "x": 1806,
+                "y": -90
+              },
+              "resolution": {
+                "input": "in2",
+                "mode": "input"
+              },
+              "type": "composite"
+            },
+            "in_ai": {
+              "definitionVersion": 1,
+              "id": "in_ai",
+              "label": "ai",
+              "parameters": {},
+              "position": {
+                "x": 0,
+                "y": -262
+              },
+              "type": "componentIn"
+            },
+            "in_painting0": {
+              "definitionVersion": 1,
+              "id": "in_painting0",
+              "label": "painting0",
+              "parameters": {},
+              "position": {
+                "x": 0,
+                "y": -74
+              },
+              "type": "componentIn"
+            },
+            "in_painting1": {
+              "definitionVersion": 1,
+              "id": "in_painting1",
+              "label": "painting1",
+              "parameters": {},
+              "position": {
+                "x": 0,
+                "y": 114
+              },
+              "type": "componentIn"
+            },
+            "level_brightness": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "level_brightness",
+              "label": "level_brightness",
+              "parameters": {
+                "blacklevel": 0,
+                "brightness": 1.64,
+                "contrast": 1,
+                "gamma1": 1,
+                "invert": 0,
+                "opacity": 1,
+                "whitelevel": 1
+              },
+              "position": {
+                "x": 1032,
+                "y": -74
+              },
+              "type": "level"
+            },
+            "level_gamma": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "level_gamma",
+              "label": "level_gamma",
+              "parameters": {
+                "blacklevel": 0,
+                "brightness": 1,
+                "contrast": 1,
+                "gamma1": 0.98,
+                "invert": 0,
+                "opacity": 1,
+                "whitelevel": 1
+              },
+              "position": {
+                "x": 1290,
+                "y": -74
+              },
+              "type": "level"
+            },
+            "null_painting0": {
+              "definitionVersion": 1,
+              "id": "null_painting0",
+              "parameters": {},
+              "position": {
+                "x": 258,
+                "y": -74
+              },
+              "type": "null"
+            },
+            "null_painting1": {
+              "definitionVersion": 1,
+              "id": "null_painting1",
+              "parameters": {},
+              "position": {
+                "x": 258,
+                "y": 114
+              },
+              "type": "null"
+            },
+            "out_out": {
+              "definitionVersion": 1,
+              "id": "out_out",
+              "label": "out",
+              "parameters": {},
+              "position": {
+                "x": 2322,
+                "y": -74
+              },
+              "type": "componentOut"
+            },
+            "switch_scene": {
+              "definitionVersion": 1,
+              "id": "switch_scene",
+              "label": "switch_scene",
+              "parameters": {
+                "crossfade": false,
+                "index": 0
+              },
+              "position": {
+                "x": 516,
+                "y": 4
+              },
+              "type": "switch"
+            },
+            "threshold_key": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "threshold_key",
+              "label": "threshold_key",
+              "parameters": {
+                "channel": "luminance",
+                "compare": "greater",
+                "softness": 0.75,
+                "threshold": 0.05
+              },
+              "position": {
+                "x": 516,
+                "y": -184
+              },
+              "type": "threshold"
+            },
+            "transform_fit": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "transform_fit",
+              "label": "transform_fit",
+              "parameters": {
+                "aspectcorrect": true,
+                "extend": "zero",
+                "p": [
+                  0,
+                  0
+                ],
+                "r": 0,
+                "s": [
+                  1.6,
+                  1.6
+                ],
+                "t": [
+                  0,
+                  0
+                ],
+                "xord": "srt"
+              },
+              "position": {
+                "x": 1548,
+                "y": -74
+              },
+              "type": "transform"
+            },
+            "wgsl_decodekey": {
+              "definitionVersion": 1,
+              "format": {
+                "mode": "project"
+              },
+              "id": "wgsl_decodekey",
+              "label": "wgsl_decodekey",
+              "parameters": {
+                "amount": 1,
+                "source": "// Loom works in linear light and straight alpha (SPEC V56). TouchDesigner's TOPs hold\n// sRGB-encoded 8-bit values, and every operator in drmbt's network does its maths on those\n// numbers. wgsl_encode and wgsl_decode bracket the TD chain so a threshold of 0.05, a\n// brightness of 1.64, a soft light and an emboss all mean exactly what they meant in TD.\n// This half: sRGB-encoded values -> linear, back into the project's working space.\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn decodeSrgb(encoded: vec3f) -> vec3f {\n  let c = clamp(encoded, vec3f(0.0), vec3f(1.0));\n  let high = pow((c + vec3f(0.055)) / 1.055, vec3f(2.4));\n  return select(high, c / 12.92, c <= vec3f(0.04045));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let source = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  // Amount must match wgsl_encode's: 1 decodes, 0 passes the values through.\n  return vec4f(mix(source.rgb, decodeSrgb(source.rgb), params.amount), source.a);\n}"
+              },
+              "position": {
+                "x": 2064,
+                "y": -74
+              },
+              "type": "customWgsl"
+            },
+            "wgsl_encodeai": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_encodeai",
+              "label": "wgsl_encodeai",
+              "parameters": {
+                "amount": 1,
+                "source": "// Loom works in linear light and straight alpha (SPEC V56). TouchDesigner's TOPs hold\n// sRGB-encoded 8-bit values, and every operator in drmbt's network does its maths on those\n// numbers. wgsl_encode and wgsl_decode bracket the TD chain so a threshold of 0.05, a\n// brightness of 1.64, a soft light and an emboss all mean exactly what they meant in TD.\n// This half: linear -> sRGB-encoded values (the exact piecewise sRGB curve).\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn encodeSrgb(linear: vec3f) -> vec3f {\n  let c = clamp(linear, vec3f(0.0), vec3f(1.0));\n  let high = (1.055 * pow(c, vec3f(1.0 / 2.4))) - vec3f(0.055);\n  return select(high, c * 12.92, c <= vec3f(0.0031308));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let source = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let plain = clamp(source.rgb, vec3f(0.0), vec3f(1.0));\n  // Amount 1 encodes. 0 leaves linear values in place, to A/B the TD maths against Loom's.\n  return vec4f(mix(plain, encodeSrgb(source.rgb), params.amount), source.a);\n}"
+              },
+              "position": {
+                "x": 258,
+                "y": -262
+              },
+              "type": "customWgsl"
+            },
+            "wgsl_encodepainting": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_encodepainting",
+              "label": "wgsl_encodepainting",
+              "parameters": {
+                "amount": 1,
+                "source": "// Loom works in linear light and straight alpha (SPEC V56). TouchDesigner's TOPs hold\n// sRGB-encoded 8-bit values, and every operator in drmbt's network does its maths on those\n// numbers. wgsl_encode and wgsl_decode bracket the TD chain so a threshold of 0.05, a\n// brightness of 1.64, a soft light and an emboss all mean exactly what they meant in TD.\n// This half: linear -> sRGB-encoded values (the exact piecewise sRGB curve).\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn encodeSrgb(linear: vec3f) -> vec3f {\n  let c = clamp(linear, vec3f(0.0), vec3f(1.0));\n  let high = (1.055 * pow(c, vec3f(1.0 / 2.4))) - vec3f(0.055);\n  return select(high, c * 12.92, c <= vec3f(0.0031308));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let source = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let plain = clamp(source.rgb, vec3f(0.0), vec3f(1.0));\n  // Amount 1 encodes. 0 leaves linear values in place, to A/B the TD maths against Loom's.\n  return vec4f(mix(plain, encodeSrgb(source.rgb), params.amount), source.a);\n}"
+              },
+              "position": {
+                "x": 774,
+                "y": 36
+              },
+              "type": "customWgsl"
+            },
+            "wgsl_minimum": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_minimum",
+              "label": "wgsl_minimum",
+              "parameters": {
+                "amount": 1,
+                "source": "// TD Composite TOP, operation Minimum (comp3 in the Ciurlionis mirror), followed by the\n// alpha convention change Loom needs.\n// TD takes the per-channel minimum of PREMULTIPLIED pixels, alpha included: the threshold\n// matte (rgb = alpha = m, input 0) caps the AI picture (input 1, in More) at m and becomes\n// its coverage, so TD stores (min(m, rgb), m). Loom carries straight alpha (SPEC V56), so\n// that result is divided back out here; the Porter-Duff atop downstream multiplies it in\n// again, and atop(front, painting) then reproduces TD's min(m, rgb) + painting * (1 - m).\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n@group(0) @binding(4) var inputTexture1: texture_2d<f32>;\n\nfn secondAt(uv: vec2f) -> vec4f {\n  let size = vec2i(textureDimensions(inputTexture1));\n  let texel = clamp(vec2i(uv * vec2f(size)), vec2i(0), size - vec2i(1));\n  return textureLoad(inputTexture1, texel, 0);\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let matte = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let picture = secondAt(uv);\n  let premultiplied = vec4f(picture.rgb * picture.a, picture.a);\n  let keyed = min(matte, premultiplied);\n  let straight = select(keyed.rgb / max(keyed.a, 1e-6), vec3f(0.0), keyed.a <= 0.0);\n  // Amount 1 keys. 0 hands the AI picture through unkeyed.\n  return mix(picture, vec4f(clamp(straight, vec3f(0.0), vec3f(1.0)), keyed.a), params.amount);\n}"
+              },
+              "position": {
+                "x": 774,
+                "y": -184
+              },
+              "type": "customWgslMulti"
+            }
+          },
+          "revision": 1
+        },
+        "inputs": [
+          {
+            "externalId": "ai",
+            "label": "ai",
+            "nodeId": "in_ai",
+            "portId": "in"
+          },
+          {
+            "externalId": "painting0",
+            "label": "painting0",
+            "nodeId": "in_painting0",
+            "portId": "in"
+          },
+          {
+            "externalId": "painting1",
+            "label": "painting1",
+            "nodeId": "in_painting1",
+            "portId": "in"
+          }
+        ],
+        "name": "PaintingKey",
+        "outputs": [
+          {
+            "externalId": "out",
+            "label": "out",
+            "nodeId": "out_out",
+            "portId": "out"
+          }
+        ],
+        "parameters": [
+          {
+            "definition": {
+              "default": 0.05,
+              "description": "Luminance (sRGB-encoded) where the AI picture turns opaque.",
+              "label": "Threshold",
+              "max": 1,
+              "min": 0,
+              "range": "soft",
+              "step": 0.001,
+              "type": "number"
+            },
+            "key": "Threshold",
+            "targets": [
+              {
+                "key": "threshold",
+                "nodeId": "threshold_key"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0.75,
+              "description": "Width of the key's ramp. At 0.75 even black keeps about 40% cover.",
+              "label": "Soften",
+              "max": 1,
+              "min": 0,
+              "range": "bounded",
+              "step": 0.001,
+              "type": "number"
+            },
+            "key": "Soften",
+            "targets": [
+              {
+                "key": "softness",
+                "nodeId": "threshold_key"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0,
+              "description": "Which painting loop: 0 shows painting0, 1 shows painting1 (TD switch2, driven by the scene clock).",
+              "label": "Scene",
+              "max": 1,
+              "min": 0,
+              "range": "soft",
+              "step": 1,
+              "type": "number"
+            },
+            "key": "Scene",
+            "targets": [
+              {
+                "key": "index",
+                "nodeId": "switch_scene"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 1.64,
+              "label": "Brightness",
+              "max": 4,
+              "min": 0,
+              "range": "floor",
+              "step": 0.01,
+              "type": "number"
+            },
+            "key": "Brightness",
+            "targets": [
+              {
+                "key": "brightness",
+                "nodeId": "level_brightness"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0.98,
+              "label": "Gamma",
+              "max": 4,
+              "min": 0.1,
+              "range": "floor",
+              "step": 0.01,
+              "type": "number"
+            },
+            "key": "Gamma",
+            "targets": [
+              {
+                "key": "gamma1",
+                "nodeId": "level_gamma"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": [
+                1.6,
+                1.6
+              ],
+              "description": "The fitted painting, scaled about the centre (TD fit1 sx, sy).",
+              "label": "Scale",
+              "max": 4,
+              "min": 0,
+              "range": "floor",
+              "size": 2,
+              "step": 0.01,
+              "type": "vector"
+            },
+            "key": "Scale",
+            "targets": [
+              {
+                "key": "s",
+                "nodeId": "transform_fit"
+              }
+            ]
+          }
+        ],
+        "version": 1
+      },
+      {
+        "componentId": "watercolor",
+        "description": "drmbt's TouchDesigner watercolor, operator for operator: a feedback loop that drifts along a noise flow field, bleeds uphill along its own soft-light slope, keeps the brighter of trail and grained input, and darkens one side of every stroke with an emboss. Runs TD's maths on sRGB-encoded 8-bit values between wgsl_encode and wgsl_decode; parameters keep drmbt's names and meanings.",
+        "graph": {
+          "edges": {
+            "in_input_feed_1": {
+              "id": "in_input_feed_1",
+              "source": {
+                "nodeId": "in_input",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_encode",
+                "portId": "input"
+              }
+            },
+            "out_out_feed": {
+              "id": "out_out_feed",
+              "source": {
+                "nodeId": "wgsl_decode",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "out_out",
+                "portId": "in"
+              }
+            },
+            "w-bleed-original": {
+              "id": "w-bleed-original",
+              "source": {
+                "nodeId": "displace_bleed",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "cross_original",
+                "portId": "in1"
+              }
+            },
+            "w-bypass-decode": {
+              "id": "w-bypass-decode",
+              "source": {
+                "nodeId": "switch_bypass",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_decode",
+                "portId": "input"
+              }
+            },
+            "w-drift-soften": {
+              "id": "w-drift-soften",
+              "source": {
+                "nodeId": "displace_drift",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "blur_soften",
+                "portId": "input"
+              }
+            },
+            "w-drift-softlight": {
+              "id": "w-drift-softlight",
+              "source": {
+                "nodeId": "displace_drift",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_softlight",
+                "portId": "input"
+              }
+            },
+            "w-drywet-bypass": {
+              "id": "w-drywet-bypass",
+              "order": 0,
+              "source": {
+                "nodeId": "cross_drywet",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "switch_bypass",
+                "portId": "inputs"
+              }
+            },
+            "w-emboss-relief": {
+              "id": "w-emboss-relief",
+              "source": {
+                "nodeId": "convolve_emboss",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_relief",
+                "portId": "in2"
+              }
+            },
+            "w-encode-bypass": {
+              "id": "w-encode-bypass",
+              "order": 1,
+              "source": {
+                "nodeId": "wgsl_encode",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "switch_bypass",
+                "portId": "inputs"
+              }
+            },
+            "w-encode-drywet": {
+              "id": "w-encode-drywet",
+              "source": {
+                "nodeId": "wgsl_encode",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "cross_drywet",
+                "portId": "in1"
+              }
+            },
+            "w-encode-grain": {
+              "id": "w-encode-grain",
+              "source": {
+                "nodeId": "wgsl_encode",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_grain",
+                "portId": "in1"
+              }
+            },
+            "w-encode-paper": {
+              "id": "w-encode-paper",
+              "source": {
+                "nodeId": "wgsl_encode",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_paper",
+                "portId": "in1"
+              }
+            },
+            "w-flow-drift": {
+              "id": "w-flow-drift",
+              "source": {
+                "nodeId": "reorder_flow",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "displace_drift",
+                "portId": "disp"
+              }
+            },
+            "w-flowa-remap": {
+              "id": "w-flowa-remap",
+              "source": {
+                "nodeId": "noise_flowa",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "remap_flowa",
+                "portId": "map"
+              }
+            },
+            "w-flowb-remap": {
+              "id": "w-flowb-remap",
+              "source": {
+                "nodeId": "noise_flowb",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "remap_flowb",
+                "portId": "map"
+              }
+            },
+            "w-grain-paper": {
+              "id": "w-grain-paper",
+              "source": {
+                "nodeId": "composite_grain",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_paper",
+                "portId": "in2"
+              }
+            },
+            "w-luma-emboss": {
+              "id": "w-luma-emboss",
+              "source": {
+                "nodeId": "reorder_luma",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "convolve_emboss",
+                "portId": "input"
+              }
+            },
+            "w-maximum-luma": {
+              "id": "w-maximum-luma",
+              "source": {
+                "nodeId": "wgsl_maximum",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "reorder_luma",
+                "portId": "in1"
+              }
+            },
+            "w-maximum-relief": {
+              "id": "w-maximum-relief",
+              "source": {
+                "nodeId": "wgsl_maximum",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_relief",
+                "portId": "in1"
+              }
+            },
+            "w-noise-grain": {
+              "id": "w-noise-grain",
+              "source": {
+                "nodeId": "noise_grain",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "composite_grain",
+                "portId": "in2"
+              }
+            },
+            "w-original-maximum": {
+              "id": "w-original-maximum",
+              "source": {
+                "nodeId": "cross_original",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_maximum",
+                "portId": "more"
+              }
+            },
+            "w-paper-maximum": {
+              "id": "w-paper-maximum",
+              "source": {
+                "nodeId": "composite_paper",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_maximum",
+                "portId": "input"
+              }
+            },
+            "w-paper-original": {
+              "id": "w-paper-original",
+              "source": {
+                "nodeId": "composite_paper",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "cross_original",
+                "portId": "in2"
+              }
+            },
+            "w-paper-softlight": {
+              "id": "w-paper-softlight",
+              "source": {
+                "nodeId": "composite_paper",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "wgsl_softlight",
+                "portId": "more"
+              }
+            },
+            "w-rate-drift": {
+              "id": "w-rate-drift",
+              "source": {
+                "nodeId": "constant_rate",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "speed_drift",
+                "portId": "in"
+              }
+            },
+            "w-relief-drywet": {
+              "id": "w-relief-drywet",
+              "source": {
+                "nodeId": "composite_relief",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "cross_drywet",
+                "portId": "in2"
+              }
+            },
+            "w-remapa-flow": {
+              "id": "w-remapa-flow",
+              "source": {
+                "nodeId": "remap_flowa",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "reorder_flow",
+                "portId": "in1"
+              }
+            },
+            "w-remapb-flow": {
+              "id": "w-remapb-flow",
+              "source": {
+                "nodeId": "remap_flowb",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "reorder_flow",
+                "portId": "in2"
+              }
+            },
+            "w-slope-bleed": {
+              "id": "w-slope-bleed",
+              "source": {
+                "nodeId": "slope_flow",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "displace_bleed",
+                "portId": "disp"
+              }
+            },
+            "w-soften-bleed": {
+              "id": "w-soften-bleed",
+              "source": {
+                "nodeId": "blur_soften",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "displace_bleed",
+                "portId": "source"
+              }
+            },
+            "w-softlight-slope": {
+              "id": "w-softlight-slope",
+              "source": {
+                "nodeId": "wgsl_softlight",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "slope_flow",
+                "portId": "input"
+              }
+            },
+            "w-trail-drift": {
+              "id": "w-trail-drift",
+              "source": {
+                "nodeId": "feedback_trail",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "displace_drift",
+                "portId": "source"
+              }
+            },
+            "w-warpa-remap": {
+              "id": "w-warpa-remap",
+              "source": {
+                "nodeId": "noise_warpa",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "remap_flowa",
+                "portId": "source"
+              }
+            },
+            "w-warpb-remap": {
+              "id": "w-warpb-remap",
+              "source": {
+                "nodeId": "noise_warpb",
+                "portId": "out"
+              },
+              "target": {
+                "nodeId": "remap_flowb",
+                "portId": "source"
+              }
+            }
+          },
+          "groups": {},
+          "nodes": {
+            "blur_soften": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "blur_soften",
+              "label": "blur_soften",
+              "parameters": {
+                "extend": "hold",
+                "filter": "gaussian",
+                "size": 2
+              },
+              "position": {
+                "x": 1032,
+                "y": 36
+              },
+              "type": "blur"
+            },
+            "composite_grain": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "composite_grain",
+              "label": "composite_grain",
+              "parameters": {
+                "opacity": 1,
+                "operation": "add"
+              },
+              "position": {
+                "x": 516,
+                "y": 12
+              },
+              "type": "composite"
+            },
+            "composite_paper": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "composite_paper",
+              "label": "composite_paper",
+              "parameters": {
+                "opacity": 1,
+                "operation": "multiply"
+              },
+              "position": {
+                "x": 774,
+                "y": -192
+              },
+              "type": "composite"
+            },
+            "composite_relief": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "composite_relief",
+              "label": "composite_relief",
+              "parameters": {
+                "opacity": 1,
+                "operation": "multiply"
+              },
+              "position": {
+                "x": 2838,
+                "y": -90
+              },
+              "type": "composite"
+            },
+            "constant_direction": {
+              "definitionVersion": 1,
+              "id": "constant_direction",
+              "label": "constant_direction",
+              "parameters": {
+                "value": 162
+              },
+              "position": {
+                "x": 0,
+                "y": -1125.5
+              },
+              "type": "constant"
+            },
+            "constant_displaceweight": {
+              "definitionVersion": 1,
+              "id": "constant_displaceweight",
+              "label": "constant_displaceweight",
+              "parameters": {
+                "value": 0.0055
+              },
+              "position": {
+                "x": 0,
+                "y": -937.5
+              },
+              "type": "constant"
+            },
+            "constant_embossstrength": {
+              "definitionVersion": 1,
+              "id": "constant_embossstrength",
+              "label": "constant_embossstrength",
+              "parameters": {
+                "value": 9.08
+              },
+              "position": {
+                "x": 0,
+                "y": -749.5
+              },
+              "type": "constant"
+            },
+            "constant_rate": {
+              "definitionVersion": 1,
+              "id": "constant_rate",
+              "label": "constant_rate",
+              "parameters": {
+                "value": 0.0147
+              },
+              "position": {
+                "x": 0,
+                "y": -561.5
+              },
+              "type": "constant"
+            },
+            "convolve_emboss": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "convolve_emboss",
+              "label": "convolve_emboss",
+              "parameters": {
+                "bias": 1,
+                "extend": "hold",
+                "normalize": false,
+                "row0": [
+                  0,
+                  -1.11336,
+                  0
+                ],
+                "row0.y": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "-(op('constant_embossstrength').chan.value / (abs(cos(op('constant_direction').chan.value * 0.017453292519943295)) + abs(sin(op('constant_direction').chan.value * 0.017453292519943295)))) * sin(op('constant_direction').chan.value * 0.017453292519943295) * 0.5"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": -1.11336
+                    }
+                  },
+                  "mode": "expression"
+                },
+                "row1": [
+                  -3.42658,
+                  0,
+                  3.42658
+                ],
+                "row1.x": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "(op('constant_embossstrength').chan.value / (abs(cos(op('constant_direction').chan.value * 0.017453292519943295)) + abs(sin(op('constant_direction').chan.value * 0.017453292519943295)))) * cos(op('constant_direction').chan.value * 0.017453292519943295) * 0.5"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": -3.42658
+                    }
+                  },
+                  "mode": "expression"
+                },
+                "row1.z": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "-(op('constant_embossstrength').chan.value / (abs(cos(op('constant_direction').chan.value * 0.017453292519943295)) + abs(sin(op('constant_direction').chan.value * 0.017453292519943295)))) * cos(op('constant_direction').chan.value * 0.017453292519943295) * 0.5"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 3.42658
+                    }
+                  },
+                  "mode": "expression"
+                },
+                "row2": [
+                  0,
+                  1.11336,
+                  0
+                ],
+                "row2.y": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "(op('constant_embossstrength').chan.value / (abs(cos(op('constant_direction').chan.value * 0.017453292519943295)) + abs(sin(op('constant_direction').chan.value * 0.017453292519943295)))) * sin(op('constant_direction').chan.value * 0.017453292519943295) * 0.5"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 1.11336
+                    }
+                  },
+                  "mode": "expression"
+                }
+              },
+              "position": {
+                "x": 2580,
+                "y": -74
+              },
+              "type": "convolve"
+            },
+            "cross_drywet": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "cross_drywet",
+              "label": "cross_drywet",
+              "parameters": {
+                "cross": 0.535
+              },
+              "position": {
+                "x": 3096,
+                "y": -82
+              },
+              "type": "cross"
+            },
+            "cross_original": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "cross_original",
+              "label": "cross_original",
+              "parameters": {
+                "cross": 0.207
+              },
+              "position": {
+                "x": 1806,
+                "y": -82
+              },
+              "type": "cross"
+            },
+            "displace_bleed": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "displace_bleed",
+              "label": "displace_bleed",
+              "parameters": {
+                "extend": "hold",
+                "offset": [
+                  0.5,
+                  0.5
+                ],
+                "sourcex": "red",
+                "sourcey": "green",
+                "weight": [
+                  0.0055,
+                  0.0055
+                ],
+                "weight.x": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "op('constant_displaceweight').chan.value"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 0.0055
+                    }
+                  },
+                  "mode": "expression"
+                },
+                "weight.y": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "op('constant_displaceweight').chan.value"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 0.0055
+                    }
+                  },
+                  "mode": "expression"
+                }
+              },
+              "position": {
+                "x": 1548,
+                "y": -82
+              },
+              "type": "displace"
+            },
+            "displace_drift": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "displace_drift",
+              "label": "displace_drift",
+              "parameters": {
+                "extend": "hold",
+                "offset": [
+                  0.5,
+                  0.5
+                ],
+                "sourcex": "red",
+                "sourcey": "blue",
+                "weight": [
+                  0.001,
+                  0.001
+                ]
+              },
+              "position": {
+                "x": 774,
+                "y": 28
+              },
+              "type": "displace"
+            },
+            "feedback_trail": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "feedback_trail",
+              "label": "feedback_trail",
+              "parameters": {
+                "clearColor": [
+                  0,
+                  0,
+                  0,
+                  1
+                ],
+                "persistence": 1,
+                "reset": false,
+                "source": "wgsl_maximum",
+                "substeps": 1
+              },
+              "position": {
+                "x": 0,
+                "y": -373.5
+              },
+              "type": "feedback"
+            },
+            "in_input": {
+              "definitionVersion": 1,
+              "id": "in_input",
+              "label": "input",
+              "parameters": {},
+              "position": {
+                "x": 0,
+                "y": -185.5
+              },
+              "type": "componentIn"
+            },
+            "noise_flowa": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "noise_flowa",
+              "label": "noise_flowa",
+              "parameters": {
+                "amp": 3.15,
+                "aspectcorrect": true,
+                "exp": 1,
+                "gain": 0.7,
+                "harmon": 8,
+                "mono": true,
+                "offset": 0,
+                "p": [
+                  0,
+                  0,
+                  0
+                ],
+                "period": 0.2,
+                "r": 0,
+                "rough": 0,
+                "s": [
+                  1,
+                  1,
+                  1
+                ],
+                "seed": 1,
+                "spread": 2,
+                "t": [
+                  0,
+                  0,
+                  0
+                ],
+                "t.z": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "op('speed_drift').chan.value * 0.2"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 0
+                    }
+                  },
+                  "mode": "expression"
+                },
+                "type": "simplex3d",
+                "xord": "srt"
+              },
+              "position": {
+                "x": 0,
+                "y": 2.5
+              },
+              "type": "noise"
+            },
+            "noise_flowb": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "noise_flowb",
+              "label": "noise_flowb",
+              "parameters": {
+                "amp": 3.15,
+                "aspectcorrect": true,
+                "exp": 1,
+                "gain": 0.7,
+                "harmon": 8,
+                "mono": true,
+                "offset": 0,
+                "p": [
+                  0,
+                  0,
+                  0
+                ],
+                "period": 0.2,
+                "r": 0,
+                "rough": 0,
+                "s": [
+                  1,
+                  1,
+                  1
+                ],
+                "seed": 1141,
+                "spread": 2,
+                "t": [
+                  0,
+                  0,
+                  0
+                ],
+                "t.z": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "op('speed_drift').chan.value * 0.2"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 0
+                    }
+                  },
+                  "mode": "expression"
+                },
+                "type": "simplex3d",
+                "xord": "srt"
+              },
+              "position": {
+                "x": 0,
+                "y": 190.5
+              },
+              "type": "noise"
+            },
+            "noise_grain": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "noise_grain",
+              "label": "noise_grain",
+              "parameters": {
+                "amp": 1,
+                "aspectcorrect": true,
+                "harmon": 0,
+                "mono": true,
+                "offset": 0,
+                "period": 0.001,
+                "s": [
+                  0.78125,
+                  0.78125,
+                  1
+                ],
+                "seed": 1,
+                "speed": 0,
+                "type": "random"
+              },
+              "position": {
+                "x": 0,
+                "y": 378.5
+              },
+              "type": "noise"
+            },
+            "noise_warpa": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "noise_warpa",
+              "label": "noise_warpa",
+              "parameters": {
+                "amp": 2.5,
+                "aspectcorrect": true,
+                "exp": 1,
+                "gain": 0.7,
+                "harmon": 8,
+                "mono": true,
+                "offset": 0,
+                "p": [
+                  0,
+                  0,
+                  0
+                ],
+                "period": 0.13,
+                "r": 0,
+                "rough": 0,
+                "s": [
+                  1,
+                  1,
+                  1
+                ],
+                "seed": 1,
+                "spread": 2,
+                "t": [
+                  0,
+                  0,
+                  0
+                ],
+                "t.z": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "op('speed_drift').chan.value * 0.13"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 0
+                    }
+                  },
+                  "mode": "expression"
+                },
+                "type": "simplex3d",
+                "xord": "srt"
+              },
+              "position": {
+                "x": 0,
+                "y": 566.5
+              },
+              "resolution": {
+                "height": 320,
+                "mode": "fixed",
+                "width": 320
+              },
+              "type": "noise"
+            },
+            "noise_warpb": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "noise_warpb",
+              "label": "noise_warpb",
+              "parameters": {
+                "amp": 2.5,
+                "aspectcorrect": true,
+                "exp": 1,
+                "gain": 0.7,
+                "harmon": 8,
+                "mono": true,
+                "offset": 0,
+                "p": [
+                  0,
+                  0,
+                  0
+                ],
+                "period": 0.13,
+                "r": 0,
+                "rough": 0,
+                "s": [
+                  1,
+                  1,
+                  1
+                ],
+                "seed": 1141,
+                "spread": 2,
+                "t": [
+                  0,
+                  0,
+                  0
+                ],
+                "t.z": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "op('speed_drift').chan.value * 0.13"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 0
+                    }
+                  },
+                  "mode": "expression"
+                },
+                "type": "simplex3d",
+                "xord": "srt"
+              },
+              "position": {
+                "x": 0,
+                "y": 754.5
+              },
+              "resolution": {
+                "height": 320,
+                "mode": "fixed",
+                "width": 320
+              },
+              "type": "noise"
+            },
+            "out_out": {
+              "definitionVersion": 1,
+              "id": "out_out",
+              "label": "out",
+              "parameters": {},
+              "position": {
+                "x": 3870,
+                "y": -74
+              },
+              "type": "componentOut"
+            },
+            "remap_flowa": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "remap_flowa",
+              "label": "remap_flowa",
+              "parameters": {
+                "extend": "hold",
+                "flipu": false,
+                "flipv": false,
+                "sourcex": "red",
+                "sourcey": "green"
+              },
+              "position": {
+                "x": 258,
+                "y": 4
+              },
+              "type": "remap"
+            },
+            "remap_flowb": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "remap_flowb",
+              "label": "remap_flowb",
+              "parameters": {
+                "extend": "hold",
+                "flipu": false,
+                "flipv": false,
+                "sourcex": "red",
+                "sourcey": "green"
+              },
+              "position": {
+                "x": 258,
+                "y": 208
+              },
+              "type": "remap"
+            },
+            "reorder_flow": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "reorder_flow",
+              "label": "reorder_flow",
+              "parameters": {
+                "outa": "in1a",
+                "outb": "in2b",
+                "outg": "zero",
+                "outr": "in1r"
+              },
+              "position": {
+                "x": 516,
+                "y": -192
+              },
+              "type": "reorder"
+            },
+            "reorder_luma": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "reorder_luma",
+              "label": "reorder_luma",
+              "parameters": {
+                "outa": "in1a",
+                "outb": "in1lum",
+                "outg": "in1lum",
+                "outr": "in1lum"
+              },
+              "position": {
+                "x": 2322,
+                "y": -82
+              },
+              "type": "reorder"
+            },
+            "slope_flow": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "slope_flow",
+              "label": "slope_flow",
+              "parameters": {
+                "angle": 45,
+                "channel": "luminance",
+                "extend": "hold",
+                "mode": "slope",
+                "strength": 2.5,
+                "zeropoint": 0.5
+              },
+              "position": {
+                "x": 1290,
+                "y": -74
+              },
+              "type": "slope"
+            },
+            "speed_drift": {
+              "definitionVersion": 1,
+              "id": "speed_drift",
+              "label": "speed_drift",
+              "parameters": {
+                "limit": "mirror",
+                "maximum": 32,
+                "minimum": 0
+              },
+              "position": {
+                "x": 258,
+                "y": -372
+              },
+              "type": "valueSpeed"
+            },
+            "switch_bypass": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "switch_bypass",
+              "label": "switch_bypass",
+              "parameters": {
+                "crossfade": false,
+                "index": {
+                  "bindings": {
+                    "expression": {
+                      "kind": "expression",
+                      "source": "op('toggle_bypass').chan.value"
+                    },
+                    "static": {
+                      "kind": "static",
+                      "value": 0
+                    }
+                  },
+                  "mode": "expression"
+                }
+              },
+              "position": {
+                "x": 3354,
+                "y": -90
+              },
+              "type": "switch"
+            },
+            "toggle_bypass": {
+              "definitionVersion": 2,
+              "id": "toggle_bypass",
+              "label": "toggle_bypass",
+              "parameters": {
+                "caption": "Bypass",
+                "channel": "value",
+                "defaultOn": false,
+                "on": false
+              },
+              "position": {
+                "x": 0,
+                "y": 942.5
+              },
+              "type": "toggle"
+            },
+            "wgsl_decode": {
+              "definitionVersion": 1,
+              "format": {
+                "mode": "project"
+              },
+              "id": "wgsl_decode",
+              "label": "wgsl_decode",
+              "parameters": {
+                "amount": 1,
+                "source": "// Loom works in linear light and straight alpha (SPEC V56). TouchDesigner's TOPs hold\n// sRGB-encoded 8-bit values, and every operator in drmbt's network does its maths on those\n// numbers. wgsl_encode and wgsl_decode bracket the TD chain so a threshold of 0.05, a\n// brightness of 1.64, a soft light and an emboss all mean exactly what they meant in TD.\n// This half: sRGB-encoded values -> linear, back into the project's working space.\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn decodeSrgb(encoded: vec3f) -> vec3f {\n  let c = clamp(encoded, vec3f(0.0), vec3f(1.0));\n  let high = pow((c + vec3f(0.055)) / 1.055, vec3f(2.4));\n  return select(high, c / 12.92, c <= vec3f(0.04045));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let source = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  // Amount must match wgsl_encode's: 1 decodes, 0 passes the values through.\n  return vec4f(mix(source.rgb, decodeSrgb(source.rgb), params.amount), source.a);\n}"
+              },
+              "position": {
+                "x": 3612,
+                "y": -74
+              },
+              "type": "customWgsl"
+            },
+            "wgsl_encode": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_encode",
+              "label": "wgsl_encode",
+              "parameters": {
+                "amount": 1,
+                "source": "// Loom works in linear light and straight alpha (SPEC V56). TouchDesigner's TOPs hold\n// sRGB-encoded 8-bit values, and every operator in drmbt's network does its maths on those\n// numbers. wgsl_encode and wgsl_decode bracket the TD chain so a threshold of 0.05, a\n// brightness of 1.64, a soft light and an emboss all mean exactly what they meant in TD.\n// This half: linear -> sRGB-encoded values (the exact piecewise sRGB curve).\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n\nfn encodeSrgb(linear: vec3f) -> vec3f {\n  let c = clamp(linear, vec3f(0.0), vec3f(1.0));\n  let high = (1.055 * pow(c, vec3f(1.0 / 2.4))) - vec3f(0.055);\n  return select(high, c * 12.92, c <= vec3f(0.0031308));\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let source = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let plain = clamp(source.rgb, vec3f(0.0), vec3f(1.0));\n  // Amount 1 encodes. 0 leaves linear values in place, to A/B the TD maths against Loom's.\n  return vec4f(mix(plain, encodeSrgb(source.rgb), params.amount), source.a);\n}"
+              },
+              "position": {
+                "x": 258,
+                "y": -184
+              },
+              "type": "customWgsl"
+            },
+            "wgsl_maximum": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_maximum",
+              "label": "wgsl_maximum",
+              "parameters": {
+                "amount": 1,
+                "source": "// TD Composite TOP, operation Maximum (comp2 in drmbt's watercolor): per channel\n// max(a, b), alpha included, as TD returns it. a is input 0 (the grained input), b is\n// input 1 (the bled feedback, wired into More). This node is also what the feedback\n// records, so the trail can only ever brighten the picture under it.\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n@group(0) @binding(4) var inputTexture1: texture_2d<f32>;\n\nfn secondAt(uv: vec2f) -> vec4f {\n  let size = vec2i(textureDimensions(inputTexture1));\n  let texel = clamp(vec2i(uv * vec2f(size)), vec2i(0), size - vec2i(1));\n  return textureLoad(inputTexture1, texel, 0);\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let a = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let b = secondAt(uv);\n  // Amount mixes from input 0 alone (0) to the full maximum (1).\n  return mix(a, max(a, b), params.amount);\n}"
+              },
+              "position": {
+                "x": 2064,
+                "y": -90
+              },
+              "type": "customWgslMulti"
+            },
+            "wgsl_softlight": {
+              "definitionVersion": 1,
+              "format": {
+                "format": "rgba8unorm",
+                "mode": "fixed"
+              },
+              "id": "wgsl_softlight",
+              "label": "wgsl_softlight",
+              "parameters": {
+                "amount": 1,
+                "source": "// TD Composite TOP, operation Soft Light (comp3 in drmbt's watercolor).\n// Measured in TD 2025.33230 on two ramps: per channel (1 - 2b) * a^2 + 2b * a, the Pegtop\n// form rather than the W3C one, where a is input 0 (the base: the drifted feedback) and\n// b is input 1 (the blend: the grained input, wired into More). Alpha is input 0's.\nstruct Params {\n  amount: f32,\n};\n\n@group(0) @binding(0) var inputSampler: sampler;\n@group(0) @binding(1) var inputTexture: texture_2d<f32>;\n@group(0) @binding(3) var<uniform> params: Params;\n@group(0) @binding(4) var inputTexture1: texture_2d<f32>;\n\nfn secondAt(uv: vec2f) -> vec4f {\n  let size = vec2i(textureDimensions(inputTexture1));\n  let texel = clamp(vec2i(uv * vec2f(size)), vec2i(0), size - vec2i(1));\n  return textureLoad(inputTexture1, texel, 0);\n}\n\n@fragment\nfn fs(@location(0) uv: vec2f) -> @location(0) vec4f {\n  let a = textureSampleLevel(inputTexture, inputSampler, uv, 0.0);\n  let b = secondAt(uv);\n  let soft = ((vec3f(1.0) - (2.0 * b.rgb)) * a.rgb * a.rgb) + (2.0 * b.rgb * a.rgb);\n  // Amount mixes from the base (0) to the full soft light (1).\n  return vec4f(mix(a.rgb, soft, params.amount), a.a);\n}"
+              },
+              "position": {
+                "x": 1032,
+                "y": -184
+              },
+              "type": "customWgslMulti"
+            }
+          },
+          "revision": 1
+        },
+        "inputs": [
+          {
+            "externalId": "input",
+            "label": "input",
+            "nodeId": "in_input",
+            "portId": "in"
+          }
+        ],
+        "name": "Watercolor",
+        "outputs": [
+          {
+            "externalId": "out",
+            "label": "out",
+            "nodeId": "out_out",
+            "portId": "out"
+          }
+        ],
+        "parameters": [
+          {
+            "definition": {
+              "default": false,
+              "description": "Passes the input through untouched.",
+              "label": "Bypass",
+              "type": "boolean"
+            },
+            "key": "Bypass",
+            "targets": [
+              {
+                "key": "on",
+                "nodeId": "toggle_bypass"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0.535,
+              "label": "Dry / Wet Mix",
+              "max": 1,
+              "min": 0,
+              "range": "bounded",
+              "step": 0.001,
+              "type": "number"
+            },
+            "key": "Drywet",
+            "targets": [
+              {
+                "key": "cross",
+                "nodeId": "cross_drywet"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0.207,
+              "description": "How far each frame of the trail falls back toward the grained input.",
+              "label": "Blend Original",
+              "max": 1,
+              "min": 0,
+              "range": "bounded",
+              "step": 0.001,
+              "type": "number"
+            },
+            "key": "Blendoriginal",
+            "targets": [
+              {
+                "key": "cross",
+                "nodeId": "cross_original"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0.0147,
+              "description": "How fast the flow field evolves (noise z units per second).",
+              "label": "Speed",
+              "max": 0.1,
+              "min": 0,
+              "range": "floor",
+              "step": 0.0001,
+              "type": "number"
+            },
+            "key": "Speed",
+            "targets": [
+              {
+                "key": "value",
+                "nodeId": "constant_rate"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 0.0055,
+              "description": "How far the trail bleeds along its own slope each frame, in uv units.",
+              "label": "Displace Weight",
+              "max": 0.1,
+              "min": 0,
+              "range": "floor",
+              "step": 0.0001,
+              "type": "number"
+            },
+            "key": "Displaceweight",
+            "targets": [
+              {
+                "key": "value",
+                "nodeId": "constant_displaceweight"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 1,
+              "description": "The emboss's flat value. 1 leaves only the darkened side.",
+              "label": "Midpoint",
+              "max": 1,
+              "min": 0,
+              "range": "bounded",
+              "step": 0.001,
+              "type": "number"
+            },
+            "key": "Midpoint",
+            "targets": [
+              {
+                "key": "bias",
+                "nodeId": "convolve_emboss"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 9.08,
+              "label": "Emboss Strength",
+              "max": 15,
+              "min": 0,
+              "range": "floor",
+              "step": 0.01,
+              "type": "number"
+            },
+            "key": "Embossstrength",
+            "targets": [
+              {
+                "key": "value",
+                "nodeId": "constant_embossstrength"
+              }
+            ]
+          },
+          {
+            "definition": {
+              "default": 162,
+              "description": "TD's emboss direction: counter-clockwise from +x, y up.",
+              "label": "Direction",
+              "max": 360,
+              "min": 0,
+              "range": "cyclic",
+              "step": 1,
+              "type": "number",
+              "unit": "degrees"
+            },
+            "key": "Direction",
+            "targets": [
+              {
+                "key": "value",
+                "nodeId": "constant_direction"
+              }
+            ]
+          }
+        ],
+        "version": 1
+      }
+    ],
+    "schemaVersion": 1
+  },
+  "createdAt": "2026-10-24T00:00:00.000Z",
+  "graph": {
+    "edges": {
+      "ed_mirror3": {
+        "id": "ed_mirror3",
+        "source": {
+          "nodeId": "nd_mirror1",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "cornerpin_projector",
+          "portId": "input"
+        }
+      },
+      "ed_mirror6": {
+        "id": "ed_mirror6",
+        "source": {
+          "nodeId": "movie_angels",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "nd_mirror5",
+          "portId": "painting0"
+        }
+      },
+      "ed_mirror7": {
+        "id": "ed_mirror7",
+        "source": {
+          "nodeId": "movie_friendship",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "nd_mirror5",
+          "portId": "painting1"
+        }
+      },
+      "ed_mirror8": {
+        "id": "ed_mirror8",
+        "source": {
+          "nodeId": "flip_mirror",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "nd_mirror5",
+          "portId": "ai"
+        }
+      },
+      "ed_mirror9": {
+        "id": "ed_mirror9",
+        "source": {
+          "nodeId": "nd_mirror5",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "nd_mirror1",
+          "portId": "input"
+        }
+      },
+      "x-ai-surround": {
+        "id": "x-ai-surround",
+        "source": {
+          "nodeId": "movie_ai",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "composite_surround",
+          "portId": "in1"
+        }
+      },
+      "x-pin-output": {
+        "id": "x-pin-output",
+        "source": {
+          "nodeId": "cornerpin_projector",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "output_main",
+          "portId": "input"
+        }
+      },
+      "x-spot-surround": {
+        "id": "x-spot-surround",
+        "source": {
+          "nodeId": "circle_surround",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "composite_surround",
+          "portId": "in2"
+        }
+      },
+      "x-surround-mirror": {
+        "id": "x-surround-mirror",
+        "source": {
+          "nodeId": "composite_surround",
+          "portId": "out"
+        },
+        "target": {
+          "nodeId": "flip_mirror",
+          "portId": "input"
+        }
+      }
+    },
+    "groups": {},
+    "nodes": {
+      "circle_surround": {
+        "definitionVersion": 1,
+        "id": "circle_surround",
+        "label": "circle_surround",
+        "parameters": {
+          "aspectcorrect": true,
+          "bgcolor": [
+            0,
+            0,
+            0,
+            1
+          ],
+          "center": [
+            0.5,
+            0.5
+          ],
+          "fillcolor": [
+            1,
+            1,
+            1,
+            1
+          ],
+          "mode": "fill",
+          "radius": [
+            0.36,
+            0.42
+          ],
+          "softness": 0.22
+        },
+        "position": {
+          "x": 0,
+          "y": -356
+        },
+        "type": "circle"
+      },
+      "composite_surround": {
+        "definitionVersion": 1,
+        "id": "composite_surround",
+        "label": "composite_surround",
+        "parameters": {
+          "opacity": 1,
+          "operation": "multiply"
+        },
+        "position": {
+          "x": 258,
+          "y": -90
+        },
+        "type": "composite"
+      },
+      "cornerpin_projector": {
+        "definitionVersion": 1,
+        "id": "cornerpin_projector",
+        "label": "cornerpin_projector",
+        "parameters": {
+          "extend": "zero",
+          "extractbl": [
+            0,
+            0
+          ],
+          "extractbr": [
+            1,
+            0
+          ],
+          "extracttl": [
+            0,
+            1
+          ],
+          "extracttr": [
+            1,
+            1
+          ],
+          "feather": 0,
+          "pinbl": [
+            0.189,
+            0.22
+          ],
+          "pinbr": [
+            0.748,
+            0.253
+          ],
+          "pintl": [
+            0.167,
+            0.786
+          ],
+          "pintr": [
+            0.756,
+            0.792
+          ]
+        },
+        "position": {
+          "x": 1290,
+          "y": -74
+        },
+        "type": "cornerPin"
+      },
+      "flip_mirror": {
+        "definitionVersion": 1,
+        "id": "flip_mirror",
+        "label": "flip_mirror",
+        "parameters": {
+          "flipx": true,
+          "flipy": false
+        },
+        "position": {
+          "x": 516,
+          "y": -74
+        },
+        "type": "flip"
+      },
+      "movie_ai": {
+        "definitionVersion": 1,
+        "id": "movie_ai",
+        "label": "movie_ai",
+        "parameters": {
+          "audio": false,
+          "cue": false,
+          "cuePoint": 0,
+          "extend": "loop",
+          "file": "projects/ciurlionis-mirror/media/ai-standin-portraits.mp4",
+          "imageFit": "fill",
+          "play": true,
+          "playMode": "freeRun",
+          "speed": 1,
+          "trimEnd": 0,
+          "trimStart": 0,
+          "volume": 1
+        },
+        "position": {
+          "x": 0,
+          "y": -168
+        },
+        "type": "movieFileIn"
+      },
+      "movie_angels": {
+        "definitionVersion": 1,
+        "id": "movie_angels",
+        "label": "movie_angels",
+        "parameters": {
+          "audio": false,
+          "cue": false,
+          "cuePoint": 0,
+          "extend": "loop",
+          "file": "projects/ciurlionis-mirror/media/painting-loop-angels.mp4",
+          "imageFit": "fit",
+          "play": true,
+          "playMode": "freeRun",
+          "speed": 1,
+          "trimEnd": 0,
+          "trimStart": 0,
+          "volume": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 20
+        },
+        "type": "movieFileIn"
+      },
+      "movie_friendship": {
+        "definitionVersion": 1,
+        "id": "movie_friendship",
+        "label": "movie_friendship",
+        "parameters": {
+          "audio": false,
+          "cue": false,
+          "cuePoint": 0,
+          "extend": "loop",
+          "file": "projects/ciurlionis-mirror/media/painting-loop-background.mp4",
+          "imageFit": "fit",
+          "play": true,
+          "playMode": "freeRun",
+          "speed": 1,
+          "trimEnd": 0,
+          "trimStart": 0,
+          "volume": 1
+        },
+        "position": {
+          "x": 0,
+          "y": 208
+        },
+        "type": "movieFileIn"
+      },
+      "nd_mirror1": {
+        "definitionVersion": 1,
+        "id": "nd_mirror1",
+        "label": "watercolor_look",
+        "parameters": {},
+        "position": {
+          "x": 1032,
+          "y": -74.5
+        },
+        "type": "component:watercolor@1"
+      },
+      "nd_mirror5": {
+        "definitionVersion": 1,
+        "id": "nd_mirror5",
+        "label": "paintingkey_look",
+        "parameters": {
+          "Scene": {
+            "bindings": {
+              "expression": {
+                "kind": "expression",
+                "source": "mod(floor(abstime / 30), 2)"
+              },
+              "static": {
+                "kind": "static",
+                "value": 0
+              }
+            },
+            "mode": "expression"
+          }
+        },
+        "position": {
+          "x": 774,
+          "y": -90.5
+        },
+        "type": "component:paintingKey@1"
+      },
+      "output_main": {
+        "definitionVersion": 1,
+        "id": "output_main",
+        "label": "output_main",
+        "parameters": {
+          "toneMap": "none"
+        },
+        "position": {
+          "x": 1548,
+          "y": -74
+        },
+        "type": "output"
+      }
+    },
+    "revision": 5
+  },
+  "name": "Ciurlionis Mirror",
+  "projectId": "ciurlionis-mirror",
+  "schemaVersion": 5,
+  "settings": {
+    "fps": 60,
+    "limits": {
+      "maxBufferBytes": 268435456,
+      "maxDispatch": 65535,
+      "maxResolution": 4096,
+      "memoryBudgetBytes": 1073741824
+    },
+    "outputResolution": {
+      "height": 1280,
+      "width": 1280
+    },
+    "previewFps": 30,
+    "previewLongEdge": 192,
+    "randomSeed": 7,
+    "workingFormat": "rgba16float"
+  },
+  "updatedAt": "2026-10-24T00:00:00.000Z"
+}
