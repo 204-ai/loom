@@ -30,6 +30,17 @@ export {
 } from "./example-link.ts";
 export type { ExampleLinkResolution } from "./example-link.ts";
 
+/** T1720b — the repo-project link contract, read at boot under `pnpm dev`. */
+export {
+  PROJECT_LINK_PARAM,
+  projectLinkFetchUrl,
+  projectLinkUrl,
+  readProjectLink,
+  resolveProjectLink,
+  withoutProjectLink,
+} from "./project-link.ts";
+export type { ProjectLinkResolution } from "./project-link.ts";
+
 export { useDocumentDirty } from "./document-dirty.ts";
 export type { DocumentDirty } from "./document-dirty.ts";
 

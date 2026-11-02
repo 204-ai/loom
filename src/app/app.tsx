@@ -75,8 +75,10 @@ import { createDisplaySinkStore, mergeSinkStores } from "./display-sinks.ts";
 import { usePerformWindows } from "./use-perform-windows.ts";
 import { useAutosave } from "./use-autosave.ts";
 import { useStarterProject } from "./use-starter-project.ts";
-import type { ExampleLinkOutcome, UnrunnableRestore } from "./use-starter-project.ts";
+import type { ExampleLinkOutcome, ProjectLinkOutcome, UnrunnableRestore } from "./use-starter-project.ts";
 import { consumeExampleLink, currentExampleLink } from "./example-link-boot.ts";
+import { consumeProjectLink, currentProjectLink, loadProjectLink, startProjectLink } from "./project-link-boot.ts";
+import type { ProjectLinkLoad } from "./project-link-boot.ts";
 import { lastOpenedStore } from "./last-opened.ts";
 import type { LastOpened } from "./last-opened.ts";
 import { useGpuStatus } from "./use-gpu-status.ts";
@@ -1308,6 +1310,37 @@ export function App({
     setExampleLinkOutcome(outcome.kind === "opened" ? null : outcome);
   }, []);
 
+  /**
+   * T1720b — THE REPO-PROJECT LINK (`?project=projects/…/*.loom.json`), read once at mount
+   * like the example link, and FETCHED: the boot decision waits for `projectLinkLoad` to
+   * settle. Its outcome is state for the same reason the example link's is.
+   */
+  const [projectLinkLoad, setProjectLinkLoad] = useState<ProjectLinkLoad | null>(() => {
+    const requested = currentProjectLink();
+    return requested === null ? null : startProjectLink(requested);
+  });
+  useEffect(() => {
+    if (projectLinkLoad?.kind !== "loading") return;
+    let live = true;
+    void loadProjectLink(projectLinkLoad).then((settled) => {
+      if (live) setProjectLinkLoad(settled);
+    });
+    return () => {
+      live = false;
+    };
+  }, [projectLinkLoad]);
+  const [projectLinkOutcome, setProjectLinkOutcome] = useState<
+    Exclude<ProjectLinkOutcome, { kind: "opened" }> | null
+  >(null);
+  const onProjectLink = useCallback((outcome: ProjectLinkOutcome) => {
+    // Consumed once the boot has taken responsibility, with the example link's rules — and
+    // an example link riding along is stripped too: the boot answered the project link.
+    consumeProjectLink();
+    consumeExampleLink();
+    // Nothing to `lastOpened`, as for an example link: a refresh is a plain refresh.
+    setProjectLinkOutcome(outcome.kind === "opened" ? null : outcome);
+  }, []);
+
   // T189/§V93: "is there unsaved work" is the one thing that makes OPEN ask first. The
   // example library asks it; `markSaved` after a successful write is the other half.
   const dirty = useDocumentDirty(runtime.bus, runtime.components); // §T1540b: definition writes are unsaved work
@@ -1412,6 +1445,9 @@ export function App({
     // outranks this browser's own autosave.
     exampleLink: bootExampleLink,
     onExampleLink,
+    // T1720b: a repo project the load was linked to, asked before the example link.
+    projectLink: projectLinkLoad,
+    onProjectLink,
     // B225: what this machine IS, so rule two cannot put a browser tab back on a
     // desktop-only example. Read at the decision, not frozen: the helper fact moves as the
     // bridge socket settles, and the honest answer is whatever is true when we decide.
@@ -1792,6 +1828,51 @@ export function App({
     }
 
     /**
+     * T1720b — the repo-project link's notices, on the same terms. A refused path and a
+     * file the server did not serve are ERRORS that name what was asked for; nothing was
+     * opened, and the starter did not stand in for it.
+     */
+    if (projectLinkOutcome !== null) {
+      const dismissProject = { label: "Dismiss", onSelect: () => setProjectLinkOutcome(null) };
+      if (projectLinkOutcome.kind === "refused") {
+        list.push({
+          id: "project-link-refused",
+          tone: "error",
+          message: `This link asks for a project this app will not open: "${projectLinkOutcome.requested}", because ${projectLinkOutcome.reason}.`,
+          detail: "Nothing was opened. A project link names a projects/…/*.loom.json file on this server.",
+          actions: [dismissProject],
+        });
+      } else if (projectLinkOutcome.kind === "failed") {
+        list.push({
+          id: "project-link-failed",
+          tone: "error",
+          message: `This link's project could not be loaded: ${projectLinkOutcome.path} (${projectLinkOutcome.reason}).`,
+          detail: "Nothing was opened. Project links need a server that serves the repository's projects/ folder, such as `pnpm dev`; the hosted build ships none.",
+          actions: [dismissProject],
+        });
+      } else {
+        const linked = projectLinkOutcome;
+        list.push({
+          id: "project-link-confirm",
+          tone: "warn",
+          message: `A link wants to open the project ${linked.fileName}.`,
+          detail: "You have unsaved work here, and opening replaces it.",
+          actions: [
+            {
+              label: "Open project",
+              variant: "outline",
+              onSelect: () => {
+                setProjectLinkOutcome(null);
+                project.openText(linked.text, linked.fileName);
+              },
+            },
+            { label: "Keep my work", onSelect: () => setProjectLinkOutcome(null) },
+          ],
+        });
+      }
+    }
+
+    /**
      * B225 — WE DID NOT PUT YOU BACK WHERE YOU WERE, AND HERE IS WHY AND HERE IS THE WAY
      * BACK.
      *
@@ -1853,6 +1934,7 @@ export function App({
     depth.notices,
     phoneDoor,
     exampleLinkOutcome,
+    projectLinkOutcome,
     floatBlocked,
     outputStale,
     project,

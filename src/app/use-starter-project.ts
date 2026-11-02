@@ -6,6 +6,7 @@ import { assessRequirements, describeRunVerdict } from "@domain/types/requiremen
 import type { HostFacts, RuntimeRequirement } from "@domain/types/requirements.ts";
 import { STARTER_EXAMPLE_FILE } from "./starter-document.ts";
 import type { LastOpened } from "./last-opened.ts";
+import type { ProjectLinkLoad } from "./project-link-boot.ts";
 
 /**
  * THE STARTER NETWORK — something on screen on a boot that has nothing to restore.
@@ -171,6 +172,20 @@ export type ExampleLinkOutcome =
   | { readonly kind: "unreadable"; readonly example: ExampleProject };
 
 /**
+ * WHAT THE BOOT DID ABOUT A REPO-PROJECT LINK (T1720b) — the example link's outcomes, for
+ * a file the server serves rather than one the build ships.
+ */
+export type ProjectLinkOutcome =
+  /** Opened, as a picked file opens: its own project id, its basename in the top bar. */
+  | { readonly kind: "opened"; readonly fileName: string }
+  /** Unsaved work here, so the link ASKS (§V93). `text` is the fetched file, ready to open. */
+  | { readonly kind: "confirm"; readonly fileName: string; readonly text: string }
+  /** Not a path a link may name. NOTHING was fetched or opened. */
+  | { readonly kind: "refused"; readonly requested: string; readonly reason: string }
+  /** An accepted path the server did not serve as JSON. NOTHING was opened. */
+  | { readonly kind: "failed"; readonly path: string; readonly reason: string };
+
+/**
  * B225 — THE BOOT DECLINED TO REOPEN WHERE YOU WERE, BECAUSE THIS MACHINE CANNOT RUN IT.
  *
  * Reported for the same reason `ExampleLinkOutcome` is: this module is a decision over
@@ -309,6 +324,14 @@ export interface StarterProjectOptions {
   /** Where an `exampleLink` decision goes. Required whenever a link can arrive. */
   readonly onExampleLink?: ((outcome: ExampleLinkOutcome) => void) | undefined;
   /**
+   * THE REPO PROJECT THIS LOAD WAS LINKED TO (T1720b), as fetched so far. Null on every
+   * ordinary boot. While it is `loading` the decision WAITS — the starter landing first and
+   * the linked project on top of it would be two opens for one boot.
+   */
+  readonly projectLink?: ProjectLinkLoad | null | undefined;
+  /** Where a `projectLink` decision goes. Required whenever a project link can arrive. */
+  readonly onProjectLink?: ((outcome: ProjectLinkOutcome) => void) | undefined;
+  /**
    * WHAT THIS MACHINE IS (B225, T1340b) — `pageHostFacts`, read at the decision.
    *
    * A value rather than a probe, so the whole of rule two stays a decision over facts and
@@ -324,8 +347,11 @@ export interface StarterProjectOptions {
   readonly onUnrunnableRestore?: ((outcome: UnrunnableRestore) => void) | undefined;
   /** The project id the starter is restamped with — the runtime's own. */
   readonly projectId: string;
-  /** `useProject().openText`, i.e. `project.open` on the bus (§V29). */
-  readonly openText: (text: string) => void;
+  /**
+   * `useProject().openText`, i.e. `project.open` on the bus (§V29). A file name only for a
+   * repo-project link, which opens as a picked file does; nothing else here opened a file.
+   */
+  readonly openText: (text: string, fileName?: string) => void;
   /** Test seam. Defaults to the shipped catalogue. */
   readonly catalogue?: readonly ExampleProject[];
 }
@@ -354,6 +380,8 @@ export function useStarterProject(options: StarterProjectOptions): void {
     lastOpened,
     exampleLink,
     onExampleLink,
+    projectLink = null,
+    onProjectLink,
     host,
     onUnrunnableRestore,
     projectId,
@@ -374,6 +402,8 @@ export function useStarterProject(options: StarterProjectOptions): void {
     lastOpened,
     exampleLink,
     onExampleLink,
+    projectLink,
+    onProjectLink,
     host,
     onUnrunnableRestore,
     projectId,
@@ -390,6 +420,8 @@ export function useStarterProject(options: StarterProjectOptions): void {
     lastOpened,
     exampleLink,
     onExampleLink,
+    projectLink,
+    onProjectLink,
     host,
     onUnrunnableRestore,
     projectId,
@@ -398,11 +430,15 @@ export function useStarterProject(options: StarterProjectOptions): void {
   };
 
   const decided = useRef(false);
+  // T1720b: a project link is FETCHED, so the decision has a second answer to wait for.
+  const projectLinkSettled = projectLink === null || projectLink.kind !== "loading";
 
   useEffect(() => {
     if (decided.current) return;
     // Still in flight, or the lookup failed and cannot say. Either way, not an answer.
     if (!restoreChecked) return;
+    // The linked project is still on its way; deciding now would let the starter land first.
+    if (!projectLinkSettled) return;
     decided.current = true;
 
     const current = latest.current;
@@ -437,7 +473,38 @@ export function useStarterProject(options: StarterProjectOptions): void {
      * An UNKNOWN name returns rather than falling through. Falling through would boot the
      * starter, i.e. hand the recipient a plausible document and no reason to doubt it was
      * the one they were sent — the failure mode this whole row exists to refuse.
+     *
+     * T1720b — A REPO-PROJECT LINK IS THE SAME RULE, asked first. It ranks above the
+     * autosave for the same reason and with the same guarantees, with one difference that
+     * the owner asked for: it opens AS A PICKED FILE OPENS, so the document keeps its own
+     * project id and its basename names it. This browser's own autosave is therefore not
+     * offered over it — it sits untouched in its slot and is offered on the next boot
+     * without the link — while an autosave of THAT project (edits made to it here before)
+     * comes back as the restore notice, exactly as for an example. A refused or failed link
+     * returns, loudly, rather than falling through. A load carrying both links answers the
+     * project link: it is the deliberate deployment, the example link the shared one.
      */
+    if (current.projectLink !== null) {
+      const link = current.projectLink;
+      if (link.kind === "refused") {
+        current.onProjectLink?.({ kind: "refused", requested: link.requested, reason: link.reason });
+        return;
+      }
+      if (link.kind === "failed") {
+        current.onProjectLink?.({ kind: "failed", path: link.path, reason: link.reason });
+        return;
+      }
+      // `loading` cannot reach here: the guard above waits for it to settle.
+      if (link.kind !== "loaded") return;
+      if (current.isDirty()) {
+        current.onProjectLink?.({ kind: "confirm", fileName: link.fileName, text: link.text });
+        return;
+      }
+      current.openText(link.text, link.fileName);
+      current.onProjectLink?.({ kind: "opened", fileName: link.fileName });
+      return;
+    }
+
     if (current.exampleLink !== null) {
       const catalogue = current.catalogue ?? listExampleProjects();
       const resolution = resolveExampleLink(current.exampleLink, catalogue);
@@ -527,5 +594,5 @@ export function useStarterProject(options: StarterProjectOptions): void {
     const starter = starterProjectText(current.projectId, current.catalogue);
     if (starter === null) return;
     current.openText(starter.text);
-  }, [restoreChecked]);
+  }, [restoreChecked, projectLinkSettled]);
 }
