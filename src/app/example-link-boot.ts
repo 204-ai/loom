@@ -28,7 +28,8 @@ export interface AddressBar {
   replace(href: string): void;
 }
 
-function browserAddress(): AddressBar {
+/** The real address bar. Shared with the project link (`project-link-boot.ts`). */
+export function browserAddress(): AddressBar {
   return {
     get href() {
       return globalThis.location.href;

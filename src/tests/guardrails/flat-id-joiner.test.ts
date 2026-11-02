@@ -85,6 +85,7 @@ const NOT_A_NODE_PATH: Readonly<Record<string, string>> = {
   "src/editor/inspect/pipeline-model.ts": "a row's text",
   "src/editor/inspector/component-section.tsx": "a React key",
   "src/editor/library/example-catalogue.ts": "a file path",
+  "src/editor/library/project-link.ts": "a repo file path from a `?project=` link, in segments",
 };
 
 function sourceFiles(): string[] {
