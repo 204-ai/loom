@@ -12,7 +12,7 @@ StreamDiffusion output.
 | `mirror-whip.loom.json` | Option 3: Loom sends to and reads from sd-webrtc directly, over WHIP and WHEP (see Option 3). |
 | `Watercolor.loom.json` | Watercolor on its own: the component and a movie to run it on. |
 | `PaintingKey.loom.json` | PaintingKey on its own, with the two painting loops. |
-| `media/` | The stand-in movies (see Media). |
+| `media/` | The show's loops and the stand-in movies (see Media). |
 | `td-vs-loom.jpg` | The comparison below, as pictures. |
 
 Open with File → Open project from a local `pnpm dev`. The movies are addressed relative to
@@ -153,8 +153,9 @@ picker by hand. Loom also opens a capture only on a click; see Limits.
   MoveNet looks at the same square SD diffuses, so the wrist maps as is; `constant_wristscale`
   is the knob.
 - **The angels follow across only**, a quarter frame to the side, at ×0.8, as comp6 and
-  transform6 do (transform5 is bypassed in the .toe). The clip is the
-  `painting-loop-angels.mp4` stand-in: `Angels_flying_loop.mp4` is not in this repo.
+  transform6 do (transform5 is bypassed in the .toe). The clip is the show's
+  `Angels_flying_loop.mp4` (see Media). TD keyed it by its luminance (reorder1, math2);
+  Screen does much the same over a black ground.
 - **Visibility is gated.** The .toe routes no visibility channel, so its gate never fires.
   MoveNet always returns 17 joints, so a joint below 0.5 confidence does not count.
 - **The play area is measured on the centre square** SD diffuses, not on MediaPipe's full
@@ -378,17 +379,31 @@ percentile 3 levels). See `td-vs-loom.jpg`.
 
 ## Media
 
-The movies are working copies of 204.ai material:
+The show's media, which the .toe could not find on this Mac, is in
+`dao-llama/mirror-ciurlionis/media/`. All three networks use these copies of it, re-encoded
+(H.264, no audio, full size and frame rate) to keep this folder small:
 
-- `ai-standin-portraits.mp4` is `feat-ciurlionis-5a3485.mp4` from the 204.ai site.
+| File here | Source | Used by | SSIM to source |
+|---|---|---|---|
+| `ciurlionis-truth-background.mp4` | `Ciulionis_truth_background_full_size.mp4`, 1152 × 1760, CRF 26 | `movie_angels` (PaintingKey `painting0`, scene 0) | 0.971 |
+| `ciurlionis-friendship-background.mp4` | `Ciulionis_friendship_background_full_size.mp4`, 1152 × 1760, CRF 26 | `movie_friendship` (`painting1`, scene 1) | 0.965 |
+| `angels-flying-loop.mp4` | `Angels_flying_loop.mp4`, 1024 × 768, CRF 23 | the hybrid's `movie_angelsoverlay` | 0.998 |
+
+switch2 in the .toe reads `ciurlionis_loop_2_angels-1152x1760.mp4` and
+`ciurlionis_loop_1_friendship_1152x1760.mp4` from the 204.ai shared drive, and neither name
+is in the folder. The friendship file matches by name and size. The truth file is the only
+other 1152 × 1760 loop, so it stands in the angels slot. That pairing is a guess: swap the
+file if the drive's angels loop differs. The .toe also loads the truth file and
+`background_ciurlionis_2.mp4` (the same footage at 1080 × 1478) into two Movie File Ins that
+feed nothing.
+
+The earlier stand-ins stay because the TD comparison above was measured on them:
+
+- `ai-standin-portraits.mp4` is `feat-ciurlionis-5a3485.mp4` from the 204.ai site. It still
+  stands in for the SD output in the look example and the component files.
 - `painting-loop-angels.mp4` is 212–224 s of `Ciurlionis_Narrative_Journey_720p.mp4`, centre
   crop 472 × 720.
-- `painting-loop-background.mp4` is the KBC mirror's `background_ciurlionis_2.mp4`, scaled
-  to 576 × 788.
-
-The show's own loops (`ciurlionis_loop_1_friendship` / `loop_2_angels`, 1152 × 1760) are on
-the 204.ai shared drive. Point `movie_angels` and `movie_friendship` at them for the real
-thing.
+- `painting-loop-background.mp4` is `background_ciurlionis_2.mp4`, scaled to 576 × 788.
 
 ## How these files were made
 
