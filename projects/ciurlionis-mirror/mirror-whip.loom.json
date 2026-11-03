@@ -3457,7 +3457,7 @@
         "id": "webcam_camera",
         "label": "webcam_camera",
         "parameters": {
-          "device": "whep:http://127.0.0.1:8889/cam/whep",
+          "device": "whep:http://127.0.0.1:8777/whep?stream=color",
           "imageAnchorX": 0.5,
           "imageAnchorY": 0.5,
           "imageFit": "fill",
